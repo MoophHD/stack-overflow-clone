@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user.model");
+
 const {
   createToken,
   verifyPassword,
@@ -36,7 +35,8 @@ router.post(
         });
       }
 
-      if (verifyPassword(password, user.password)) {
+      const isMatch = await verifyPassword(password, user.password)
+      if (!isMatch) {
         return res.status(400).json({ message: "Wrong email or password." });
       }
 
