@@ -1,7 +1,10 @@
+import Auth from './pages/Auth';
+import './index.css'
+
 function App() {
   return (
     <div className="App">
-      <h1>Client is running</h1>
+      <Auth />
     </div>
   );
 }
