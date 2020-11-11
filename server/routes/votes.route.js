@@ -2,24 +2,29 @@ const express = require("express");
 const router = express.Router();
 const Question = require("../models/question.model");
 const Answer = require("../models/answer.model");
+const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
-async function vote(user, target, voteValue) {
-  const existingVote = target.votes.find((v) => v.user._id.equals(user));
+async function vote(userId, target, voteValue) {
+  const user = await User.findById(userId);
+  const existingVote = target.votes.find((v) => v.user._id.equals(userId));
 
   if (existingVote) {
     target.score -= existingVote.vote;
+    user.score -= existingVote.vote;
     if (voteValue == 0) {
       target.votes.pull(existingVote);
     } else {
       existingVote.vote = voteValue;
       target.score += voteValue;
+      user.score += voteValue;
     }
   } else if (voteValue != 0) {
     target.votes.push({ user, vote: voteValue });
     target.score += voteValue;
   }
 
+  await user.save();
   return await target.save();
 }
 
