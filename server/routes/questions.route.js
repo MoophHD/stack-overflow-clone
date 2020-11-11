@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/question.model");
+const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
 router.get("/", async (req, res) => {
@@ -27,6 +28,10 @@ router.post("/", auth, async (req, res) => {
     const { title, text } = req.body;
     const question = new Question({ author, title, text });
     const savedQuestion = await question.save();
+
+    const user = await User.findById(author);
+    user.questions.push(savedQuestion.id);
+    await user.save();
 
     res.json({ id: savedQuestion.id });
   } catch (e) {
