@@ -7,6 +7,7 @@ const {
   createToken,
   verifyPassword,
   hashPassword,
+  createRefreshToken,
 } = require("../utils/authentification");
 
 router.post(
@@ -35,10 +36,16 @@ router.post(
         });
       }
 
-      const isMatch = await verifyPassword(password, user.password)
+      const isMatch = await verifyPassword(password, user.password);
       if (!isMatch) {
         return res.status(400).json({ message: "Wrong email or password." });
       }
+
+      res.cookie("refreshToken", createRefreshToken(user), {
+        path: "/api/auth",
+        maxAge: process.env.REFRESH_TOKEN_EXPIERY,
+        httpOnly: true,
+      });
 
       const token = createToken(user);
       res.json({ token, userId: user.id });
@@ -66,7 +73,7 @@ router.post(
           message: "Incorrect data for registration",
         });
       }
-      
+
       const {
         email,
         password,
@@ -95,7 +102,13 @@ router.post(
       });
       const savedUser = await user.save();
       const token = createToken(savedUser);
-      res.json({ token, userId: savedUser.id });
+
+      res.cookie("refreshToken", createRefreshToken(user), {
+        path: "/api/auth",
+        maxAge: process.env.REFRESH_TOKEN_EXPIERY,
+        httpOnly: true,
+      });
+
       res.status(201).json({ userId: savedUser.id, token });
     } catch (e) {
       res

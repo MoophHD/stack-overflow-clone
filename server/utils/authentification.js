@@ -8,7 +8,18 @@ const createToken = (user) => {
       email: user.email,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIERY }
+  );
+};
+
+const createRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIERY }
   );
 };
 
@@ -24,4 +35,5 @@ module.exports = {
   createToken,
   hashPassword,
   verifyPassword,
+  createRefreshToken,
 };
