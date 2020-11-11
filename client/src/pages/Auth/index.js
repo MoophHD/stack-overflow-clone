@@ -1,39 +1,61 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { login, register } from "../../redux/auth/auth.actions";
 
-const Auth = () => {
+const Auth = ({ isAuthenticated, login, register }) => {
   const [isLogin, setIsLogin] = useState(true);
   // { register, errors, setValue, getValues }
-  const { register, getValues } = useForm({
+  const { register: registerForm, getValues } = useForm({
     mode: "onChange",
   });
 
   return (
     <Wrapper>
       <Container>
+        <p>isAuthed {isAuthenticated ? "true" : "false"}</p>
+
         <ChangeTypeBtn onClick={() => setIsLogin(!isLogin)} href="#">
           {isLogin ? "Register instead" : "Login instead"}
         </ChangeTypeBtn>
+
         <Title>{isLogin ? "Login" : "Register"}</Title>
 
-        <Input type="email" name="email" placeholder="email" ref={register()} />
+        <Input
+          type="email"
+          name="email"
+          placeholder="email"
+          ref={registerForm()}
+        />
 
         {!isLogin && (
           <>
-            <Input name="firstName" placeholder="first name" ref={register()} />
-            <Input name="lastName" placeholder="last name" ref={register()} />
+            <Input
+              name="firstName"
+              placeholder="first name"
+              ref={registerForm()}
+            />
+            <Input
+              name="lastName"
+              placeholder="last name"
+              ref={registerForm()}
+            />
             <Input
               name="jobPosition"
               placeholder="job position"
-              ref={register()}
+              ref={registerForm()}
             />
             <Input
               name="jobExperience"
               placeholder="job experience"
-              ref={register()}
+              ref={registerForm()}
             />
-            <Input name="techStack" placeholder="tech stack" ref={register()} />
+            <Input
+              name="techStack"
+              placeholder="tech stack"
+              ref={registerForm()}
+            />
           </>
         )}
 
@@ -41,23 +63,24 @@ const Auth = () => {
           type="password"
           name="password"
           placeholder="password"
-          ref={register()}
+          ref={registerForm()}
         />
 
         <SubmitBtn
           onClick={() => {
-            const data = getValues();
-            console.log(data);
-            
-            fetch("/api/auth/login", {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              method: "POST",
-              body: JSON.stringify(data),
-            })
-              .then((res) => res.json())
-              .then((data) => console.log(data));
+            isLogin ? login(getValues()) : register(getValues());
+            // const data = getValues();
+            // console.log(data);
+
+            // fetch("/api/auth/login", {
+            //   headers: {
+            //     "Content-Type": "application/json",
+            //   },
+            //   method: "POST",
+            //   body: JSON.stringify(data),
+            // })
+            //   .then((res) => res.json())
+            //   .then((data) => console.log(data));
           }}
         >
           Submit
@@ -108,4 +131,8 @@ const ChangeTypeBtn = styled.a`
 
 const SubmitBtn = styled.button``;
 
-export default Auth;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login, register })(Auth);
