@@ -17,15 +17,16 @@ router.post(
     check("password", "Enter password").exists(),
   ],
   async (req, res) => {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          errors: errors.array(),
-          message: "Incorrect data for login",
-        });
-      }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array(),
+        message: "Incorrect data for login",
+      });
+    }
 
+    try {
       const { email, password } = req.body;
       const user = await User.findOne({
         email,
@@ -64,16 +65,16 @@ router.post(
     check("password", "Minimal length 6 characters").isLength({ min: 6 }),
   ],
   async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+        message: "Incorrect data for registration",
+      });
+    }
+
     try {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          errors: errors.array(),
-          message: "Incorrect data for registration",
-        });
-      }
-
       const {
         email,
         password,

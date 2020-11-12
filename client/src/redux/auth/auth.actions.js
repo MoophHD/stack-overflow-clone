@@ -4,17 +4,11 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
 } from "./auth.types";
+import axios from "axios";
 
 export const register = (data) => async (dispatch) => {
   try {
-    const body = JSON.stringify(data);
-    const resData = await fetch("/api/auth/register", {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      body,
-    })
-      .then((res) => res.json())
-      .then((data) => data);
+    const resData = await axios.post("/api/auth/register", data);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -29,20 +23,14 @@ export const register = (data) => async (dispatch) => {
 
 export const login = (data) => async (dispatch) => {
   try {
-    const body = JSON.stringify(data);
-    const resData = await fetch("/api/auth/login", {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      body,
-    })
-      .then((res) => res.json())
-      .then((data) => data);
+    const resData = await axios.post("/api/auth/login", data);
 
     dispatch({
       type: LOGIN_SUCCESS,
       payload: resData,
     });
   } catch (e) {
+    console.log(e.response.data);
     dispatch({
       type: LOGIN_FAIL,
     });
