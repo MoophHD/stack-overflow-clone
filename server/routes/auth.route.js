@@ -2,13 +2,31 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user.model");
-
+const jwt = require("jsonwebtoken");
 const {
   createToken,
   verifyPassword,
   hashPassword,
   createRefreshToken,
 } = require("../utils/authentification");
+
+router.get("/refreshToken", async (req, res) => {
+  try {
+
+    if (req.cookies.refreshToken) {
+      const decoded = await jwt.verify(
+        req.cookies.refreshToken,
+        process.env.JWT_SECRET
+      );
+
+      res.json({ token: createToken(decoded) });
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .json({ message: `Something went wrong while refreshing token: ${e}` });
+  }
+});
 
 router.post(
   "/login",
