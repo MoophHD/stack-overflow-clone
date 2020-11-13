@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const UserModel = new Schema({
+const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   firstName: { type: String, required: true },
@@ -15,4 +15,14 @@ const UserModel = new Schema({
   questions: [{ type: Schema.Types.ObjectId, ref: "question" }],
 });
 
-module.exports = mongoose.model("user", UserModel);
+// don't show some user data on retrieving
+UserSchema.methods.toJSON = function () {
+  var obj = this.toObject();
+  delete obj.password;
+  delete obj.email;
+  delete obj.__v;
+  delete obj._id;
+  return obj;
+};
+
+module.exports = mongoose.model("user", UserSchema);
