@@ -6,7 +6,6 @@ import {
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILURE,
   CHECK_TOKEN_SUCCESS,
-  CHECK_TOKEN_FAILURE,
 } from "./auth.types";
 import axios from "axios";
 import setAuthToken from "./auth.utils";
