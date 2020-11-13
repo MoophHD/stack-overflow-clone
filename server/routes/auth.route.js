@@ -10,9 +10,19 @@ const {
   createRefreshToken,
 } = require("../utils/authentification");
 
+router.get("/checkToken", async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    jwt.verify(token, process.env.JWT_SECRET);
+
+    res.json({ isValid: true });
+  } catch (e) {
+    res.json({ isValid: false });
+  }
+});
+
 router.get("/refreshToken", async (req, res) => {
   try {
-
     if (req.cookies.refreshToken) {
       const decoded = await jwt.verify(
         req.cookies.refreshToken,
@@ -59,7 +69,6 @@ router.post(
       if (!isMatch) {
         return res.status(400).json({ message: "Wrong email or password." });
       }
-
       res.cookie("refreshToken", createRefreshToken(user), {
         path: "/api/auth",
         maxAge: process.env.REFRESH_TOKEN_EXPIERY,

@@ -5,6 +5,8 @@ import {
   LOGIN_FAIL,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILURE,
+  CHECK_TOKEN_SUCCESS,
+  CHECK_TOKEN_FAILURE,
 } from "./auth.types";
 
 const initialState = {
@@ -16,10 +18,17 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHECK_TOKEN_SUCCESS:
+      return { state };
     case REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
         ...action.payload,
+      };
+    case REFRESH_TOKEN_FAILURE:
+      return {
+        ...state,
+        token: null,
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
@@ -31,7 +40,6 @@ const reducer = (state = initialState, action) => {
       };
     case REGISTER_FAIL:
     case LOGIN_FAIL:
-    case REFRESH_TOKEN_FAILURE:
       return {
         ...state,
         token: null,

@@ -1,32 +1,32 @@
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import { Provider } from "react-redux";
 import Auth from "./pages/Auth/Auth.component";
 import "./index.css";
-import store from "./redux/store";
+import { checkAndRefreshToken } from "./redux/auth/auth.actions";
+import { useEffect } from "react";
+import { connect } from "react-redux";
 import setAuthToken from "./redux/auth/auth.utils";
-import { refreshToken } from "./redux/auth/auth.actions";
 
-//move into component
-if (localStorage.token) {
-  setAuthToken(localStorage.token);
-} else {
-  refreshToken()(store.dispatch);
-}
+const App = ({ token, checkAndRefreshToken }) => {
+  useEffect(() => {
+    if (token) {
+      setAuthToken(token);
+      checkAndRefreshToken();
+    }
+  }, []);
 
-// (async () => {await refreshToken()()})()
-
-function App() {
   return (
-    <Provider store={store}>
-      <Router>
-        <div className="App">
-          <Switch>
-            <Route path="/" component={Auth} />
-          </Switch>
-        </div>
-      </Router>
-    </Provider>
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route path="/" component={Auth} />
+        </Switch>
+      </div>
+    </Router>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => ({
+  token: state.auth.token,
+});
+
+export default connect(mapStateToProps, { checkAndRefreshToken })(App);
