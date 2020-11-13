@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
 
-// it should not require auth, just testing
-const auth = require("../middleware/auth.middleware");
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
