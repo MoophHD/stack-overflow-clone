@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { login, register } from "../../redux/auth/auth.actions";
+import Input from "../../components/Input/Input.component";
+import Button from "../../components/Button/Button.component";
 
 const Auth = ({ isAuthenticated, login, register }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,7 +24,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
 
         <Title>{isLogin ? "Login" : "Register"}</Title>
 
-        <Input
+        <AuthInput
           type="email"
           name="email"
           placeholder="email"
@@ -31,27 +33,27 @@ const Auth = ({ isAuthenticated, login, register }) => {
 
         {!isLogin && (
           <>
-            <Input
+            <AuthInput
               name="firstName"
               placeholder="first name"
               ref={registerForm()}
             />
-            <Input
+            <AuthInput
               name="lastName"
               placeholder="last name"
               ref={registerForm()}
             />
-            <Input
+            <AuthInput
               name="jobPosition"
               placeholder="job position"
               ref={registerForm()}
             />
-            <Input
+            <AuthInput
               name="jobExperience"
               placeholder="job experience"
               ref={registerForm()}
             />
-            <Input
+            <AuthInput
               name="techStack"
               placeholder="tech stack"
               ref={registerForm()}
@@ -59,7 +61,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
           </>
         )}
 
-        <Input
+        <AuthInput
           type="password"
           name="password"
           placeholder="password"
@@ -113,13 +115,6 @@ const Title = styled.h2`
   font-size: 2rem;
 `;
 
-const Input = styled.input`
-  margin-bottom: 1rem;
-  &:last-child {
-    margin: 0;
-  }
-`;
-
 const ChangeTypeBtn = styled.a`
   position: absolute;
   right: 1rem;
@@ -129,7 +124,14 @@ const ChangeTypeBtn = styled.a`
   text-decoration: none;
 `;
 
-const SubmitBtn = styled.button``;
+const AuthInput = styled(Input)`
+  margin-bottom: 1rem;
+  &:last-child {
+    margin: 0;
+  }
+`;
+
+const SubmitBtn = styled(Button)``;
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
