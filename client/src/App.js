@@ -1,20 +1,15 @@
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import { checkAndRefreshToken } from "./redux/auth/auth.actions";
-import { useEffect } from "react";
-import { connect } from "react-redux";
-import setAuthToken from "./redux/auth/auth.utils";
+import store from "./redux/store";
 import Auth from "./pages/Auth/Auth.component";
 import User from "./pages/User/User.component";
 
-const App = ({ token, checkAndRefreshToken }) => {
-  useEffect(() => {
-    if (token) {
-      setAuthToken(token);
-      checkAndRefreshToken();
-    }
-  }, []);
+if (store.getState().token) {
+  checkAndRefreshToken();
+}
 
+const App = () => {
   return (
     <Router>
       <div className="App">
@@ -27,8 +22,4 @@ const App = ({ token, checkAndRefreshToken }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  token: state.auth.token,
-});
-
-export default connect(mapStateToProps, { checkAndRefreshToken })(App);
+export default App;
