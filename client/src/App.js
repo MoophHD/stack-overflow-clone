@@ -1,5 +1,5 @@
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import "./index.css";
+import "./styles/index.scss";
 import { checkAndRefreshToken } from "./redux/auth/auth.actions";
 import store from "./redux/store";
 import Auth from "./pages/Auth/Auth.component";

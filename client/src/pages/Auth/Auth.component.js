@@ -3,86 +3,124 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { login, register } from "../../redux/auth/auth.actions";
-import Input from "../../components/Input/Input.component";
 import Button from "../../components/Button/Button.component";
+import AuthInput from "./AuthInput.component";
 
 const Auth = ({ isAuthenticated, login, register }) => {
   const [isLogin, setIsLogin] = useState(true);
-  // { register, errors, setValue, getValues }
-  const { register: registerForm, getValues } = useForm({
+  const { register: registerForm, getValues, errors } = useForm({
     mode: "onChange",
   });
 
+  console.log(errors);
+
+  const passwordValidation = {};
   return (
     <Wrapper>
       <Container>
-        <p>isAuthed {isAuthenticated ? "true" : "false"}</p>
-
         <ChangeTypeBtn onClick={() => setIsLogin(!isLogin)} href="#">
-          {isLogin ? "Register instead" : "Login instead"}
+          {isLogin ? "New? Register Instead" : "Already a User? Login instead"}
         </ChangeTypeBtn>
 
         <Title>{isLogin ? "Login" : "Register"}</Title>
 
-        <AuthInput
-          type="email"
-          name="email"
-          placeholder="email"
-          ref={registerForm()}
-        />
+        <AuthInputGroup>
+          <AuthInput
+            label="Email"
+            error={errors.email}
+            type="email"
+            name="email"
+            ref={registerForm({
+              required: { value: true, message: "Email is required" },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "invalid email address",
+              },
+            })}
+          />
 
-        {!isLogin && (
-          <>
-            <AuthInput
-              name="firstName"
-              placeholder="first name"
-              ref={registerForm()}
-            />
-            <AuthInput
-              name="lastName"
-              placeholder="last name"
-              ref={registerForm()}
-            />
-            <AuthInput
-              name="jobPosition"
-              placeholder="job position"
-              ref={registerForm()}
-            />
-            <AuthInput
-              name="jobExperience"
-              placeholder="job experience"
-              ref={registerForm()}
-            />
-            <AuthInput
-              name="techStack"
-              placeholder="tech stack"
-              ref={registerForm()}
-            />
-          </>
-        )}
+          {!isLogin && (
+            <InputRow>
+              <AuthInput
+                label="First Name"
+                name="firstName"
+                error={errors.firstName}
+                ref={registerForm({
+                  required: { value: true, message: "First Name is required" },
+                  pattern: {
+                    value: /^[A-Za-z]+$/i,
+                    message: "Please only use letters",
+                  },
+                })}
+              />
+              <AuthInput
+                label="Last Name"
+                name="lastName"
+                error={errors.lastName}
+                ref={registerForm({
+                  required: { value: true, message: "Last Name is required" },
+                  pattern: {
+                    value: /^[A-Za-z]+$/i,
+                    message: "Please only use letters",
+                  },
+                })}
+              />
+            </InputRow>
+          )}
 
-        <AuthInput
-          type="password"
-          name="password"
-          placeholder="password"
-          ref={registerForm()}
-        />
+          <AuthInput
+            label="Password"
+            type="password"
+            name="password"
+            error={errors.password}
+            ref={registerForm({
+              required: { value: true, message: "Password is required" },
+              minLength: {
+                value: 6,
+                message: "Password length should be >= 6",
+              },
+              maxLength: {
+                value: 48,
+                message: "Password length should be <= 48",
+              },
+              validate: {
+                hasDigit: (value) =>
+                  /\d/.test(value) ||
+                  "Password should contain at least one digit",
+              },
+            })}
+          />
+
+          {!isLogin && (
+            <>
+              <AuthInput
+                optional
+                label="Current Job Position"
+                name="jobPosition"
+                ref={registerForm()}
+              />
+              <AuthInput
+                optional
+                label="Job Experience"
+                name="jobExperience"
+                ref={registerForm()}
+              />
+              <AuthInput
+                optional
+                label="Tech Stack"
+                name="techStack"
+                ref={registerForm()}
+              />
+            </>
+          )}
+        </AuthInputGroup>
 
         <SubmitBtn
+          primary
           onClick={() => {
-            isLogin ? login(getValues()) : register(getValues());
-            // const data = getValues();
-            // console.log(data);
-
-            // fetch("/api/auth/login", {
-            //   headers: {
-            //     "Content-Type": "application/json",
-            //   },
-            //   method: "POST",
-            //   body: JSON.stringify(data),
-            // })
-            //   .then((res) => res.json())
-            //   .then((data) => console.log(data));
+            if (errors.length === 0) {
+              isLogin ? login(getValues()) : register(getValues());
+            }
           }}
         >
           Submit
@@ -96,42 +134,62 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 5rem;
-  height: 100vh;
-  width: 100vw;
+  padding: 2% 0;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-plain);
+  overflow-y: hidden;
 `;
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 2rem;
-  background-color: darkseagreen;
+  padding: 2rem 3rem;
+  width: 32rem;
+  background-color: white;
   position: relative;
+  border-radius: 0.35rem;
 `;
 
 const Title = styled.h2`
   font-size: 2rem;
+  font-weight: normal;
+  margin: 2rem 0;
 `;
 
 const ChangeTypeBtn = styled.a`
   position: absolute;
   right: 1rem;
   top: 1rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: bold;
   color: inherit;
-  text-decoration: none;
+  text-decoration: underline;
 `;
 
-const AuthInput = styled(Input)`
-  margin-bottom: 1rem;
-  &:last-child {
-    margin: 0;
+const AuthInputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  width: 100%;
+`;
+
+const InputRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  & > *:not(:last-child) {
+    margin-right: 1rem;
   }
 `;
 
-const SubmitBtn = styled(Button)``;
+const SubmitBtn = styled(Button)`
+  width: 100%;
+  font-weight: bold;
+`;
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
