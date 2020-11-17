@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { login, register } from "../../redux/auth/auth.actions";
 import Button from "../../components/Button/Button.component";
 import AuthInput from "./AuthInput.component";
+import { Redirect } from "react-router";
 
 const Auth = ({ isAuthenticated, login, register }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,10 +13,9 @@ const Auth = ({ isAuthenticated, login, register }) => {
     mode: "onChange",
   });
 
-  console.log(errors);
-
-  const passwordValidation = {};
-  return (
+  return isAuthenticated ? (
+    <Redirect to="/" />
+  ) : (
     <Wrapper>
       <Container>
         <ChangeTypeBtn onClick={() => setIsLogin(!isLogin)} href="#">
