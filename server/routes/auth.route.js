@@ -41,8 +41,15 @@ router.get("/refreshToken", async (req, res) => {
 router.post(
   "/login",
   [
-    check("email", "Enter correct email").normalizeEmail().isEmail(),
-    check("password", "Enter password").exists(),
+    check("email", "Enter correct email")
+      .normalizeEmail()
+      .isEmail()
+      .withMessage("Email correct Email"),
+    check("password", "Enter correct password")
+      .isLength({ min: 6, max: 48 })
+      .withMessage("Password must be >= 6 & <= 48")
+      .matches(/(?=.*\d).+/)
+      .withMessage("Password must contain a digit"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -88,8 +95,17 @@ router.post(
 router.post(
   "/register",
   [
-    check("email", "Incorrect email").isEmail(),
-    check("password", "Minimal length 6 characters").isLength({ min: 6 }),
+    check("email", "Enter correct email")
+      .normalizeEmail()
+      .isEmail()
+      .withMessage("Email correct Email"),
+    check("password", "Enter correct password")
+      .isLength({ min: 6, max: 48 })
+      .withMessage("Password must be >= 6 & <= 48")
+      .matches(/(?=.*\d).+/)
+      .withMessage("Password must contain a digit"),
+    check("firstName", "Enter correct first name").matches(/^[A-Za-z]+$/),
+    check("lastName", "Enter correct last name").matches(/^[A-Za-z]+$/),
   ],
   async (req, res) => {
     const errors = validationResult(req);
