@@ -17,6 +17,7 @@ const User = ({ match, data, getUser }) => {
         isClosed={true}
         score={5}
         title="Lorem ipsum bruh bluh adasd"
+        slim={true}
       />
       {JSON.stringify(data)}
     </Wrapper>

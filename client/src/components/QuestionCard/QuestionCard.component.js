@@ -1,21 +1,26 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import InfoBlocks from "./components/InfoBlocks.component";
 import AuthorRow from "./components/Author.component";
 
 const QuestionCard = ({
   authorName,
-  authorId = "123",
+  authorId,
   title,
   answerCount,
   score,
   isClosed,
   slim = false,
 }) => (
-  <Container>
-    <InfoBlocks answerCount={answerCount} score={score} isClosed={isClosed} />
+  <Container slim={slim}>
+    <InfoBlocks
+      slim={slim}
+      answerCount={answerCount}
+      score={score}
+      isClosed={isClosed}
+    />
 
     <ContentContainer>
-      <Title>{title}</Title>
+      <Title slim={slim}>{title}</Title>
 
       <AuthorContainer>
         {!slim && <AuthorRow name={authorName} id={authorId} />}
@@ -30,9 +35,16 @@ const Container = styled.div`
   align-items: stretch;
   border-radius: 0.35rem;
   background-color: white;
-  padding: 0.75rem 1.25rem;
   cursor: pointer;
   min-width: 35rem;
+  padding: 0.75rem 1.25rem;
+
+  ${(props) =>
+    props.slim &&
+    css`
+      padding: 0.5rem 1rem;
+      align-items: center;
+    `};
 `;
 
 const ContentContainer = styled.div`
@@ -45,6 +57,13 @@ const ContentContainer = styled.div`
 const Title = styled.h2`
   font-size: 1.15rem;
   margin: 0;
+
+  ${(props) =>
+    props.slim &&
+    css`
+      font-size: 0.85rem;
+      font-weight: normal;
+    `}
 `;
 
 const AuthorContainer = styled.div`
