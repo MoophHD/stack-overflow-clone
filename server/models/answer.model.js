@@ -12,6 +12,7 @@ const AnswerSchema = new Schema({
   score: { type: Number, default: 0 },
   votes: [VoteSchema],
   createdAt: { type: Date, default: Date.now },
+  isBest: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("answer", AnswerSchema);
