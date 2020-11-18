@@ -14,7 +14,7 @@ const QuestionSchema = new Schema({
   votes: [VoteSchema],
   answers: [{ type: Schema.Types.ObjectId, ref: "answer" }],
   createdAt: { type: Date, default: Date.now },
-  bestAnswer: { type: Schema.Types.ObjectId, ref: "answer" },
+  bestAnswer: { type: Schema.Types.ObjectId, ref: "answer"},
 });
 
 module.exports = mongoose.model("question", QuestionSchema);
