@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const AuthorRow = ({ name, id }) => (
   <Container>
     <Text>
-      Asked by <AuthorLink to={`/users/${id}`}>{name}</AuthorLink>
+      Asked by <AuthorLink to={`/user/${id}`}>{name}</AuthorLink>
     </Text>
   </Container>
 );

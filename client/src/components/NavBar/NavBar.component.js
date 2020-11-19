@@ -9,7 +9,7 @@ const NavBar = ({ userId, firstName, lastName }) => (
       <Logo />
     </Link>
 
-    <UserLink to={userId ? `/users/${userId}/` : `/auth/`}>
+    <UserLink to={userId ? `/user/${userId}/` : `/auth/`}>
       {firstName && lastName ? (
         <User firstName={firstName} lastName={lastName} />
       ) : (
