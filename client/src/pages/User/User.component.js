@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { getUser } from "../../redux/user/user.actions";
-import QuestionCard from "../../components/QuestionCard/QuestionCard.component";
+// import QuestionCard from "../../components/QuestionCard/QuestionCard.component";
 
 const User = ({ match, data, getUser }) => {
   useEffect(() => {
@@ -11,14 +11,6 @@ const User = ({ match, data, getUser }) => {
 
   return (
     <Wrapper>
-      <QuestionCard
-        authorName="Bruh Bruh"
-        answerCount={5}
-        isClosed={true}
-        score={5}
-        title="Lorem ipsum bruh bluh adasd"
-        slim={true}
-      />
       {JSON.stringify(data)}
     </Wrapper>
   );
