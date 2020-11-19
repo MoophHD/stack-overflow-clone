@@ -22,7 +22,9 @@ const reducer = (state = initialState, action) => {
     case REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
-        ...action.payload,
+        isAuthenticated: true,
+        loading: false,
+        token: action.payload.token,
       };
     case REFRESH_TOKEN_FAILURE:
       return {

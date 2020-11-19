@@ -135,10 +135,10 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   padding: 2% 0;
-  min-height: 100vh;
   width: 100%;
   background-color: var(--color-plain);
   overflow-y: hidden;
+  flex: 1;
 `;
 
 const Container = styled.section`
