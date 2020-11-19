@@ -118,7 +118,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
         <SubmitBtn
           primary
           onClick={() => {
-            if (errors.length === 0) {
+            if (Object.keys(errors).length === 0) {
               isLogin ? login(getValues()) : register(getValues());
             }
           }}

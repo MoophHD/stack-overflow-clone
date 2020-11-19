@@ -3,12 +3,26 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth.middleware");
+
 const {
   createToken,
   verifyPassword,
   hashPassword,
   createRefreshToken,
 } = require("../utils/authentification");
+
+router.get("/load-user", auth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    res.json({ user });
+  } catch (e) {
+    res
+      .status(500)
+      .json({ message: `Something went wrong while loading user: ${e}` });
+  }
+});
 
 router.get("/checkToken", async (req, res) => {
   try {

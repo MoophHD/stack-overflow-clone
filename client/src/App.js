@@ -9,10 +9,10 @@ import NavBar from "./components/NavBar/NavBar.component";
 import styled from "styled-components";
 
 if (store.getState().auth.token) {
-  checkAndRefreshToken()(store.dispatch);
+  checkAndRefreshToken()(store.dispatch, store.getState);
 }
 
-const App = ({ userId="123", firstName="AAa", lastName="AAa" }) => {
+const App = ({ userId, firstName, lastName }) => {
   return (
     <Router>
       <Wrapper>
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
 `;
 
 const mapStateToProps = (state) => ({
-  userId: state.auth.isAuthenticated,
+  userId: state.auth.user?._id,
   firstName: state.auth.user?.firstName,
   lastName: state.auth.user?.lastName,
 });

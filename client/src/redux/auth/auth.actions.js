@@ -4,13 +4,24 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   REFRESH_TOKEN_SUCCESS,
-  REFRESH_TOKEN_FAILURE,
   CHECK_TOKEN_SUCCESS,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAIL,
 } from "./auth.types";
 import axios from "axios";
 import setAuthToken from "./auth.utils";
 
-export const checkAndRefreshToken = () => async (dispatch) => {
+const loadUser = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/auth/load-user/`);
+
+    dispatch({ type: LOAD_USER_SUCCESS, payload: res.data.user });
+  } catch (e) {
+    dispatch({ type: LOAD_USER_FAIL });
+  }
+};
+
+export const checkAndRefreshToken = () => async (dispatch, getState) => {
   try {
     const resCheckToken = await axios.get("/api/auth/checkToken");
     if (resCheckToken.data.isValid) {
@@ -22,28 +33,31 @@ export const checkAndRefreshToken = () => async (dispatch) => {
     const token = res.data.token;
     setAuthToken(token);
 
+    if (!getState().auth.user) dispatch(loadUser());
+
     dispatch({
       type: REFRESH_TOKEN_SUCCESS,
       payload: { token },
     });
   } catch (e) {
     dispatch({
-      type: REFRESH_TOKEN_FAILURE,
+      type: LOAD_USER_FAIL,
     });
   }
 };
 
 export const register = (data) => async (dispatch) => {
   try {
-    const resData = await axios.post("/api/auth/register", data);
-    setAuthToken(resData.data.token);
+    const res = await axios.post("/api/auth/register", data);
+    const token = res.data.token;
+    setAuthToken(token);
 
+    dispatch(loadUser());
     dispatch({
       type: REGISTER_SUCCESS,
-      payload: resData.data,
+      payload: res.data,
     });
   } catch (e) {
-    console.log(e.response.data);
     dispatch({
       type: REGISTER_FAIL,
     });
@@ -52,15 +66,16 @@ export const register = (data) => async (dispatch) => {
 
 export const login = (data) => async (dispatch) => {
   try {
-    const resData = await axios.post("/api/auth/login", data);
-    setAuthToken(resData.data.token);
+    const res = await axios.post("/api/auth/login", data);
+    const token = res.data.token;
+    setAuthToken(token);
 
+    dispatch(loadUser());
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: resData.data,
+      payload: res.data,
     });
   } catch (e) {
-    console.log(e.response.data);
     dispatch({
       type: LOGIN_FAIL,
     });

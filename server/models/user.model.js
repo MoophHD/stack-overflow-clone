@@ -21,7 +21,7 @@ UserSchema.methods.toJSON = function () {
   delete obj.password;
   delete obj.email;
   delete obj.__v;
-  delete obj._id;
+  // delete obj._id;
   return obj;
 };
 

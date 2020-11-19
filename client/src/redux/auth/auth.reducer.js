@@ -6,6 +6,8 @@ import {
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILURE,
   CHECK_TOKEN_SUCCESS,
+  LOAD_USER_FAIL,
+  LOAD_USER_SUCCESS,
 } from "./auth.types";
 
 const initialState = {
@@ -17,6 +19,8 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_USER_SUCCESS:
+      return { ...state, user: { ...action.payload } };
     case CHECK_TOKEN_SUCCESS:
       return { state };
     case REFRESH_TOKEN_SUCCESS:
@@ -39,6 +43,7 @@ const reducer = (state = initialState, action) => {
         isAuthenticated: true,
         loading: false,
       };
+    case LOAD_USER_FAIL:
     case REGISTER_FAIL:
     case LOGIN_FAIL:
       return {
