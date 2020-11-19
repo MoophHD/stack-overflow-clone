@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Avatar from "../../Avatar/Avatar.component";
 
 const User = ({ firstName, lastName }) => (
   <Container>
@@ -12,14 +13,6 @@ const User = ({ firstName, lastName }) => (
 const Container = styled.div`
   display: flex;
   align-items: baseline;
-`;
-
-const Avatar = styled.div`
-  background-color: var(--color-main);
-  color: white;
-  text-transform: uppercase;
-  padding: 0.5rem;
-  margin-right: 0.25rem;
 `;
 
 const Name = styled.span`

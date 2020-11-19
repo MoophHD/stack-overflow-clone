@@ -10,6 +10,7 @@ const initialState = {
   jobExperience: null,
   jobPosition: null,
   techStack: null,
+  loading: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +20,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        loading: false,
       };
     case GET_USER_FAILURE:
       return {
@@ -32,6 +34,7 @@ const reducer = (state = initialState, action) => {
         jobExperience: null,
         jobPosition: null,
         techStack: null,
+        loading: false,
       };
     default:
       return state;

@@ -10,8 +10,9 @@ const QuestionCard = ({
   score,
   isClosed,
   slim = false,
+  colored = false,
 }) => (
-  <Container slim={slim}>
+  <Container slim={slim} colored={colored}>
     <InfoBlocks
       slim={slim}
       answerCount={answerCount}
@@ -23,7 +24,7 @@ const QuestionCard = ({
       <Title slim={slim}>{title}</Title>
 
       <AuthorContainer>
-        {!slim && <AuthorRow name={authorName} id={authorId} />}
+        {!slim && !colored && <AuthorRow name={authorName} id={authorId} />}
       </AuthorContainer>
     </ContentContainer>
   </Container>
@@ -38,6 +39,12 @@ const Container = styled.div`
   cursor: pointer;
   min-width: 35rem;
   padding: 0.75rem 1.25rem;
+
+  ${(props) =>
+    props.colored &&
+    css`
+      background-color: var(--color-plain);
+    `};
 
   ${(props) =>
     props.slim &&

@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { getUser } from "../../redux/user/user.actions";
-// import QuestionCard from "../../components/QuestionCard/QuestionCard.component";
+import { Redirect } from "react-router-dom";
+import PersonalInfo from "./components/PersonalInfo/PersonalInfo.component";
+import Questions from "./components/Questions/Questions.component";
+import Rating from "./components/Rating/Rating.component";
 
 const User = ({
   match,
@@ -16,33 +19,53 @@ const User = ({
   jobExperience,
   jobPosition,
   techStack,
+  loading,
 }) => {
   useEffect(() => {
     if (match.params.id) getUser(match.params.id);
   }, [match.params.id, getUser]);
 
-  return (
+  // just a placeholder
+  if (loading) return <div>spinner</div>;
+
+  return email === null ? (
+    <Redirect to="/auth/" />
+  ) : (
     <Wrapper>
-      {JSON.stringify(firstName)}
-      {JSON.stringify(lastName)}
-      {JSON.stringify(score)}
-      {JSON.stringify(answers)}
-      {JSON.stringify(questions)}
-      {JSON.stringify(email)}
-      {JSON.stringify(jobExperience)}
-      {JSON.stringify(jobPosition)}
-      {JSON.stringify(techStack)}
+      <Container>
+        <PersonalInfo
+          firstName={firstName}
+          lastName={lastName}
+          email={email}
+          jobExperience={jobExperience}
+          jobPosition={jobPosition}
+          techStack={techStack}
+        />
+
+        <Rating questions={questions} answers={answers} score={score} />
+
+        <Questions questions={questions} />
+      </Container>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  padding: 2% 2rem;
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: flex-start;
-  height: 100vh;
-  width: 100vw;
   background-color: var(--color-plain);
+`;
+
+const Container = styled.section`
+  background-color: white;
+  padding: 2rem;
+  width: 100%;
+  border-radius: 0.35rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const mapStateToProps = (state) => ({
@@ -55,6 +78,7 @@ const mapStateToProps = (state) => ({
   jobExperience: state.user.jobExperience,
   jobPosition: state.user.jobPosition,
   techStack: state.user.techStack,
+  loading: state.user.loading,
 });
 
 export default connect(mapStateToProps, { getUser })(User);
