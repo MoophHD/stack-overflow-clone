@@ -12,6 +12,7 @@ const Questions = ({ questions }) => (
         key={`${question._id}`}
       >
         <QuestionCard
+          id={question._id}
           colored
           title={question.title}
           answerCount={question.answers.length}
@@ -30,7 +31,7 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const QuestionContainer = styled(Link)`
+const QuestionContainer = styled.div`
   margin-bottom: 1rem;
   text-decoration: none;
   display: block;

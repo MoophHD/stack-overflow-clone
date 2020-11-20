@@ -3,10 +3,11 @@ import "./styles/index.scss";
 import { checkAndRefreshToken } from "./redux/auth/auth.actions";
 import store from "./redux/store";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import Auth from "./pages/Auth/Auth.component";
 import User from "./pages/User/User.component";
+import Questions from "./pages/Questions/Questions.component";
 import NavBar from "./components/NavBar/NavBar.component";
-import styled from "styled-components";
 
 if (store.getState().auth.token) {
   checkAndRefreshToken()(store.dispatch, store.getState);
@@ -20,6 +21,7 @@ const App = ({ userId, firstName, lastName }) => {
         <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/user/:id" component={User} />
+          <Route path="/" component={Questions} />
         </Switch>
       </Wrapper>
     </Router>

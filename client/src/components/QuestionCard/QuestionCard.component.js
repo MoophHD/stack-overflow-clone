@@ -1,8 +1,11 @@
 import styled, { css } from "styled-components";
 import InfoBlocks from "./components/InfoBlocks.component";
 import AuthorRow from "./components/Author.component";
+import { useHistory } from "react-router-dom";
+import { useCallback } from "react";
 
 const QuestionCard = ({
+  id,
   authorName,
   authorId,
   title,
@@ -11,24 +14,35 @@ const QuestionCard = ({
   isClosed,
   slim = false,
   colored = false,
-}) => (
-  <Container slim={slim} colored={colored}>
-    <InfoBlocks
-      slim={slim}
-      answerCount={answerCount}
-      score={score}
-      isClosed={isClosed}
-    />
+}) => {
+  const history = useHistory();
+  const handleOnClick = useCallback(
+    (e) => {
+      if (e.target.tagName !== "A") {
+        history.push(`/questions/${id}`);
+      }
+    },
+    [history, id]
+  );
+  return (
+    <Container onClick={handleOnClick} slim={slim} colored={colored}>
+      <InfoBlocks
+        slim={slim}
+        answerCount={answerCount}
+        score={score}
+        isClosed={isClosed}
+      />
 
-    <ContentContainer>
-      <Title slim={slim}>{title}</Title>
+      <ContentContainer>
+        <Title slim={slim}>{title}</Title>
 
-      <AuthorContainer>
-        {!slim && !colored && <AuthorRow name={authorName} id={authorId} />}
-      </AuthorContainer>
-    </ContentContainer>
-  </Container>
-);
+        <AuthorContainer>
+          {!slim && <AuthorRow name={authorName} id={authorId} />}
+        </AuthorContainer>
+      </ContentContainer>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   display: flex;
@@ -37,8 +51,8 @@ const Container = styled.div`
   border-radius: 0.35rem;
   background-color: white;
   cursor: pointer;
-  min-width: 35rem;
   padding: 0.75rem 1.25rem;
+  width: 100%;
 
   ${(props) =>
     props.colored &&

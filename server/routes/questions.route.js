@@ -7,7 +7,11 @@ const auth = require("../middleware/auth.middleware");
 
 router.get("/", async (req, res) => {
   try {
-    const questions = await Question.find({}).sort({ createdAt: -1 });
+    const questions = await Question.find({})
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate("answers");
+
     res.json({ questions });
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
