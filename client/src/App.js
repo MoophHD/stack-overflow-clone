@@ -1,19 +1,23 @@
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.scss";
-import { checkAndRefreshToken } from "./redux/auth/auth.actions";
-import store from "./redux/store";
+import { loadUser } from "./redux/auth/auth.actions";
+import setAuthToken from "./redux/auth/auth.utils";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Auth from "./pages/Auth/Auth.component";
 import User from "./pages/User/User.component";
 import Questions from "./pages/Questions/Questions.component";
 import NavBar from "./components/NavBar/NavBar.component";
+import { useEffect } from "react";
 
-if (store.getState().auth.token) {
-  checkAndRefreshToken()(store.dispatch, store.getState);
-}
-
-const App = ({ userId, firstName, lastName }) => {
+const App = ({ userId, firstName, lastName, loadUser }) => {
+  useEffect(() => {
+    if (localStorage.token) setAuthToken(localStorage.token);
+  }, []);
+  
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
   return (
     <Router>
       <Wrapper>
@@ -40,4 +44,4 @@ const mapStateToProps = (state) => ({
   lastName: state.auth.user?.lastName,
 });
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, { loadUser })(App);

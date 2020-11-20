@@ -4,7 +4,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   REFRESH_TOKEN_SUCCESS,
-  REFRESH_TOKEN_FAILURE,
+  REFRESH_TOKEN_FAIL,
   CHECK_TOKEN_SUCCESS,
   LOAD_USER_FAIL,
   LOAD_USER_SUCCESS,
@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
     case LOAD_USER_SUCCESS:
       return { ...state, user: { ...action.payload } };
     case CHECK_TOKEN_SUCCESS:
-      return { state };
+      return state;
     case REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
         loading: false,
         token: action.payload.token,
       };
-    case REFRESH_TOKEN_FAILURE:
+    case REFRESH_TOKEN_FAIL:
       return {
         ...state,
         token: null,
