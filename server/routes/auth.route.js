@@ -24,9 +24,9 @@ router.get("/load-user", auth, async (req, res) => {
   }
 });
 
-router.get("/checkToken", async (req, res) => {
+router.get("/checkToken/:token", async (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.params.token;
     jwt.verify(token, process.env.JWT_SECRET);
 
     res.json({ isValid: true });

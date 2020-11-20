@@ -23,7 +23,8 @@ const loadUser = () => async (dispatch) => {
 
 export const checkAndRefreshToken = () => async (dispatch, getState) => {
   try {
-    const resCheckToken = await axios.get("/api/auth/checkToken");
+    const previousToken = getState().auth.token;
+    const resCheckToken = await axios.get("/api/auth/checkToken/" + previousToken);
     if (resCheckToken.data.isValid) {
       dispatch({ type: CHECK_TOKEN_SUCCESS });
       return;
