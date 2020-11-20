@@ -10,11 +10,11 @@ const AuthorRow = ({ name, id }) => (
 );
 
 const Container = styled.div`
-  font-size: 1rem;
+  font-size: var(--fs-med);
 `;
 
 const Text = styled.span`
-font-size: 0.8rem;
+  font-size: var(--fs-small);
 `;
 
 const AuthorLink = styled(Link)`

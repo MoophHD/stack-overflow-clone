@@ -156,11 +156,12 @@ const Container = styled.section`
   width: 32rem;
   background-color: white;
   position: relative;
-  border-radius: 0.35rem;
+  border-radius: var(--br);
+  box-shadow: var(--bs-main);
 `;
 
 const Title = styled.h2`
-  font-size: 2rem;
+  font-size: var(--fs-xlarge);
   font-weight: normal;
   margin: 2rem 0;
 `;
@@ -169,7 +170,7 @@ const ChangeTypeBtn = styled.a`
   position: absolute;
   right: 1rem;
   top: 1rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-small);
   font-weight: bold;
   color: inherit;
   text-decoration: underline;

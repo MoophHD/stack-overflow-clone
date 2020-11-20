@@ -46,7 +46,7 @@ const ScoreRow = styled.h2`
 `;
 
 const Score = styled.span`
-  font-size: 1.25em;
+  font-size: var(--fs-xlarge);
 `;
 
 const Ratings = styled.div`
@@ -63,7 +63,7 @@ const RatingWrapper = styled.div`
   align-items: center;
   padding: 1rem;
   background-color: var(--color-plain);
-  border-radius: 0.35rem;
+  border-radius: var(--br);
 
   &:not(:last-child) {
     margin-right: 1rem;
@@ -72,13 +72,13 @@ const RatingWrapper = styled.div`
 
 const RatingTitle = styled.span`
   margin-bottom: 0.15rem;
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
   margin-bottom: 0.5rem;
 `;
 
 const RatingValue = styled.span`
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: var(--fs-large);
 `;
 
 export default Rating;

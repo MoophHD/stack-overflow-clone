@@ -65,7 +65,7 @@ const Container = styled.section`
   background-color: white;
   padding: 2rem;
   width: 100%;
-  border-radius: 0.35rem;
+  border-radius: var(--br);
   display: flex;
   flex-direction: column;
 `;

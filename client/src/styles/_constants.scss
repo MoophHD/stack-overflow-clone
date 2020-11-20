@@ -1,20 +1,36 @@
 :root {
+  // COLORS BRAND
   --color-main: #3ab19b;
   --color-main-light: #3ab19b79;
   --color-accent: #ff884d;
   --color-accent-light: #ffc3a3;
   --color-plain: #f0f4f3;
 
+  // COLOR MISC
   --color-gray: #d9dfdd;
   --color-dark: #30423e;
   --color-danger: #e42727;
 
+  // COLOR TEXT
   --color-text-dark: #4b4f4e;
   --color-text-gray: #7e7e7e;
   --color-text-light: white;
   --color-text-link: #0645ad;
 
-  --bs-main: 0 2px 2px 0px #3ab19b49;
+  // BOX SHADOW
+  --bs-main: 0 3px 8px 0px #3ab19b49;
+  --bs-large: 0 3px 9px 1px #3ab19b80;
+  --bs-small: 0 2px 2px 0px #3ab19b49;
 
+  // FONTS
   --font-main: "Open Sans", sans-serif;
+
+  // FONT SIZE
+  --fs-xlarge: 2rem;
+  --fs-large: 1.25rem;
+  --fs-med: 1rem;
+  --fs-small: 0.85rem;
+
+  // BORDER RADIUS
+  --br: 0.35rem;
 }

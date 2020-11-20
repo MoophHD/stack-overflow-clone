@@ -35,7 +35,7 @@ const Block = styled.div`
   border: 2px solid transparent;
   border-color: transparent;
   color: var(--color-text-gray);
-  border-radius: 0.35rem;
+  border-radius: var(--br);
   padding: 0.6rem 0.35rem;
   margin-right: 1rem;
 
@@ -44,7 +44,7 @@ const Block = styled.div`
     css`
       padding: 0 0.5rem;
       border-color: var(--color-gray);
-      margin-right: .5rem;
+      margin-right: 0.5rem;
     `}
 
   ${(props) =>
@@ -68,7 +68,7 @@ const BlockCount = styled.span`
 `;
 
 const BlockText = styled.span`
-  font-size: 0.8rem;
+  font-size: var(--fs-small);
 `;
 
 export default InfoBlocks;

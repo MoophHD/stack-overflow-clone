@@ -10,7 +10,7 @@ const Logo = () => (
 
 const Container = styled.div`
   background-color: white;
-  box-shadow: var(--bs-main);
+  box-shadow: var(--bs-small);
   border-radius: 50%;
   width: 2.5rem;
   height: 2.5rem;

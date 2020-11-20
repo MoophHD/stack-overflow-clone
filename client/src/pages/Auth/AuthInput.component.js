@@ -21,7 +21,7 @@ const Label = styled.label`
 
 const LabelOptional = styled.span`
   font-style: italic;
-  font-size: 0.85em;
+  font-size: var(--fs-small);
 `;
 
 const Wrapper = styled.div`
@@ -38,7 +38,7 @@ const Error = styled.span`
   position: absolute;
   bottom: -1.3rem;
   left: 0;
-  font-size: 0.9rem;
+  font-size: var(--fs-small);
   font-weight: bold;
 `;
 

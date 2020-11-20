@@ -67,20 +67,20 @@ const Name = styled.h2`
 const NickName = styled.span`
   margin-left: 0.5rem;
   color: var(--coror-text-gray);
-  font-size: 0.95rem;
-  border-radius: 0.35rem;
+  font-size: var(--fs-small);
+  border-radius: var(--br);
   background-color: var(--color-plain);
   padding: 0.25rem 0.5rem;
 `;
 
 const Text = styled.span`
   margin-bottom: 0.15rem;
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
 `;
 
 const AccentText = styled(Text)`
   font-weight: bold;
-  font-size: 1rem;
+  font-size: var(--fs-med);
 `;
 
 export default PersonalInfo;

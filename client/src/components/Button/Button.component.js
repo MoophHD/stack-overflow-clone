@@ -6,7 +6,7 @@ const Button = styled.div.attrs(() => ({
 }))`
   display: inline-block;
   padding: 0.65rem 1rem;
-  border-radius: 0.35rem;
+  border-radius: var(--br);
   cursor: pointer;
   text-align: center;
   background-color: ${(props) =>

@@ -3,9 +3,9 @@ import styled from "styled-components";
 const Input = styled.input`
   border: none;
   padding: 0.65rem 1rem;
-  border-radius: 0.35rem;
+  border-radius: var(--br);
   transition: all 0.2s ease-in-out;
-  font-size: 1rem;
+  font-size: var(--fs-med);
   outline: none;
 
   font-family: var(--font-main);

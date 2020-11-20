@@ -25,7 +25,12 @@ const QuestionCard = ({
     [history, id]
   );
   return (
-    <Container onClick={handleOnClick} slim={slim} colored={colored}>
+    <Container
+      tabIndex={0}
+      onClick={handleOnClick}
+      slim={slim}
+      colored={colored}
+    >
       <InfoBlocks
         slim={slim}
         answerCount={answerCount}
@@ -48,11 +53,18 @@ const Container = styled.div`
   display: flex;
   justify-items: space-between;
   align-items: stretch;
-  border-radius: 0.35rem;
+  border-radius: var(--br);
   background-color: white;
   cursor: pointer;
   padding: 0.75rem 1.25rem;
   width: 100%;
+  box-shadow: var(--bs-main);
+
+  transition: box-shadow 0.15s ease-in-out;
+  &:hover,
+  &:focus {
+    box-shadow: var(--bs-large);
+  }
 
   ${(props) =>
     props.colored &&
@@ -76,13 +88,13 @@ const ContentContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 1.15rem;
+  font-size: var(--fs-large);
   margin: 0;
 
   ${(props) =>
     props.slim &&
     css`
-      font-size: 0.85rem;
+      font-size: var(--fs-small);
       font-weight: normal;
     `}
 `;
