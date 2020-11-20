@@ -95,6 +95,12 @@ const Auth = ({ isAuthenticated, login, register }) => {
             <>
               <AuthInput
                 optional
+                label="Nick Name"
+                name="nickName"
+                ref={registerForm()}
+              />
+              <AuthInput
+                optional
                 label="Current Job Position"
                 name="jobPosition"
                 ref={registerForm()}

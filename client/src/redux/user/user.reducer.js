@@ -10,6 +10,7 @@ const initialState = {
   jobExperience: null,
   jobPosition: null,
   techStack: null,
+  nickName: null,
   loading: true,
 };
 
@@ -33,6 +34,7 @@ const reducer = (state = initialState, action) => {
         jobExperience: null,
         jobPosition: null,
         techStack: null,
+        nickName: null,
         loading: false,
       };
     default:

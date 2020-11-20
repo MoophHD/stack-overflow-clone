@@ -140,6 +140,7 @@ router.post(
         jobPosition,
         jobExperience,
         techStack,
+        nickName,
       } = req.body;
 
       const candidate = await User.findOne({ email });
@@ -157,6 +158,7 @@ router.post(
         jobPosition,
         jobExperience,
         techStack,
+        nickName,
       });
       const savedUser = await user.save();
       const token = createToken(savedUser);

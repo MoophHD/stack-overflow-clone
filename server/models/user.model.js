@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   jobPosition: { type: String },
   jobExperience: { type: String },
   techStack: { type: String },
+  nickName: { type: String },
 
   score: { type: Number, default: 0 },
   answers: [{ type: Schema.Types.ObjectId, ref: "answer" }],

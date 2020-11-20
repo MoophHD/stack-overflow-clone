@@ -20,6 +20,7 @@ const User = ({
   jobPosition,
   techStack,
   loading,
+  nickName
 }) => {
   useEffect(() => {
     if (match.params.id) getUser(match.params.id);
@@ -36,6 +37,7 @@ const User = ({
         <PersonalInfo
           firstName={firstName}
           lastName={lastName}
+          nickName={nickName}
           email={email}
           jobExperience={jobExperience}
           jobPosition={jobPosition}
@@ -79,6 +81,7 @@ const mapStateToProps = (state) => ({
   jobPosition: state.user.jobPosition,
   techStack: state.user.techStack,
   loading: state.user.loading,
+  nickName: state.user.nickName,
 });
 
 export default connect(mapStateToProps, { getUser })(User);

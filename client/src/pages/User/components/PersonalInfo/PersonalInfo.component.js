@@ -8,12 +8,16 @@ const PersonalInfo = ({
   jobExperience,
   jobPosition,
   techStack,
+  nickName,
 }) => (
   <Container>
     <Avatar large>{`${firstName[0]}${lastName[0]}`}</Avatar>
 
     <TextContainer>
-      <Name>{`${firstName} ${lastName}`}</Name>
+      <NameRow>
+        <Name>{`${firstName} ${lastName}`}</Name>
+        {nickName && <NickName>{nickName}</NickName>}
+      </NameRow>
 
       <Text>
         Contact: <AccentText>{email}</AccentText>
@@ -49,11 +53,24 @@ const TextContainer = styled.div`
   flex: 1;
 `;
 
+const NameRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+`;
+
 const Name = styled.h2`
   letter-spacing: -0.05rem;
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-  line-height: 1.25rem;
+  margin: 0;
+`;
+
+const NickName = styled.span`
+  margin-left: 0.5rem;
+  color: var(--coror-text-gray);
+  font-size: 0.95rem;
+  border-radius: 0.35rem;
+  background-color: var(--color-plain);
+  padding: 0.25rem 0.5rem;
 `;
 
 const Text = styled.span`
