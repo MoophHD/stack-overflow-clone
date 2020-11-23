@@ -21,8 +21,10 @@ router.post("/", auth, async (req, res) => {
     const { questionId, text } = req.body;
     const userId = req.user.id;
 
+    const author = await User.findById(userId, "firstName lastName score");
+
     const question = await Question.findById(questionId);
-    const answer = new Answer({ author: userId, questionId, text });
+    const answer = new Answer({ author, questionId, text });
 
     if (question.bestAnswer) {
       return res.status(401).json({ message: "Question closed" });

@@ -9,6 +9,7 @@ import User from "./pages/User/User.component";
 import Questions from "./pages/Questions/Questions.component";
 import NavBar from "./components/NavBar/NavBar.component";
 import { useEffect } from "react";
+import QuestionDiscussion from "./pages/QuestionDiscussion/QuestionDiscussion.component";
 
 const App = ({ userId, firstName, lastName, loadUser }) => {
   useEffect(() => {
@@ -18,6 +19,7 @@ const App = ({ userId, firstName, lastName, loadUser }) => {
   useEffect(() => {
     loadUser();
   }, [loadUser]);
+  
   return (
     <Router>
       <Wrapper>
@@ -25,6 +27,7 @@ const App = ({ userId, firstName, lastName, loadUser }) => {
         <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/user/:id" component={User} />
+          <Route path="/questions/:id" component={QuestionDiscussion} />
           <Route path="/" component={Questions} />
         </Switch>
       </Wrapper>

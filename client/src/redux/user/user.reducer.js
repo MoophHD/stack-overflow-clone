@@ -11,6 +11,7 @@ const initialState = {
   jobPosition: null,
   techStack: null,
   nickName: null,
+  id: null,
   loading: true,
 };
 
@@ -20,6 +21,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        id: action.payload._id,
         loading: false,
       };
     case GET_USER_FAILURE:
@@ -36,6 +38,7 @@ const reducer = (state = initialState, action) => {
         techStack: null,
         nickName: null,
         loading: false,
+        id: null
       };
     default:
       return state;
