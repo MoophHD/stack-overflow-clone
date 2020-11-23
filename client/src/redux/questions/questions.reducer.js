@@ -7,7 +7,8 @@ import {
   VOTE_ANSWER_SUCCESS,
   VOTE_FAILED,
   ADD_ANSWER_FAILURE,
-  ADD_ANSWER_SUCCESS
+  ADD_ANSWER_SUCCESS,
+  MARK_ANSWER_BEST,
 } from "./questions.types";
 
 const initialState = {
@@ -18,6 +19,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case MARK_ANSWER_BEST:
+      return {
+        ...state,
+        question: {
+          ...state.question,
+          bestAnswer: action.payload.bestAnswer,
+        },
+      };
     case ADD_ANSWER_SUCCESS:
       return {
         ...state,

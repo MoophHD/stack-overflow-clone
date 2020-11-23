@@ -29,7 +29,7 @@ const Score = styled.span`
 const VoteButton = styled(Button)`
   font-size: var(--fs-large);
   background-color: var(--color-plain);
-  padding: 0.5rem;
+  padding: 0.25rem;
 
   &:hover,
   &:focus {

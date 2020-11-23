@@ -7,6 +7,7 @@ import {
   downvoteAnswer,
   upvoteQuestion,
   downvoteQuestion,
+  markAnswerBest,
   addAnswer,
 } from "../../redux/questions/questions.actions";
 import Question from "./components/Question/Question.component";
@@ -30,14 +31,22 @@ const QuestionDiscussion = ({
   userId,
   votes,
   addAnswer,
+  bestAnswer,
+  markAnswerBest,
 }) => {
   const [isMyUpvote, setIsMyUpvote] = useState(null);
   const [stateAnswers, setStateAnswers] = useState([]);
 
   useEffect(() => {
+    if (match.params.id) {
+      (async () => await getQuestion(match.params.id))();
+    }
+  }, [match.params.id, getQuestion]);
+
+  useEffect(() => {
     if (!answers || answers.length < 1) return;
 
-    const sortedAnswers = answers.sort((a1, a2) => {
+    let sortedAnswers = answers.sort((a1, a2) => {
       if (a1.score !== a2.score) {
         return a2.score - a1.score;
       } else {
@@ -45,14 +54,17 @@ const QuestionDiscussion = ({
       }
     });
 
-    setStateAnswers(sortedAnswers);
-  }, [answers]);
-
-  useEffect(() => {
-    if (match.params.id) {
-      (async () => await getQuestion(match.params.id))();
+    const bestAnswerInd = sortedAnswers.findIndex((a) => a.isBest);
+    if (bestAnswerInd) {
+      sortedAnswers = [
+        sortedAnswers[bestAnswerInd],
+        ...sortedAnswers.slice(0, bestAnswerInd),
+        ...sortedAnswers.slice(bestAnswerInd + 1),
+      ];
     }
-  }, [match.params.id, getQuestion]);
+
+    setStateAnswers(sortedAnswers);
+  }, [answers, bestAnswer]);
 
   useEffect(() => {
     if (userId && votes?.length > 0) {
@@ -82,13 +94,18 @@ const QuestionDiscussion = ({
             />
 
             <AnswerList
+              canMark={userId === author._id}
+              markAnswerBest={(answerId) => markAnswerBest(_id, answerId)}
+              bestAnswer={bestAnswer}
               userId={userId}
               onDownvote={(answerId) => downvoteAnswer(questionId, answerId)}
               onUpvote={(answerId) => upvoteAnswer(questionId, answerId)}
               answers={stateAnswers}
             />
 
-            <AddAnswer onSubmit={(text) => addAnswer(_id, text)} />
+            {!bestAnswer && (
+              <AddAnswer onSubmit={(text) => addAnswer(_id, text)} />
+            )}
           </Container>
         </Wrapper>
       )}
@@ -119,4 +136,5 @@ export default connect(mapStateToProps, {
   upvoteQuestion,
   downvoteQuestion,
   addAnswer,
+  markAnswerBest,
 })(QuestionDiscussion);

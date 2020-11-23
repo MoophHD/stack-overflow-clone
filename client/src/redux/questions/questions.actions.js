@@ -8,8 +8,27 @@ import {
   VOTE_FAILED,
   ADD_ANSWER_SUCCESS,
   ADD_ANSWER_FAILURE,
+  MARK_ANSWER_BEST,
 } from "./questions.types";
 import axios from "axios";
+
+export const markAnswerBest = (questionId, answerId) => async (dispatch) => {
+  try {
+    const res = await axios.get(
+      `/api/questions/pick-answer/${questionId}/${answerId}`
+    );
+
+
+    dispatch({
+      type: MARK_ANSWER_BEST,
+      payload: res.data.question,
+    });
+  } catch (e) {
+    dispatch({
+      type: VOTE_FAILED,
+    });
+  }
+};
 
 export const addAnswer = (questionId, text) => async (dispatch) => {
   try {
