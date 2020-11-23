@@ -2,10 +2,24 @@ import styled from "styled-components";
 import Avatar from "../../../../components/Avatar/Avatar.component";
 import VoteBlock from "../VoteBlock/VoteBlock.component";
 
-const Question = ({ author, score, title, text, loading }) => (
+const Question = ({
+  author,
+  score,
+  title,
+  text,
+  loading,
+  onUpvote,
+  onDownvote,
+  isMyUpvote,
+}) => (
   <Container>
     <Left>
-      <VoteBlock />
+      <VoteBlock
+        isUpvoted={isMyUpvote}
+        onUpvote={onUpvote}
+        onDownvote={onDownvote}
+        score={score}
+      />
     </Left>
 
     <Right>

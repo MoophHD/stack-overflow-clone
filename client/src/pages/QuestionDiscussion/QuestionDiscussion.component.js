@@ -1,7 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getQuestion } from "../../redux/questions/questions.actions";
+import {
+  getQuestion,
+  upvoteAnswer,
+  downvoteAnswer,
+  upvoteQuestion,
+  downvoteQuestion,
+} from "../../redux/questions/questions.actions";
 import Question from "./components/Question/Question.component";
 
 const QuestionDiscussion = ({
@@ -13,12 +19,29 @@ const QuestionDiscussion = ({
   match,
   getQuestion,
   loading,
+  upvoteAnswer,
+  downvoteAnswer,
+  upvoteQuestion,
+  downvoteQuestion,
+  userId,
+  votes,
 }) => {
+  console.log(`score ${score}`);
+  const [isMyUpvote, setIsMyUpvote] = useState(null);
   useEffect(() => {
     if (match.params.id) {
       (async () => await getQuestion(match.params.id))();
     }
   }, [match.params.id, getQuestion]);
+
+  useEffect(() => {
+    if (userId && votes?.length > 0) {
+      const myVote = votes.find((v) => v.user === userId);
+
+      if (myVote) return setIsMyUpvote(myVote.vote === 1);
+    }
+    setIsMyUpvote(null);
+  }, [userId, votes]);
 
   return (
     <>
@@ -27,7 +50,15 @@ const QuestionDiscussion = ({
       ) : (
         <Wrapper>
           <Container>
-            <Question author={author} score={score} title={title} text={text} />
+            <Question
+              isMyUpvote={isMyUpvote}
+              onUpvote={() => upvoteQuestion(match.params.id)}
+              onDownvote={() => downvoteQuestion(match.params.id)}
+              author={author}
+              score={score}
+              title={title}
+              text={text}
+            />
           </Container>
         </Wrapper>
       )}
@@ -47,7 +78,14 @@ const Container = styled.section`
 
 const mapStateToProps = (state) => ({
   ...state.questions.question,
+  userId: state.auth.user?._id,
   loading: state.questions.loading,
 });
 
-export default connect(mapStateToProps, { getQuestion })(QuestionDiscussion);
+export default connect(mapStateToProps, {
+  getQuestion,
+  upvoteAnswer,
+  downvoteAnswer,
+  upvoteQuestion,
+  downvoteQuestion,
+})(QuestionDiscussion);

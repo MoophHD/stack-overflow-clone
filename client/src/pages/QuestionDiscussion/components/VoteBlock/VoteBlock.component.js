@@ -1,13 +1,13 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Button from "../../../../components/Button/Button.component";
 
-const VoteBlock = ({ score = 0, onUpClick, onDownClick, isUpvoted }) => (
+const VoteBlock = ({ score = 0, onUpvote, onDownvote, isUpvoted=false }) => (
   <Container>
-    <UpButton active={isUpvoted === true} onClick={onUpClick}>
+    <UpButton active={isUpvoted === true} onClick={onUpvote}>
       ▲
     </UpButton>
     <Score>{score}</Score>
-    <DownButton active={isUpvoted === false} onClick={onDownClick}>
+    <DownButton active={isUpvoted === false} onClick={onDownvote}>
       ▼
     </DownButton>
   </Container>
@@ -23,7 +23,7 @@ const Container = styled.div`
 const Score = styled.span`
   font-size: var(--fs-large);
   font-weight: bold;
-  margin: .2rem 0;
+  margin: 0.2rem 0;
 `;
 
 const VoteButton = styled(Button)`
@@ -43,6 +43,13 @@ const UpButton = styled(VoteButton)`
     background-color: var(--color-main);
     color: white;
   }
+
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: var(--color-main);
+      color: white;
+    `};
 `;
 
 const DownButton = styled(VoteButton)`
@@ -51,6 +58,13 @@ const DownButton = styled(VoteButton)`
     background-color: var(--color-danger);
     color: white;
   }
+
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: var(--color-danger);
+      color: white;
+    `};
 `;
 
 export default VoteBlock;

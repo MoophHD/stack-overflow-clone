@@ -24,7 +24,7 @@ router.get("/:question_id", async (req, res) => {
       .populate({ path: "author", select: "score firstName lastName" })
       .populate({
         path: "answers",
-        select: "score isBest author text createdAt",
+        select: "score isBest author text createdAt votes",
         populate: { path: "author", select: "firstName lastName score" },
       });
     res.json({ question });
