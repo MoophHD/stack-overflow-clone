@@ -6,6 +6,8 @@ import {
   VOTE_QUESTION_SUCCESS,
   VOTE_ANSWER_SUCCESS,
   VOTE_FAILED,
+  ADD_ANSWER_FAILURE,
+  ADD_ANSWER_SUCCESS
 } from "./questions.types";
 
 const initialState = {
@@ -16,6 +18,16 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_ANSWER_SUCCESS:
+      return {
+        ...state,
+        question: {
+          ...state.question,
+          answers: [...state.question.answers, action.payload],
+        },
+      };
+    case ADD_ANSWER_FAILURE:
+      return state;
     case VOTE_QUESTION_SUCCESS:
       return {
         ...state,

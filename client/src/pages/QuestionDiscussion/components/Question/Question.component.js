@@ -7,7 +7,6 @@ const Question = ({
   score,
   title,
   text,
-  loading,
   onUpvote,
   onDownvote,
   isMyUpvote,

@@ -6,8 +6,24 @@ import {
   VOTE_QUESTION_SUCCESS,
   VOTE_ANSWER_SUCCESS,
   VOTE_FAILED,
+  ADD_ANSWER_SUCCESS,
+  ADD_ANSWER_FAILURE,
 } from "./questions.types";
 import axios from "axios";
+
+export const addAnswer = (questionId, text) => async (dispatch) => {
+  try {
+    const res = await axios.post(`/api/answers/`, { questionId, text });
+    dispatch({
+      type: ADD_ANSWER_SUCCESS,
+      payload: res.data.answer,
+    });
+  } catch (e) {
+    dispatch({
+      type: ADD_ANSWER_FAILURE,
+    });
+  }
+};
 
 export const upvoteQuestion = (questionId) => async (dispatch) => {
   try {
@@ -59,7 +75,9 @@ export const upvoteAnswer = (questionId, answerId) => async (dispatch) => {
 
 export const downvoteAnswer = (questionId, answerId) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/votes/downvote/${questionId}/${answerId}`);
+    const res = await axios.get(
+      `/api/votes/downvote/${questionId}/${answerId}`
+    );
 
     const answer = res.data.result;
     dispatch({

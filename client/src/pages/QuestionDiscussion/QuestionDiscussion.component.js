@@ -7,11 +7,14 @@ import {
   downvoteAnswer,
   upvoteQuestion,
   downvoteQuestion,
+  addAnswer,
 } from "../../redux/questions/questions.actions";
 import Question from "./components/Question/Question.component";
 import AnswerList from "./components/AnswerList/AnswerList.component";
+import AddAnswer from "./components/AddAnswer/AddAnswer.component";
 
 const QuestionDiscussion = ({
+  _id,
   author,
   score,
   answers,
@@ -26,6 +29,7 @@ const QuestionDiscussion = ({
   downvoteQuestion,
   userId,
   votes,
+  addAnswer,
 }) => {
   const [isMyUpvote, setIsMyUpvote] = useState(null);
   const [stateAnswers, setStateAnswers] = useState([]);
@@ -43,7 +47,7 @@ const QuestionDiscussion = ({
 
     setStateAnswers(sortedAnswers);
   }, [answers]);
-  
+
   useEffect(() => {
     if (match.params.id) {
       (async () => await getQuestion(match.params.id))();
@@ -83,6 +87,8 @@ const QuestionDiscussion = ({
               onUpvote={(answerId) => upvoteAnswer(questionId, answerId)}
               answers={stateAnswers}
             />
+
+            <AddAnswer onSubmit={(text) => addAnswer(_id, text)} />
           </Container>
         </Wrapper>
       )}
@@ -112,4 +118,5 @@ export default connect(mapStateToProps, {
   downvoteAnswer,
   upvoteQuestion,
   downvoteQuestion,
+  addAnswer,
 })(QuestionDiscussion);
