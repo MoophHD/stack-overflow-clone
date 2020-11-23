@@ -40,7 +40,7 @@ const reducer = (state = initialState, action) => {
         question: {
           ...question,
           answers: [
-            ...answers,
+            ...answers.filter((answer) => answer._id !== id),
             { ...previousAnswer, votes: nextVotes, score: nextScore },
           ],
         },

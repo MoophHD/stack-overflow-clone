@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import Button from "../../../../components/Button/Button.component";
 
-const VoteBlock = ({ score = 0, onUpvote, onDownvote, isUpvoted=false }) => (
+const VoteBlock = ({ score, onUpvote, onDownvote, isUpvoted }) => (
   <Container>
     <UpButton active={isUpvoted === true} onClick={onUpvote}>
       ▲

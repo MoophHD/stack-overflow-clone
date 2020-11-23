@@ -59,7 +59,7 @@ export const upvoteAnswer = (questionId, answerId) => async (dispatch) => {
 
 export const downvoteAnswer = (questionId, answerId) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/votes/upvote/${questionId}/${answerId}`);
+    const res = await axios.get(`/api/votes/downvote/${questionId}/${answerId}`);
 
     const answer = res.data.result;
     dispatch({

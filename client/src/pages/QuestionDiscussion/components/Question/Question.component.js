@@ -29,7 +29,7 @@ const Question = ({
         <Avatar>{`${author.firstName[0]}${author.lastName[0]}`}</Avatar>
         <UserCol>
           <Name>{`${author.firstName} ${author.lastName}`}</Name>
-          <Score>score: {score}</Score>
+          <Score>score: {author.score}</Score>
         </UserCol>
       </UserBlock>
     </Right>
@@ -41,12 +41,13 @@ const Container = styled.div`
 
   border-radius: var(--br);
   background-color: white;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--bs-main);
 `;
 
 const Left = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-right: 1.5rem;
 `;
 
@@ -62,6 +63,7 @@ const Title = styled.h2`
 
 const Description = styled.p`
   margin: 1.5rem 0 1rem;
+  word-break: break-word;
 `;
 
 const Name = styled.span``;
