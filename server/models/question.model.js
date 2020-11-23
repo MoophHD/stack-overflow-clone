@@ -17,4 +17,11 @@ const QuestionSchema = new Schema({
   bestAnswer: { type: Schema.Types.ObjectId, ref: "answer"},
 });
 
+QuestionSchema.methods.toJSON = function () {
+  var obj = this.toObject();
+  delete obj.__v;
+  return obj;
+};
+
+
 module.exports = mongoose.model("question", QuestionSchema);

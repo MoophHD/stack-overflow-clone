@@ -20,7 +20,13 @@ router.get("/", async (req, res) => {
 
 router.get("/:question_id", async (req, res) => {
   try {
-    const question = await Question.findById(req.params.question_id);
+    const question = await Question.findById(req.params.question_id)
+      .populate({ path: "author", select: "score firstName lastName" })
+      .populate({
+        path: "answers",
+        select: "score isBest author text createdAt",
+        populate: { path: "author", select: "firstName lastName score" },
+      });
     res.json({ question });
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
