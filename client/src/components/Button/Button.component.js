@@ -13,7 +13,7 @@ const Button = styled.div.attrs(() => ({
     props.primary ? "var(--color-main)" : "var(--color-white)"};
   color: ${(props) =>
     props.primary ? "var(--color-text-light)" : "var(--color-text-dark)"};
-  transition: all 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out, background 0.2s ease-in-out;
 
   &:focus {
     transition-duration: 0s;
