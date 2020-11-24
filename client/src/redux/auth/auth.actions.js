@@ -10,6 +10,7 @@ import {
   LOAD_USER_FAIL,
 } from "./auth.types";
 import axios from "axios";
+import { push } from "connected-react-router";
 
 export const loadUser = () => async (dispatch) => {
   try {
@@ -40,6 +41,8 @@ export const checkAndRefreshToken = () => async (dispatch, getState) => {
       payload: { token },
     });
   } catch (e) {
+    dispatch(push("/auth"));
+
     dispatch({
       type: REFRESH_TOKEN_FAIL,
     });
