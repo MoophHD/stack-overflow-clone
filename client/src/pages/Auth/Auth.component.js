@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { login, register } from "../../redux/auth/auth.actions";
-import Button from "../../components/Button/Button.component";
+import { login, register } from "redux/auth/auth.actions";
+import Button from "components/Button/Button.component";
 import AuthInput from "./AuthInput.component";
 import { Redirect } from "react-router";
 
