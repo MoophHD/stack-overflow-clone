@@ -15,11 +15,13 @@ const App = ({ userId, firstName, lastName, loadUser }) => {
   useEffect(() => {
     if (localStorage.token) setAuthToken(localStorage.token);
   }, []);
-  
+
   useEffect(() => {
-    loadUser();
+    if (localStorage.token) {
+      loadUser();
+    }
   }, [loadUser]);
-  
+
   return (
     <Router>
       <Wrapper>

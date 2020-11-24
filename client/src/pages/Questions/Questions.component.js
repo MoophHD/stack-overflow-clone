@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getQuestions } from "../../redux/questions/questions.actions";
+import {
+  getQuestions,
+  searchQuestion,
+} from "../../redux/questions/questions.actions";
 import { useEffect } from "react";
 import QuestionCard from "../../components/QuestionCard/QuestionCard.component";
+import SearchBar from "./component/SearchBar.component";
 
-const Questions = ({ questions, getQuestions }) => {
+const Questions = ({ questions, getQuestions, searchQuestion }) => {
   useEffect(() => {
     const fetchQuestions = async () => {
       await getQuestions();
@@ -15,6 +19,7 @@ const Questions = ({ questions, getQuestions }) => {
 
   return (
     <Wrapper>
+      <SearchBar onSubmit={searchQuestion} />
       <Container>
         {questions.length !== 0 &&
           questions.map((question) => (
@@ -39,7 +44,9 @@ const Questions = ({ questions, getQuestions }) => {
 const Wrapper = styled.div`
   padding: 2% 2rem;
 `;
+
 const Container = styled.section``;
+
 const CardWrapper = styled.div`
   margin-bottom: 1rem;
   flex: 1;
@@ -50,4 +57,6 @@ const mapStateToProps = (state) => ({
   loading: state.questions.loading,
 });
 
-export default connect(mapStateToProps, { getQuestions })(Questions);
+export default connect(mapStateToProps, { getQuestions, searchQuestion })(
+  Questions
+);

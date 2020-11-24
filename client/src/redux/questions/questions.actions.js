@@ -9,15 +9,31 @@ import {
   ADD_ANSWER_SUCCESS,
   ADD_ANSWER_FAILURE,
   MARK_ANSWER_BEST,
+  SEARCH_QUESTION_SUCCESS,
+  SEARCH_QUESTION_FAILURE
 } from "./questions.types";
 import axios from "axios";
+
+export const searchQuestion = (title) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/questions/search/${title}`);
+
+    return dispatch({
+      type: SEARCH_QUESTION_SUCCESS,
+      payload: res.data.questions,
+    });
+  } catch (e) {
+    return dispatch({
+      type: SEARCH_QUESTION_FAILURE,
+    });
+  }
+};
 
 export const markAnswerBest = (questionId, answerId) => async (dispatch) => {
   try {
     const res = await axios.get(
       `/api/questions/pick-answer/${questionId}/${answerId}`
     );
-
 
     dispatch({
       type: MARK_ANSWER_BEST,

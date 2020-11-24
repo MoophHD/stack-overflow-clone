@@ -9,6 +9,8 @@ import {
   ADD_ANSWER_FAILURE,
   ADD_ANSWER_SUCCESS,
   MARK_ANSWER_BEST,
+  SEARCH_QUESTION_SUCCESS,
+  SEARCH_QUESTION_FAILURE,
 } from "./questions.types";
 
 const initialState = {
@@ -19,6 +21,13 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SEARCH_QUESTION_SUCCESS:
+      return {
+        ...state,
+        questions: action.payload,
+      };
+    case SEARCH_QUESTION_FAILURE:
+      return state;
     case MARK_ANSWER_BEST:
       return {
         ...state,

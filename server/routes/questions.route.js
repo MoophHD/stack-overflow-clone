@@ -5,6 +5,21 @@ const Answer = require("../models/answer.model");
 const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
+router.get("/search/:title", async (req, res) => {
+  try {
+    const questions = await Question.find({
+      title: new RegExp(req.params.title, "i"),
+    })
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate("answers");
+
+    res.json({ questions });
+  } catch (e) {
+    res.status(500).json({ message: `Something went terribly wrong: ${e}` });
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const questions = await Question.find({})
