@@ -10,20 +10,44 @@ import {
   ADD_ANSWER_FAILURE,
   MARK_ANSWER_BEST,
   SEARCH_QUESTION_SUCCESS,
-  SEARCH_QUESTION_FAILURE
+  SEARCH_QUESTION_FAILURE,
+  CREATE_QUESTION_SUCCESS,
+  CREATE_QUESTION_FAILURE,
 } from "./questions.types";
 import axios from "axios";
+import { push } from "connected-react-router";
+
+export const directToCreateQuestion = () => (dispatch) => {
+  dispatch(push("/ask-question"));
+};
+
+export const createQuestion = (title, text) => async (dispatch) => {
+  try {
+    const res = await axios.post("/api/questions", { title, text });
+
+    dispatch({
+      type: CREATE_QUESTION_SUCCESS,
+      payload: res.data.questions,
+    });
+
+    dispatch(push("/"));
+  } catch (e) {
+    dispatch({
+      type: CREATE_QUESTION_FAILURE,
+    });
+  }
+};
 
 export const searchQuestion = (title) => async (dispatch) => {
   try {
     const res = await axios.get(`/api/questions/search/${title}`);
 
-    return dispatch({
+    dispatch({
       type: SEARCH_QUESTION_SUCCESS,
       payload: res.data.questions,
     });
   } catch (e) {
-    return dispatch({
+    dispatch({
       type: SEARCH_QUESTION_FAILURE,
     });
   }

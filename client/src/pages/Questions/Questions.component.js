@@ -3,12 +3,19 @@ import { connect } from "react-redux";
 import {
   getQuestions,
   searchQuestion,
+  directToCreateQuestion,
 } from "../../redux/questions/questions.actions";
 import { useEffect } from "react";
 import QuestionCard from "../../components/QuestionCard/QuestionCard.component";
 import SearchBar from "./component/SearchBar.component";
+import Button from "../../components/Button/Button.component";
 
-const Questions = ({ questions, getQuestions, searchQuestion }) => {
+const Questions = ({
+  questions,
+  getQuestions,
+  searchQuestion,
+  directToCreateQuestion,
+}) => {
   useEffect(() => {
     const fetchQuestions = async () => {
       await getQuestions();
@@ -19,7 +26,13 @@ const Questions = ({ questions, getQuestions, searchQuestion }) => {
 
   return (
     <Wrapper>
-      <SearchBar onSubmit={searchQuestion} />
+      <UiGroup>
+        <SearchBar onSubmit={searchQuestion} />
+        <AskQuestionButton onClick={directToCreateQuestion} primary>
+          Ask a question
+        </AskQuestionButton>
+      </UiGroup>
+
       <Container>
         {questions.length !== 0 &&
           questions.map((question) => (
@@ -41,6 +54,17 @@ const Questions = ({ questions, getQuestions, searchQuestion }) => {
   );
 };
 
+const UiGroup = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 2rem;
+`;
+
+const AskQuestionButton = styled(Button)`
+  margin-left: 1rem;
+`;
+
 const Wrapper = styled.div`
   padding: 2% 2rem;
 `;
@@ -56,7 +80,8 @@ const mapStateToProps = (state) => ({
   questions: state.questions.questions,
   loading: state.questions.loading,
 });
-
-export default connect(mapStateToProps, { getQuestions, searchQuestion })(
-  Questions
-);
+export default connect(mapStateToProps, {
+  getQuestions,
+  searchQuestion,
+  directToCreateQuestion,
+})(Questions);

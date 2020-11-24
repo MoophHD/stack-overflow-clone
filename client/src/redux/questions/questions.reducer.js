@@ -11,6 +11,8 @@ import {
   MARK_ANSWER_BEST,
   SEARCH_QUESTION_SUCCESS,
   SEARCH_QUESTION_FAILURE,
+  CREATE_QUESTION_SUCCESS,
+  CREATE_QUESTION_FAILURE,
 } from "./questions.types";
 
 const initialState = {
@@ -21,6 +23,9 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_QUESTION_SUCCESS:
+    case CREATE_QUESTION_FAILURE:
+      return state;
     case SEARCH_QUESTION_SUCCESS:
       return {
         ...state,

@@ -10,6 +10,7 @@ const Input = styled.input`
   outline: none;
   flex: 1;
 
+  box-shadow: var(--bs-main);
   font-family: var(--font-main);
   color: var(--color-text-dark);
 
