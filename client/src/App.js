@@ -1,18 +1,18 @@
-import { Switch, Route } from "react-router-dom";
-import "./styles/index.scss";
-import { loadUser } from "./redux/auth/auth.actions";
-import setAuthToken from "./redux/auth/auth.utils";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import Auth from "./pages/Auth/Auth.component";
-import User from "./pages/User/User.component";
-import Questions from "./pages/Questions/Questions.component";
-import NavBar from "./components/NavBar/NavBar.component";
-import CreateQuestion from "./pages/CreateQuestion/CreateQuestion.component";
 import { useEffect } from "react";
-import QuestionDiscussion from "./pages/QuestionDiscussion/QuestionDiscussion.component";
+import { Switch, Route } from "react-router-dom";
+import styled from "styled-components";
+import { connect } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
-import { history } from "./redux/store";
+import { loadUser } from "redux/auth/auth.actions";
+import setAuthToken from "redux/auth/auth.utils";
+import { history } from "redux/store";
+import Auth from "components/pages/Auth";
+import User from "components/pages/User";
+import Questions from "components/pages/Questions";
+import NavBar from "components/shared/NavBar";
+import CreateQuestion from "components/pages/CreateQuestion";
+import QuestionDiscussion from "components/pages/QuestionDiscussion";
+import "./styles/index.scss";
 
 const App = ({ userId, firstName, lastName, loadUser }) => {
   useEffect(() => {
