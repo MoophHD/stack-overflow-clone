@@ -120,16 +120,6 @@ const QuestionDiscussion = ({
   );
 };
 
-const Wrapper = styled.div`
-  padding: 2% 10rem;
-  background-color: var(--color-plain);
-  flex: 1;
-`;
-
-const Container = styled.section`
-  border-radius: var(--br);
-`;
-
 const mapStateToProps = (state) => ({
   ...state.questions.question,
   userId: state.auth.user?._id,

@@ -65,10 +65,6 @@ const AskQuestionButton = styled(Button)`
   margin-left: 1rem;
 `;
 
-const Wrapper = styled.div`
-  padding: 2% 2rem;
-`;
-
 const Container = styled.section``;
 
 const CardWrapper = styled.div`

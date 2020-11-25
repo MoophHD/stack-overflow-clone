@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Button, TextArea, Heading } from "components/shared/lib";
-import FieldArea from "components/shared/FieldArea";
 
 const AddAnswer = ({ onSubmit }) => {
   const [value, setValue] = useState("");
