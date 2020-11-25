@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import VoteBlock from "./VoteBlock";
-import Avatar from "components/shared/Avatar";
+import Signature from "components/shared/Signature";
 
 const Answer = ({
   userId,
@@ -52,27 +52,26 @@ const Answer = ({
 
       <Right>
         <Description>{text}</Description>
-        <UserBlock>
-          <Avatar initials={`${author.firstName[0]}${author.lastName[0]}`} />
-          <UserCol>
-            <Name>{`${author.firstName} ${author.lastName}`}</Name>
-            <Score>score: {author.score}</Score>
-          </UserCol>
-        </UserBlock>
+        <Signature
+          firstName={author.firstName}
+          lastName={author.lastName}
+          score={author.score}
+        />
       </Right>
     </Container>
   );
 };
 
 const MarkBestContainer = styled.div`
-  background-color: white;
-  box-shadow: var(--bs-small);
-  border-radius: 50%;
   width: 2.5rem;
   height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background-color: white;
+  box-shadow: var(--bs-small);
+  border-radius: 50%;
   margin-top: 1rem;
   cursor: pointer;
 `;
@@ -137,24 +136,6 @@ const Right = styled.div`
   flex-direction: column;
   display: flex;
   flex: 1;
-`;
-
-const Name = styled.span``;
-
-const Score = styled.span`
-  color: var(--color-text-gray);
-  align-self: flex-end;
-  font-size: var(--fs-small);
-`;
-
-const UserBlock = styled.div`
-  align-self: flex-end;
-  display: flex;
-`;
-
-const UserCol = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 export default Answer;
