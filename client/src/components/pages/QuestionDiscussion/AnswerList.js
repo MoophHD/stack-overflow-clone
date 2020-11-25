@@ -14,7 +14,8 @@ const AnswerList = ({
     {answers.map(
       (answer) =>
         answer && (
-          <Post
+          <AnswerPost
+            key={answer._id}
             score={answer.score}
             title={answer.title}
             text={answer.text}
@@ -29,25 +30,14 @@ const AnswerList = ({
             canMark={canMark}
             onMarkBest={() => markAnswerBest(answer._id)}
           />
-
-          // <Answer
-          //   canMark={canMark}
-          //   onMarkBest={() => markAnswerBest(answer._id)}
-          //   key={`a${answer._id}`}
-          //   onUpvote={() => onUpvote(answer._id)}
-          //   onDownvote={() => onDownvote(answer._id)}
-          //   userId={userId}
-          //   votes={answer.votes}
-          //   score={answer.score}
-          //   author={answer.author}
-          //   id={answer._id}
-          //   text={answer.text}
-          //   isBest={bestAnswer === answer._id}
-          // />
         )
     )}
   </Container>
 );
+
+const AnswerPost = styled(Post)`
+  margin-bottom: 1rem;
+`;
 
 const Container = styled.div`
   margin-bottom: 2rem;

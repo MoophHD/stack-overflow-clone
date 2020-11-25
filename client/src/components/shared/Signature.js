@@ -6,7 +6,7 @@ const Signature = ({ firstName, lastName, score, userId }) => (
   <Container>
     <Avatar initials={`${firstName[0]}${lastName[0]}`} />
     <ColContainer>
-      <Name href={`/users/${userId}`}>{`${firstName} ${lastName}`}</Name>
+      <Name to={`/user/${userId}`}>{`${firstName} ${lastName}`}</Name>
       <Score>score: {score}</Score>
     </ColContainer>
   </Container>

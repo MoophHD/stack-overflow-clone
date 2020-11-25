@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
 import AnswerList from "./AnswerList";
 import AddAnswer from "./AddAnswer";
 import {
@@ -14,6 +13,9 @@ import {
 } from "redux/questions/questions.actions";
 import Post from "components/shared/Post";
 import { Heading, Page, Background } from "components/shared/lib";
+import AnswerPagination from "./AnswerPagination";
+
+const ANSWERS_PER_PAGE = 5;
 
 const QuestionDiscussion = ({
   _id,
@@ -37,6 +39,9 @@ const QuestionDiscussion = ({
 }) => {
   const [isUpvotedByMe, setIsMyUpvote] = useState(null);
   const [stateAnswers, setStateAnswers] = useState([]);
+  const [page, setPage] = useState(1);
+  const pageCount = answers ? Math.ceil(answers.length / ANSWERS_PER_PAGE) : 0;
+  console.log(pageCount);
 
   useEffect(() => {
     if (match.params.id) {
@@ -44,6 +49,7 @@ const QuestionDiscussion = ({
     }
   }, [match.params.id, getQuestion]);
 
+  // ANSWER SORT
   useEffect(() => {
     if (!answers || answers.length < 1) return;
 
@@ -107,7 +113,16 @@ const QuestionDiscussion = ({
               userId={userId}
               onDownvote={(answerId) => downvoteAnswer(questionId, answerId)}
               onUpvote={(answerId) => upvoteAnswer(questionId, answerId)}
-              answers={stateAnswers}
+              answers={stateAnswers.slice(
+                ANSWERS_PER_PAGE * (page - 1),
+                ANSWERS_PER_PAGE * page
+              )}
+            />
+
+            <AnswerPagination
+              pageCount={pageCount}
+              page={page}
+              onPageChange={(n) => setPage(n)}
             />
 
             {!bestAnswer && (

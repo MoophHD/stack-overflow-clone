@@ -18,9 +18,10 @@ const Post = ({
   onMarkBest,
   canMark,
   isUpvotedByMe,
+  ...props
 }) => {
   return (
-    <PostContainer isBest={isBest}>
+    <PostContainer {...props} isBest={isBest}>
       <Layout left>
         <Vote
           score={score}

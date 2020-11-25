@@ -149,7 +149,7 @@ export const TextArea = styled.textarea`
 
 export const Button = styled.div.attrs(() => ({
   role: "button",
-  tabIndex: 0,
+  tabIndex: 0
 }))`
   display: inline-block;
   text-align: center;
@@ -157,8 +157,9 @@ export const Button = styled.div.attrs(() => ({
   padding: 0.65rem 1rem;
   border-radius: var(--br);
   cursor: pointer;
-  background-color: var(--color-white);
+  background-color: white;
   transition: box-shadow 0.2s ease-in-out, background 0.2s ease-in-out;
+  outline: none;
 
   ${(props) =>
     props.primary &&
@@ -169,11 +170,23 @@ export const Button = styled.div.attrs(() => ({
 
   &:focus {
     transition-duration: 0s;
-    box-shadow: var(--color-dark) 0px 0px 0px 0.125rem;
-    outline: none;
+    box-shadow: var(--color-main) 0px 0px 0px 0.125rem;
   }
 
   &:hover {
     box-shadow: var(--color-main-light) 0px 0px 3px 0.125rem;
   }
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      box-shadoow: none;
+      color: var(--color-text-gray);
+
+      &:focus,
+      &:hover {
+        box-shadow: none;
+      }
+    `}
 `;
