@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Button } from "components/shared/lib";
-import AuthInput from "./AuthInput";
+import Field from "components/shared/Field";
 import { login, register } from "redux/auth/auth.actions";
 
 const Auth = ({ isAuthenticated, login, register }) => {
@@ -24,8 +24,8 @@ const Auth = ({ isAuthenticated, login, register }) => {
 
         <Title>{isLogin ? "Login" : "Register"}</Title>
 
-        <AuthInputGroup>
-          <AuthInput
+        <FieldGroup>
+          <Field
             label="Email"
             error={errors.email}
             type="email"
@@ -41,7 +41,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
 
           {!isLogin && (
             <InputRow>
-              <AuthInput
+              <Field
                 label="First Name"
                 name="firstName"
                 error={errors.firstName}
@@ -53,7 +53,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
                   },
                 })}
               />
-              <AuthInput
+              <Field
                 label="Last Name"
                 name="lastName"
                 error={errors.lastName}
@@ -68,7 +68,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
             </InputRow>
           )}
 
-          <AuthInput
+          <Field
             label="Password"
             type="password"
             name="password"
@@ -93,25 +93,25 @@ const Auth = ({ isAuthenticated, login, register }) => {
 
           {!isLogin && (
             <>
-              <AuthInput
+              <Field
                 optional
                 label="Nick Name"
                 name="nickName"
                 ref={registerForm()}
               />
-              <AuthInput
+              <Field
                 optional
                 label="Current Job Position"
                 name="jobPosition"
                 ref={registerForm()}
               />
-              <AuthInput
+              <Field
                 optional
                 label="Job Experience"
                 name="jobExperience"
                 ref={registerForm()}
               />
-              <AuthInput
+              <Field
                 optional
                 label="Tech Stack"
                 name="techStack"
@@ -119,7 +119,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
               />
             </>
           )}
-        </AuthInputGroup>
+        </FieldGroup>
 
         <SubmitBtn
           primary
@@ -176,7 +176,7 @@ const ChangeTypeBtn = styled.a`
   text-decoration: underline;
 `;
 
-const AuthInputGroup = styled.div`
+const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;

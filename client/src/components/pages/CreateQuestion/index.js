@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { Input } from "components/shared/lib";
-import { Button, TextArea } from "components/shared/lib";
+import { Button } from "components/shared/lib";
+import Field from "components/shared/Field";
+import FieldArea from "components/shared/FieldArea";
 import { createQuestion } from "redux/questions/questions.actions";
 
 const CreateQuestion = ({ createQuestion }) => {
@@ -13,8 +14,10 @@ const CreateQuestion = ({ createQuestion }) => {
       <Container>
         <Heading>Ask a public question</Heading>
         <QuestionBody>
-          <Label>Title</Label>
-          <StyledInput
+          <Field
+            light
+            shadow
+            label="Title"
             onChange={(e) => setTitle(e.target.value)}
             value={title}
             placeholder={
@@ -22,8 +25,10 @@ const CreateQuestion = ({ createQuestion }) => {
             }
           />
 
-          <Label>Description</Label>
-          <TextArea
+          <FieldArea
+            light
+            shadow
+            label="Description"
             onChange={(e) => setDescription(e.target.value)}
             value={description}
           />
@@ -61,16 +66,6 @@ const QuestionBody = styled.div`
   border-radius: var(--br-main);
   box-shadow: var(--bs-main);
   margin-bottom: 1rem;
-`;
-
-const StyledInput = styled(Input)`
-  background-color: white;
-  margin-bottom: 1rem;
-`;
-
-const Label = styled.label`
-  font-weight: bold;
-  margin-bottom: 0.5rem;
 `;
 
 const Wrapper = styled.div`

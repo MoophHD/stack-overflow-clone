@@ -68,12 +68,24 @@ export const Input = styled.input`
   transition: all 0.2s ease-in-out;
 
   ${(props) =>
+    props.light &&
+    css`
+      background-color: white;
+    `}
+
+  ${(props) =>
     props.shadow &&
     css`
       box-shadow: var(--bs-main);
     `}
 
-  &:focus {
+  ${(props) =>
+    props.danger &&
+    css`
+      box-shadow: var(--color-danger) 0px 0px 0px 0.125rem;
+    `}
+
+    &:focus {
     box-shadow: var(--color-main) 0px 0px 0px 0.125rem;
   }
 `;
@@ -88,8 +100,26 @@ export const TextArea = styled.textarea`
   border: none;
   border-radius: var(--br);
   outline: none;
-  box-shadow: var(--bs-main);
+  background-color: var(--color-plain);
   transition: all 0.2s ease-in-out;
+
+  ${(props) =>
+    props.light &&
+    css`
+      background-color: white;
+    `}
+
+  ${(props) =>
+    props.shadow &&
+    css`
+      box-shadow: var(--bs-main);
+    `}
+
+  ${(props) =>
+    props.danger &&
+    css`
+      box-shadow: var(--color-danger) 0px 0px 0px 0.125rem;
+    `}
 
   &:focus {
     box-shadow: var(--color-main) 0px 0px 0px 0.125rem;
