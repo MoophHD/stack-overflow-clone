@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { Button } from "components/shared/lib";
+import { Button, Background } from "components/shared/lib";
 import Field from "components/shared/Field";
 import { login, register } from "redux/auth/auth.actions";
 
@@ -16,7 +16,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
   return isAuthenticated ? (
     <Redirect to="/" />
   ) : (
-    <Wrapper>
+    <Background>
       <Container>
         <ChangeTypeBtn onClick={() => setIsLogin(!isLogin)} href="#">
           {isLogin ? "New? Register Instead" : "Already a User? Login instead"}
@@ -132,22 +132,12 @@ const Auth = ({ isAuthenticated, login, register }) => {
           Submit
         </SubmitBtn>
       </Container>
-    </Wrapper>
+    </Background>
   );
 };
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2% 0;
-  width: 100%;
-  background-color: var(--color-plain);
-  overflow-y: hidden;
-  flex: 1;
-`;
-
 const Container = styled.section`
+  margin-top: 2%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

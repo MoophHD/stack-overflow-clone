@@ -13,7 +13,7 @@ import {
   addAnswer,
 } from "redux/questions/questions.actions";
 import Post from "components/shared/Post";
-import { Heading } from "components/shared/lib";
+import { Heading, Page, Background } from "components/shared/lib";
 
 const QuestionDiscussion = ({
   _id,
@@ -82,8 +82,8 @@ const QuestionDiscussion = ({
       {loading ? (
         <h2>spinner</h2>
       ) : (
-        <Wrapper>
-          <Container>
+        <Background>
+          <Page>
             <Heading margin>{title}</Heading>
 
             <Post
@@ -113,8 +113,8 @@ const QuestionDiscussion = ({
             {!bestAnswer && (
               <AddAnswer onSubmit={(text) => addAnswer(_id, text)} />
             )}
-          </Container>
-        </Wrapper>
+          </Page>
+        </Background>
       )}
     </>
   );

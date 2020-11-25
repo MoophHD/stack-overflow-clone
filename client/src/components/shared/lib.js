@@ -1,6 +1,16 @@
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
+export const Background = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--color-plain);
+`;
+
 export const StyledLink = styled(Link)`
   color: var(--color-text-link);
   text-decoration: none;
@@ -8,17 +18,21 @@ export const StyledLink = styled(Link)`
 `;
 
 export const Page = styled.div`
-  height: 100%;
-  max-width: 1770px;
-  margin: auto;
+  flex: 1;
+  width: 100%;
+  max-width: 1224px;
+  margin: 2% 0;
 
-  @media (max-width: #{1870}) {
-    margin: 0 3rem;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 1300px) {
+    padding: 0 3rem;
     max-width: 100%;
   }
 
-  @media (max-width: 768) {
-    margin: 0 2rem;
+  @media (max-width: 768px) {
+    padding: 0 2rem;
   }
 `;
 

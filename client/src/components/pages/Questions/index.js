@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import QuestionCard from "components/shared/QuestionCard";
-import { Button } from "components/shared/lib";
+import { Button, Page } from "components/shared/lib";
 import SearchBar from "./SearchBar";
 import {
   getQuestions,
@@ -25,7 +25,7 @@ const Questions = ({
   }, [getQuestions]);
 
   return (
-    <Wrapper>
+    <Page>
       <UiGroup>
         <SearchBar onSubmit={searchQuestion} />
         <AskQuestionButton onClick={directToCreateQuestion} primary>
@@ -50,7 +50,7 @@ const Questions = ({
             </CardWrapper>
           ))}
       </Container>
-    </Wrapper>
+    </Page>
   );
 };
 

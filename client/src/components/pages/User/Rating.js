@@ -52,6 +52,7 @@ const Score = styled.span`
 const Ratings = styled.div`
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   flex: 1;
 `;
 

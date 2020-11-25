@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import styled from "styled-components";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Info from "./Info";
 import Questions from "./Questions";
 import Rating from "./Rating";
 import { getUser } from "redux/user/user.actions";
+import { Page, Container, Background } from "components/shared/lib";
 
 const User = ({
   match,
@@ -20,7 +20,7 @@ const User = ({
   jobPosition,
   techStack,
   loading,
-  nickName
+  nickName,
 }) => {
   useEffect(() => {
     if (match.params.id) getUser(match.params.id);
@@ -32,43 +32,27 @@ const User = ({
   return email === null ? (
     <Redirect to="/auth/" />
   ) : (
-    <Wrapper>
-      <Container>
-        <Info
-          firstName={firstName}
-          lastName={lastName}
-          nickName={nickName}
-          email={email}
-          jobExperience={jobExperience}
-          jobPosition={jobPosition}
-          techStack={techStack}
-        />
+    <Background>
+      <Page>
+        <Container>
+          <Info
+            firstName={firstName}
+            lastName={lastName}
+            nickName={nickName}
+            email={email}
+            jobExperience={jobExperience}
+            jobPosition={jobPosition}
+            techStack={techStack}
+          />
 
-        <Rating questions={questions} answers={answers} score={score} />
+          <Rating questions={questions} answers={answers} score={score} />
 
-        <Questions questions={questions} />
-      </Container>
-    </Wrapper>
+          <Questions questions={questions} />
+        </Container>
+      </Page>
+    </Background>
   );
 };
-
-const Wrapper = styled.div`
-  padding: 2% 2rem;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: var(--color-plain);
-`;
-
-const Container = styled.section`
-  background-color: white;
-  padding: 2rem;
-  width: 100%;
-  border-radius: var(--br);
-  display: flex;
-  flex-direction: column;
-`;
 
 const mapStateToProps = (state) => ({
   firstName: state.user.firstName,
