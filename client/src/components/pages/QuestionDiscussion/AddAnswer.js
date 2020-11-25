@@ -1,14 +1,20 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, TextArea } from "components/shared/lib";
+import { Button, TextArea, Heading } from "components/shared/lib";
+import FieldArea from "components/shared/FieldArea";
 
 const AddAnswer = ({ onSubmit }) => {
   const [value, setValue] = useState("");
 
   return (
     <Container>
-      <Title>Your answer: </Title>
-      <TextArea value={value} onChange={(e) => setValue(e.target.value)} />
+      <Heading margin>Your answer: </Heading>
+      <TextArea
+        light
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+
       <StyledButton primary onClick={() => onSubmit(value)}>
         Submit
       </StyledButton>
@@ -20,12 +26,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-`;
-
-const Title = styled.h2`
-  margin: 0;
-  font-size: var(--fs-large);
-  margin-bottom: 1rem;
 `;
 
 const StyledButton = styled(Button)`

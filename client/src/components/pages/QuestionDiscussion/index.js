@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import Question from "./Question";
 import AnswerList from "./AnswerList";
 import AddAnswer from "./AddAnswer";
 import {
@@ -13,6 +12,8 @@ import {
   markAnswerBest,
   addAnswer,
 } from "redux/questions/questions.actions";
+import Post from "components/shared/Post";
+import { Heading } from "components/shared/lib";
 
 const QuestionDiscussion = ({
   _id,
@@ -34,7 +35,7 @@ const QuestionDiscussion = ({
   bestAnswer,
   markAnswerBest,
 }) => {
-  const [isMyUpvote, setIsMyUpvote] = useState(null);
+  const [isUpvotedByMe, setIsMyUpvote] = useState(null);
   const [stateAnswers, setStateAnswers] = useState([]);
 
   useEffect(() => {
@@ -83,15 +84,21 @@ const QuestionDiscussion = ({
       ) : (
         <Wrapper>
           <Container>
-            <Question
-              isMyUpvote={isMyUpvote}
+            <Heading margin>{title}</Heading>
+
+            <Post
+              score={score}
+              text={text}
+              firstName={author.firstName}
+              lastName={author.lastName}
+              userScore={author.score}
+              userId={author._id}
+              isUpvotedByMe={isUpvotedByMe}
               onUpvote={() => upvoteQuestion(questionId)}
               onDownvote={() => downvoteQuestion(questionId)}
-              author={author}
-              score={score}
-              title={title}
-              text={text}
             />
+
+            <Heading margin>{answers.length} answers</Heading>
 
             <AnswerList
               canMark={userId === author._id}

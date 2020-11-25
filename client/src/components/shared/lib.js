@@ -53,6 +53,13 @@ export const Container = styled.div`
 
 export const Heading = styled.h2`
   font-size: var(--fs-large);
+  margin: 0;
+
+  ${(props) =>
+    props.margin &&
+    css`
+      margin: 1rem 0;
+    `}
 `;
 
 export const Input = styled.input`

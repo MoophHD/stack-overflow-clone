@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { StyledLink } from "components/shared/lib";
 import Avatar from "components/shared/Avatar";
 
-const Signature = ({ firstName, lastName, score }) => (
+const Signature = ({ firstName, lastName, score, userId }) => (
   <Container>
     <Avatar initials={`${firstName[0]}${lastName[0]}`} />
     <ColContainer>
-      <Name>{`${firstName} ${lastName}`}</Name>
+      <Name href={`/users/${userId}`}>{`${firstName} ${lastName}`}</Name>
       <Score>score: {score}</Score>
     </ColContainer>
   </Container>
@@ -27,6 +28,6 @@ const Score = styled.span`
   font-size: var(--fs-small);
 `;
 
-const Name = styled.span``;
+const Name = styled(StyledLink)``;
 
 export default Signature;
