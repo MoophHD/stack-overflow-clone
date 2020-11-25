@@ -12,6 +12,7 @@ import Questions from "components/pages/Questions";
 import NavBar from "components/shared/NavBar";
 import CreateQuestion from "components/pages/CreateQuestion";
 import QuestionDiscussion from "components/pages/QuestionDiscussion";
+import NotFound from 'components/pages/NotFound';
 import "./styles/index.scss";
 
 const App = ({ userId, firstName, lastName, loadUser }) => {
@@ -34,7 +35,9 @@ const App = ({ userId, firstName, lastName, loadUser }) => {
           <Route path="/user/:id" component={User} />
           <Route path="/questions/:id" component={QuestionDiscussion} />
           <Route path="/ask-question" component={CreateQuestion} />
-          <Route path="/" component={Questions} />
+          <Route path="/" exact component={Questions} />
+
+          <Route component={NotFound} />
         </Switch>
       </Wrapper>
     </ConnectedRouter>
