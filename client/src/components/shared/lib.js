@@ -6,9 +6,9 @@ export const Background = styled.div`
   width: 100%;
   display: flex;
   flex: 1;
-  justify-content: center;
-  align-items: flex-start;
   background-color: var(--color-plain);
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const StyledLink = styled(Link)`
@@ -25,6 +25,8 @@ export const Page = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  position: relative;
 
   @media (max-width: 1300px) {
     padding: 0 3rem;

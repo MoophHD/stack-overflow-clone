@@ -14,6 +14,7 @@ import {
 import Post from "components/shared/Post";
 import { Heading, Page, Background } from "components/shared/lib";
 import AnswerPagination from "./AnswerPagination";
+import Spinner from "components/shared/Spinner";
 
 const ANSWERS_PER_PAGE = 5;
 
@@ -84,12 +85,12 @@ const QuestionDiscussion = ({
 
   const questionId = match.params.id;
   return (
-    <>
-      {loading ? (
-        <h2>spinner</h2>
-      ) : (
-        <Background>
-          <Page>
+    <Background>
+      <Page>
+        {loading ? (
+          <Spinner light />
+        ) : (
+          <>
             <Heading margin>{title}</Heading>
 
             <Post
@@ -128,10 +129,10 @@ const QuestionDiscussion = ({
             {!bestAnswer && (
               <AddAnswer onSubmit={(text) => addAnswer(_id, text)} />
             )}
-          </Page>
-        </Background>
-      )}
-    </>
+          </>
+        )}
+      </Page>
+    </Background>
   );
 };
 

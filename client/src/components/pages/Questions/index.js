@@ -4,6 +4,7 @@ import styled from "styled-components";
 import QuestionCard from "components/shared/QuestionCard";
 import { Button, Page } from "components/shared/lib";
 import SearchBar from "./SearchBar";
+import Spinner from "components/shared/Spinner";
 import {
   getQuestions,
   searchQuestion,
@@ -15,6 +16,7 @@ const Questions = ({
   getQuestions,
   searchQuestion,
   directToCreateQuestion,
+  loading,
 }) => {
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -26,30 +28,36 @@ const Questions = ({
 
   return (
     <Page>
-      <UiGroup>
-        <SearchBar onSubmit={searchQuestion} />
-        <AskQuestionButton onClick={directToCreateQuestion} primary>
-          Ask a question
-        </AskQuestionButton>
-      </UiGroup>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <UiGroup>
+            <SearchBar onSubmit={searchQuestion} />
+            <AskQuestionButton onClick={directToCreateQuestion} primary>
+              Ask a question
+            </AskQuestionButton>
+          </UiGroup>
 
-      <Container>
-        {questions.length !== 0 &&
-          questions.map((question) => (
-            <CardWrapper key={`questionsPage_q${question._id}`}>
-              <QuestionCard
-                id={question._id}
-                authorId={question.author._id}
-                title={question.title}
-                answerCount={question.answers.length}
-                score={question.score}
-                colored={true}
-                isClosed={!!question.bestAnswer}
-                authorName={`${question.author.firstName} ${question.author.lastName}`}
-              />
-            </CardWrapper>
-          ))}
-      </Container>
+          <Container>
+            {questions.length !== 0 &&
+              questions.map((question) => (
+                <CardWrapper key={`questionsPage_q${question._id}`}>
+                  <QuestionCard
+                    id={question._id}
+                    authorId={question.author._id}
+                    title={question.title}
+                    answerCount={question.answers.length}
+                    score={question.score}
+                    colored={true}
+                    isClosed={!!question.bestAnswer}
+                    authorName={`${question.author.firstName} ${question.author.lastName}`}
+                  />
+                </CardWrapper>
+              ))}
+          </Container>
+        </>
+      )}
     </Page>
   );
 };

@@ -6,6 +6,7 @@ import Questions from "./Questions";
 import Rating from "./Rating";
 import { getUser } from "redux/user/user.actions";
 import { Page, Container, Background } from "components/shared/lib";
+import Spinner from "components/shared/Spinner";
 
 const User = ({
   match,
@@ -26,29 +27,32 @@ const User = ({
     if (match.params.id) getUser(match.params.id);
   }, [match.params.id, getUser]);
 
-  // just a placeholder
-  if (loading) return <div>spinner</div>;
+  if (email === null) return <Redirect to="/auth/" />;
 
-  return email === null ? (
-    <Redirect to="/auth/" />
-  ) : (
+  return (
     <Background>
       <Page>
-        <Container>
-          <Info
-            firstName={firstName}
-            lastName={lastName}
-            nickName={nickName}
-            email={email}
-            jobExperience={jobExperience}
-            jobPosition={jobPosition}
-            techStack={techStack}
-          />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <Container>
+              <Info
+                firstName={firstName}
+                lastName={lastName}
+                nickName={nickName}
+                email={email}
+                jobExperience={jobExperience}
+                jobPosition={jobPosition}
+                techStack={techStack}
+              />
 
-          <Rating questions={questions} answers={answers} score={score} />
+              <Rating questions={questions} answers={answers} score={score} />
 
-          <Questions questions={questions} />
-        </Container>
+              <Questions questions={questions} />
+            </Container>
+          </>
+        )}
       </Page>
     </Background>
   );
