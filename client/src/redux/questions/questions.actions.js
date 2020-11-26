@@ -1,6 +1,8 @@
 import {
+  GET_QUESTIONS_REQUEST,
   GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAIL,
+  GET_QUESTION_REQUEST,
   GET_QUESTION_FAIL,
   GET_QUESTION_SUCCESS,
   VOTE_QUESTION_SUCCESS,
@@ -152,6 +154,7 @@ export const downvoteAnswer = (questionId, answerId) => async (dispatch) => {
 
 export const getQuestion = (id) => async (dispatch) => {
   try {
+    dispatch({ type: GET_QUESTION_REQUEST });
     const res = await axios.get(`/api/questions/${id}`);
 
     dispatch({
@@ -167,6 +170,7 @@ export const getQuestion = (id) => async (dispatch) => {
 
 export const getQuestions = () => async (dispatch) => {
   try {
+    dispatch({ type: GET_QUESTIONS_REQUEST });
     const res = await axios.get("/api/questions/");
 
     dispatch({

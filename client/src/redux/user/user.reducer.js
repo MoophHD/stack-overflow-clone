@@ -1,4 +1,8 @@
-import { GET_USER_SUCCESS, GET_USER_FAILURE } from "./user.types";
+import {
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILURE,
+} from "./user.types";
 
 const initialState = {
   email: null,
@@ -17,6 +21,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
     case GET_USER_SUCCESS:
       return {
         ...state,
@@ -38,7 +47,7 @@ const reducer = (state = initialState, action) => {
         techStack: null,
         nickName: null,
         loading: false,
-        id: null
+        id: null,
       };
     default:
       return state;

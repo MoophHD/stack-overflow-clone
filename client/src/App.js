@@ -12,16 +12,13 @@ import Questions from "components/pages/Questions";
 import NavBar from "components/shared/NavBar";
 import CreateQuestion from "components/pages/CreateQuestion";
 import QuestionDiscussion from "components/pages/QuestionDiscussion";
-import NotFound from 'components/pages/NotFound';
+import NotFound from "components/pages/NotFound";
 import "./styles/index.scss";
 
 const App = ({ userId, firstName, lastName, loadUser }) => {
   useEffect(() => {
-    if (localStorage.token) setAuthToken(localStorage.token);
-  }, []);
-
-  useEffect(() => {
     if (localStorage.token) {
+      setAuthToken(localStorage.token);
       loadUser();
     }
   }, [loadUser]);

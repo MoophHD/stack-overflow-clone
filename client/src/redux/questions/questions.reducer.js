@@ -1,14 +1,15 @@
 import {
+  GET_QUESTION_REQUEST,
   GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAIL,
   GET_QUESTION_SUCCESS,
   GET_QUESTION_FAIL,
   VOTE_QUESTION_SUCCESS,
   VOTE_ANSWER_SUCCESS,
+  MARK_ANSWER_BEST,
   VOTE_FAILED,
   ADD_ANSWER_FAILURE,
   ADD_ANSWER_SUCCESS,
-  MARK_ANSWER_BEST,
   SEARCH_QUESTION_SUCCESS,
   SEARCH_QUESTION_FAILURE,
   CREATE_QUESTION_SUCCESS,
@@ -23,6 +24,8 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_QUESTION_REQUEST:
+      return { ...state, loading: true };
     case CREATE_QUESTION_SUCCESS:
     case CREATE_QUESTION_FAILURE:
       return state;
