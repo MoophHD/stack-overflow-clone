@@ -1,8 +1,7 @@
-import styled, { css } from "styled-components";
-import InfoBlocks from "./InfoBlocks";
-import AuthorRow from "./Author";
-import { useHistory } from "react-router-dom";
-import { useCallback } from "react";
+import styled from "styled-components";
+import QuestionStats from "./QuestionStats";
+import CreatedInfo from "./CreatedInfo";
+import { Container, StyledLink, Heading } from "components/shared/lib";
 
 const QuestionCard = ({
   id,
@@ -12,72 +11,43 @@ const QuestionCard = ({
   answerCount,
   score,
   isClosed,
-  slim = false,
-  colored = false,
+  createdAt,
+  dark = false,
 }) => {
-  const history = useHistory();
-  const handleOnClick = useCallback(
-    (e) => {
-      if (e.target.tagName !== "A") {
-        history.push(`/questions/${id}`);
-      }
-    },
-    [history, id]
-  );
   return (
-    <Container
-      tabIndex={0}
-      onClick={handleOnClick}
-      slim={slim}
-      colored={colored}
-    >
-      <InfoBlocks
-        slim={slim}
+    <CardContainer dark={dark} >
+      <QuestionStats
         answerCount={answerCount}
         score={score}
         isClosed={isClosed}
       />
 
       <ContentContainer>
-        <Title slim={slim}>{title}</Title>
+        <TitleLink to={`/questions/${id}`}>
+          <Heading>{title}</Heading>
+        </TitleLink>
 
-        <AuthorContainer>
-          {!slim && <AuthorRow name={authorName} id={authorId} />}
-        </AuthorContainer>
+        <CreatedInfo
+          createdAt={createdAt}
+          name={authorName}
+          id={authorId}
+        />
       </ContentContainer>
-    </Container>
+    </CardContainer>
   );
 };
 
-const Container = styled.div`
-  display: flex;
+const CardContainer = styled(Container)`
+  flex-direction: row;
   justify-items: space-between;
   align-items: stretch;
-  border-radius: var(--br);
-  background-color: white;
-  cursor: pointer;
   padding: 0.75rem 1.25rem;
-  width: 100%;
-  box-shadow: var(--bs-main);
 
   transition: box-shadow 0.15s ease-in-out;
   &:hover,
   &:focus {
     box-shadow: var(--bs-large);
   }
-
-  ${(props) =>
-    props.colored &&
-    css`
-      background-color: var(--color-plain);
-    `};
-
-  ${(props) =>
-    props.slim &&
-    css`
-      padding: 0.5rem 1rem;
-      align-items: center;
-    `};
 `;
 
 const ContentContainer = styled.div`
@@ -87,20 +57,8 @@ const ContentContainer = styled.div`
   flex: 1;
 `;
 
-const Title = styled.h2`
-  font-size: var(--fs-large);
-  margin: 0;
-
-  ${(props) =>
-    props.slim &&
-    css`
-      font-size: var(--fs-small);
-      font-weight: normal;
-    `}
-`;
-
-const AuthorContainer = styled.div`
-  align-self: flex-end;
+const TitleLink = styled(StyledLink)`
+  align-self: flex-start;
 `;
 
 export default QuestionCard;

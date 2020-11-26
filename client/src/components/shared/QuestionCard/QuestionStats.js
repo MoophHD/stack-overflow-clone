@@ -1,25 +1,15 @@
 import styled, { css } from "styled-components";
 
-const InfoBlocks = ({ score, isClosed, answerCount, slim }) => (
+const QuestionStats = ({ score, isClosed, answerCount, slim }) => (
   <BlockContainer>
-    {slim ? (
-      <>
-        <Block slim success={isClosed}>
-          <BlockCount slim={slim}>{score}</BlockCount>
-        </Block>
-      </>
-    ) : (
-      <>
-        <Block>
-          <BlockCount>{score}</BlockCount>
-          <BlockText>score</BlockText>
-        </Block>
-        <Block success={isClosed}>
-          <BlockCount>{answerCount}</BlockCount>
-          <BlockText>answers</BlockText>
-        </Block>
-      </>
-    )}
+    <Block>
+      <BlockCount>{score}</BlockCount>
+      <BlockText>score</BlockText>
+    </Block>
+    <Block success={isClosed}>
+      <BlockCount>{answerCount}</BlockCount>
+      <BlockText>answers</BlockText>
+    </Block>
   </BlockContainer>
 );
 
@@ -71,4 +61,4 @@ const BlockText = styled.span`
   font-size: var(--fs-small);
 `;
 
-export default InfoBlocks;
+export default QuestionStats;

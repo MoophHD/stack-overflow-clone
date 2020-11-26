@@ -11,12 +11,13 @@ const Questions = ({ questions }) => (
         key={`${question._id}`}
       >
         <QuestionCard
+          dark
           id={question._id}
-          colored
           title={question.title}
           answerCount={question.answers.length}
           isClosed={!!question.bestAnswer}
           score={question.score}
+          createdAt={question.createdAt.slice(0, 10)}
         />
       </QuestionContainer>
     ))}

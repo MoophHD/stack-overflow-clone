@@ -38,14 +38,15 @@ const Questions = ({ questions, getQuestions, searchQuestion, loading }) => {
               questions.map((question) => (
                 <CardWrapper key={`questionsPage_q${question._id}`}>
                   <QuestionCard
+                    dark
                     id={question._id}
+                    authorName={`${question.author.firstName} ${question.author.lastName}`}
                     authorId={question.author._id}
                     title={question.title}
                     answerCount={question.answers.length}
                     score={question.score}
-                    colored={true}
                     isClosed={!!question.bestAnswer}
-                    authorName={`${question.author.firstName} ${question.author.lastName}`}
+                    createdAt={question.createdAt.slice(0, 10)}
                   />
                 </CardWrapper>
               ))}
