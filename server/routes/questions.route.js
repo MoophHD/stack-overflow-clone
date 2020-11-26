@@ -52,7 +52,10 @@ router.get("/pick-answer/:question_id/:answer_id", auth, async (req, res) => {
   try {
     const user = req.user.id;
     const question = await Question.findById(req.params.question_id);
-    const answer = await Answer.findById(req.params.answer_id);
+    const answer = await Answer.findById(req.params.answer_id).populate({
+      path: "author",
+      select: "score",
+    });
 
     if (question.author.toString() !== user) {
       return res.status(401).json({ message: "Not author of the question" });
@@ -64,7 +67,7 @@ router.get("/pick-answer/:question_id/:answer_id", auth, async (req, res) => {
     answer.isBest = true;
     await answer.save();
 
-    res.json({ question });
+    res.json({ answer });
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
   }

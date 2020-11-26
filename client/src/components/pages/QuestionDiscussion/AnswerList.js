@@ -1,6 +1,14 @@
 import styled from "styled-components";
 import Post from "components/shared/Post";
 
+function getIsUpvotedByMe(votes, id) {
+  const myVote = votes.find((v) => v.user === id)?.vote;
+
+  if (!myVote) return null;
+
+  return myVote === 1;
+}
+
 const AnswerList = ({
   userId,
   answers,
@@ -12,10 +20,10 @@ const AnswerList = ({
 }) => (
   <Container>
     {answers.map(
-      (answer) =>
+      (answer, i) =>
         answer && (
           <AnswerPost
-            key={answer._id}
+            key={`${answer._id} at ${i}`}
             score={answer.score}
             title={answer.title}
             text={answer.text}
@@ -23,9 +31,9 @@ const AnswerList = ({
             lastName={answer.author.lastName}
             userScore={answer.author.score}
             userId={answer.author._id}
-            isUpvotedByMe={answer.votes.find((v) => v.user === userId)}
-            onUpvote={onUpvote}
-            onDownvote={onDownvote}
+            isUpvotedByMe={getIsUpvotedByMe(answer.votes, userId)}
+            onUpvote={() => onUpvote(answer._id)}
+            onDownvote={() => onDownvote(answer._id)}
             isBest={bestAnswer === answer._id}
             canMark={canMark}
             onMarkBest={() => markAnswerBest(answer._id)}

@@ -16,6 +16,14 @@ import { Heading, Page, Background } from "components/shared/lib";
 import AnswerPagination from "./AnswerPagination";
 import Spinner from "components/shared/Spinner";
 
+function getIsUpvotedByMe(votes, id) {
+  const myVote = votes.find((v) => v.user === id)?.vote;
+
+  if (!myVote) return null;
+
+  return myVote === 1;
+}
+
 const ANSWERS_PER_PAGE = 5;
 
 const QuestionDiscussion = ({
@@ -38,20 +46,30 @@ const QuestionDiscussion = ({
   bestAnswer,
   markAnswerBest,
 }) => {
-  const [isUpvotedByMe, setIsMyUpvote] = useState(null);
-  const [stateAnswers, setStateAnswers] = useState([]);
+  const [sortedAnswers, setSortedAnswers] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(1);
-  const pageCount = answers ? Math.ceil(answers.length / ANSWERS_PER_PAGE) : 0;
 
+  // FETCH QUESTION INFO
   useEffect(() => {
     if (match.params.id) {
       getQuestion(match.params.id);
     }
   }, [match.params.id, getQuestion]);
 
+  // SET PAGE COUNT
+  useEffect(() => {
+    const pageCount = answers
+      ? Math.ceil(answers.length / ANSWERS_PER_PAGE)
+      : 0;
+    setPageCount(pageCount);
+  }, [answers]);
+
   // ANSWER SORT
   useEffect(() => {
-    if (!answers || answers.length < 1) return;
+    if (!answers || answers.length < 1) {
+      return setSortedAnswers([]);
+    }
 
     let sortedAnswers = answers.sort((a1, a2) => {
       if (a1.score !== a2.score) {
@@ -61,26 +79,18 @@ const QuestionDiscussion = ({
       }
     });
 
-    const bestAnswerInd = sortedAnswers.findIndex((a) => a.isBest);
-    if (bestAnswerInd) {
-      sortedAnswers = [
-        sortedAnswers[bestAnswerInd],
-        ...sortedAnswers.slice(0, bestAnswerInd),
-        ...sortedAnswers.slice(bestAnswerInd + 1),
-      ];
+    if (bestAnswer) {
+
+      const bestAnswerInd = sortedAnswers.findIndex(
+        (a) => a._id === bestAnswer
+      );
+      const bestAnswerObj = sortedAnswers.splice(bestAnswerInd, 1)[0];
+      sortedAnswers.unshift(bestAnswerObj);
     }
 
-    setStateAnswers(sortedAnswers);
+
+    setSortedAnswers(sortedAnswers);
   }, [answers, bestAnswer]);
-
-  useEffect(() => {
-    if (userId && votes?.length > 0) {
-      const myVote = votes.find((v) => v.user === userId);
-
-      if (myVote) return setIsMyUpvote(myVote.vote === 1);
-    }
-    setIsMyUpvote(null);
-  }, [userId, votes]);
 
   const questionId = match.params.id;
   return (
@@ -99,7 +109,7 @@ const QuestionDiscussion = ({
               lastName={author.lastName}
               userScore={author.score}
               userId={author._id}
-              isUpvotedByMe={isUpvotedByMe}
+              isUpvotedByMe={getIsUpvotedByMe(votes, author._id)}
               onUpvote={() => upvoteQuestion(questionId)}
               onDownvote={() => downvoteQuestion(questionId)}
             />
@@ -113,7 +123,7 @@ const QuestionDiscussion = ({
               userId={userId}
               onDownvote={(answerId) => downvoteAnswer(questionId, answerId)}
               onUpvote={(answerId) => upvoteAnswer(questionId, answerId)}
-              answers={stateAnswers.slice(
+              answers={sortedAnswers.slice(
                 ANSWERS_PER_PAGE * (page - 1),
                 ANSWERS_PER_PAGE * page
               )}

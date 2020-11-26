@@ -23,6 +23,10 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+  const question = state.question;
+  //const answers = question.answers;
+  let updatedAnswer, previousAnswer, id, answers;
+
   switch (action.type) {
     case GET_QUESTION_REQUEST:
       return { ...state, loading: true };
@@ -37,11 +41,27 @@ const reducer = (state = initialState, action) => {
     case SEARCH_QUESTION_FAILURE:
       return state;
     case MARK_ANSWER_BEST:
+      answers = question.answers;
+      updatedAnswer = action.payload;
+      id = updatedAnswer._id;
+
+      previousAnswer = answers.find((answer) => answer._id === id);
       return {
         ...state,
         question: {
-          ...state.question,
-          bestAnswer: action.payload.bestAnswer,
+          ...question,
+          bestAnswer: id,
+          answers: [
+            ...answers.filter((answer) => answer._id !== id),
+            {
+              ...previousAnswer,
+              ...updatedAnswer,
+              author: {
+                ...previousAnswer.author,
+                score: updatedAnswer.author.score,
+              },
+            },
+          ],
         },
       };
     case ADD_ANSWER_SUCCESS:
@@ -64,22 +84,25 @@ const reducer = (state = initialState, action) => {
         },
       };
     case VOTE_ANSWER_SUCCESS:
-      const question = state.question;
-      const answers = question.answers;
+      answers = question.answers;
+      updatedAnswer = action.payload;
+      id = updatedAnswer._id;
 
-      const updatedAnswer = action.payload;
-      const nextVotes = updatedAnswer.votes;
-      const nextScore = updatedAnswer.score;
-      const id = updatedAnswer._id;
-
-      const previousAnswer = answers.find((answer) => answer._id === id);
+      previousAnswer = answers.find((answer) => answer._id === id);
       return {
         ...state,
         question: {
           ...question,
           answers: [
             ...answers.filter((answer) => answer._id !== id),
-            { ...previousAnswer, votes: nextVotes, score: nextScore },
+            {
+              ...previousAnswer,
+              ...updatedAnswer,
+              author: {
+                ...previousAnswer.author,
+                score: updatedAnswer.author.score,
+              },
+            },
           ],
         },
       };

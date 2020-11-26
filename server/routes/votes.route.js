@@ -22,9 +22,13 @@ async function vote(userId, target, voteValue) {
   } else if (voteValue != 0) {
     target.votes.push({ user, vote: voteValue });
     target.score += voteValue;
+    user.score += voteValue;
   }
 
   await user.save();
+
+  target.author.score = user.score;
+
   return await target.save();
 }
 
@@ -32,9 +36,15 @@ router.get("/upvote/:question_id/:answer_id?", auth, async (req, res) => {
   try {
     let target;
     if (req.params.answer_id) {
-      target = await Answer.findById(req.params.answer_id);
+      target = await Answer.findById(req.params.answer_id).populate({
+        path: "author",
+        select: "score",
+      });
     } else {
-      target = await Question.findById(req.params.question_id);
+      target = await Question.findById(req.params.question_id).populate({
+        path: "author",
+        select: "score",
+      });
     }
     const user = req.user.id;
     const result = await vote(user, target, 1);
@@ -49,11 +59,16 @@ router.get("/downvote/:question_id/:answer_id?", auth, async (req, res) => {
   try {
     let target;
     if (req.params.answer_id) {
-      target = await Answer.findById(req.params.answer_id);
+      target = await Answer.findById(req.params.answer_id).populate({
+        path: "author",
+        select: "score",
+      });
     } else {
-      target = await Question.findById(req.params.question_id);
+      target = await Question.findById(req.params.question_id).populate({
+        path: "author",
+        select: "score",
+      });
     }
-
     const user = req.user.id;
     const result = await vote(user, target, -1);
 
@@ -67,9 +82,15 @@ router.get("/unvote/:question_id/:answer_id?", auth, async (req, res) => {
   try {
     let target;
     if (req.params.answer_id) {
-      target = await Answer.findById(req.params.answer_id);
+      target = await Answer.findById(req.params.answer_id).populate({
+        path: "author",
+        select: "score",
+      });
     } else {
-      target = await Question.findById(req.params.question_id);
+      target = await Question.findById(req.params.question_id).populate({
+        path: "author",
+        select: "score",
+      });
     }
 
     const user = req.user.id;

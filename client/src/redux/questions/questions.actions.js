@@ -76,7 +76,7 @@ export const markAnswerBest = (questionId, answerId) => async (
 
     dispatch({
       type: MARK_ANSWER_BEST,
-      payload: res.data.question,
+      payload: res.data.answer,
     });
   } catch (e) {
     dispatch(setAlert(e.message, "danger"));
