@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import QuestionCard from "components/shared/QuestionCard";
-import { Button, Page } from "components/shared/lib";
+import { Button, Page, Heading } from "components/shared/lib";
 import SearchBar from "./SearchBar";
 import Spinner from "components/shared/Spinner";
 import {
@@ -34,6 +34,9 @@ const Questions = ({ questions, getQuestions, searchQuestion, loading }) => {
           </UiGroup>
 
           <Container>
+            {questions.length === 0 && (
+              <Heading light>No questions yet...</Heading>
+            )}
             {questions.length !== 0 &&
               questions.map((question) => (
                 <CardWrapper key={`questionsPage_q${question._id}`}>
@@ -58,7 +61,6 @@ const Questions = ({ questions, getQuestions, searchQuestion, loading }) => {
 };
 
 const UiGroup = styled.div`
-  flex: 1;
   display: flex;
   align-items: baseline;
   margin-bottom: 2rem;

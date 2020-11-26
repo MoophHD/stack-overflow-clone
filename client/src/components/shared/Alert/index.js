@@ -19,7 +19,7 @@ const Alert = ({ alerts, removeAlert }) => (
 const Container = styled.div`
   pointer-events: none;
   z-index: 100;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
 

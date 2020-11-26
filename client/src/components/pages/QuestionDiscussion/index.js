@@ -86,7 +86,7 @@ const QuestionDiscussion = ({
   return (
     <Background>
       <Page>
-        {loading || !_id? (
+        {loading || !_id ? (
           <Spinner light />
         ) : (
           <>
@@ -119,11 +119,13 @@ const QuestionDiscussion = ({
               )}
             />
 
-            <AnswerPagination
-              pageCount={pageCount}
-              page={page}
-              onPageChange={(n) => setPage(n)}
-            />
+            {pageCount > 1 && (
+              <AnswerPagination
+                pageCount={pageCount}
+                page={page}
+                onPageChange={(n) => setPage(n)}
+              />
+            )}
 
             {!bestAnswer && (
               <AddAnswer onSubmit={(text) => addAnswer(_id, text)} />

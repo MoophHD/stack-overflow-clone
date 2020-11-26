@@ -72,6 +72,13 @@ export const Heading = styled.h2`
   margin: 0;
 
   ${(props) =>
+    props.light &&
+    css`
+      color: var(--color-text-gray);
+      font-weight: 500;
+    `}
+
+  ${(props) =>
     props.margin &&
     css`
       margin: 1rem 0;
@@ -151,7 +158,7 @@ export const TextArea = styled.textarea`
 
 export const Button = styled.div.attrs(() => ({
   role: "button",
-  tabIndex: 0
+  tabIndex: 0,
 }))`
   display: inline-block;
   text-align: center;
