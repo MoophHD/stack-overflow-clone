@@ -19,10 +19,6 @@ import {
 import axios from "axios";
 import { push } from "connected-react-router";
 
-export const directToCreateQuestion = () => (dispatch) => {
-  dispatch(push("/ask-question"));
-};
-
 export const createQuestion = (title, text) => async (dispatch) => {
   try {
     const res = await axios.post("/api/questions", { title, text });

@@ -8,16 +8,10 @@ import Spinner from "components/shared/Spinner";
 import {
   getQuestions,
   searchQuestion,
-  directToCreateQuestion,
 } from "redux/questions/questions.actions";
+import { StyledLink } from "components/shared/lib";
 
-const Questions = ({
-  questions,
-  getQuestions,
-  searchQuestion,
-  directToCreateQuestion,
-  loading,
-}) => {
+const Questions = ({ questions, getQuestions, searchQuestion, loading }) => {
   useEffect(() => {
     const fetchQuestions = async () => {
       await getQuestions();
@@ -34,9 +28,9 @@ const Questions = ({
         <>
           <UiGroup>
             <SearchBar onSubmit={searchQuestion} />
-            <AskQuestionButton onClick={directToCreateQuestion} primary>
-              Ask a question
-            </AskQuestionButton>
+            <StyledLink to="/ask-question">
+              <AskQuestionButton primary>Ask a question</AskQuestionButton>
+            </StyledLink>
           </UiGroup>
 
           <Container>
@@ -87,5 +81,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getQuestions,
   searchQuestion,
-  directToCreateQuestion,
 })(Questions);
