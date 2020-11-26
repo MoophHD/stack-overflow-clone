@@ -11,6 +11,7 @@ import {
 } from "./auth.types";
 import axios from "axios";
 import { push } from "connected-react-router";
+import { setAlert } from "../alert/alert.actions";
 
 export const loadUser = () => async (dispatch) => {
   try {
@@ -18,6 +19,7 @@ export const loadUser = () => async (dispatch) => {
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: res.data.user });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
     dispatch({ type: LOAD_USER_FAIL });
   }
 };
@@ -59,6 +61,8 @@ export const register = (data) => async (dispatch) => {
     });
     dispatch(loadUser());
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: REGISTER_FAIL,
     });
@@ -75,6 +79,8 @@ export const login = (data) => async (dispatch) => {
     });
     dispatch(loadUser());
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: LOGIN_FAIL,
     });

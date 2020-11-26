@@ -13,19 +13,19 @@ import NavBar from "components/shared/NavBar";
 import CreateQuestion from "components/pages/CreateQuestion";
 import QuestionDiscussion from "components/pages/QuestionDiscussion";
 import NotFound from "components/pages/NotFound";
+import Alert from "components/shared/Alert";
 import "./styles/index.scss";
 
 const App = ({ userId, firstName, lastName, loadUser }) => {
-  useEffect(() => {
-    if (localStorage.token) {
-      setAuthToken(localStorage.token);
-      loadUser();
-    }
-  }, [loadUser]);
+  if (localStorage.token && userId !== null) {
+    setAuthToken(localStorage.token);
+    loadUser();
+  }
 
   return (
     <ConnectedRouter history={history}>
       <Wrapper>
+        <Alert />
         <NavBar userId={userId} firstName={firstName} lastName={lastName} />
         <Switch>
           <Route path="/auth" component={Auth} />
@@ -46,6 +46,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const mapStateToProps = (state) => ({

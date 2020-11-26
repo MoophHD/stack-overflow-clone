@@ -78,6 +78,7 @@ const mapStateToProps = (state) => ({
   questions: state.questions.questions,
   loading: state.questions.loading,
 });
+
 export default connect(mapStateToProps, {
   getQuestions,
   searchQuestion,

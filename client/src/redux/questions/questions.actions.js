@@ -18,6 +18,7 @@ import {
 } from "./questions.types";
 import axios from "axios";
 import { push } from "connected-react-router";
+import { setAlert } from "../alert/alert.actions";
 
 export const createQuestion = (title, text) => async (dispatch) => {
   try {
@@ -30,6 +31,8 @@ export const createQuestion = (title, text) => async (dispatch) => {
 
     dispatch(push("/"));
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: CREATE_QUESTION_FAILURE,
     });
@@ -45,6 +48,8 @@ export const searchQuestion = (title) => async (dispatch) => {
       payload: res.data.questions,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: SEARCH_QUESTION_FAILURE,
     });
@@ -62,6 +67,8 @@ export const markAnswerBest = (questionId, answerId) => async (dispatch) => {
       payload: res.data.question,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: VOTE_FAILED,
     });
@@ -76,6 +83,8 @@ export const addAnswer = (questionId, text) => async (dispatch) => {
       payload: res.data.answer,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: ADD_ANSWER_FAILURE,
     });
@@ -92,6 +101,8 @@ export const upvoteQuestion = (questionId) => async (dispatch) => {
       payload: question,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: VOTE_FAILED,
     });
@@ -108,6 +119,8 @@ export const downvoteQuestion = (questionId) => async (dispatch) => {
       payload: question,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: VOTE_FAILED,
     });
@@ -124,6 +137,8 @@ export const upvoteAnswer = (questionId, answerId) => async (dispatch) => {
       payload: answer,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: VOTE_FAILED,
     });
@@ -142,6 +157,8 @@ export const downvoteAnswer = (questionId, answerId) => async (dispatch) => {
       payload: answer,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: VOTE_FAILED,
     });
@@ -158,6 +175,8 @@ export const getQuestion = (id) => async (dispatch) => {
       payload: res.data.question,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: GET_QUESTION_FAIL,
     });
@@ -174,6 +193,8 @@ export const getQuestions = () => async (dispatch) => {
       payload: res.data.questions,
     });
   } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
     dispatch({
       type: GET_QUESTIONS_FAIL,
     });

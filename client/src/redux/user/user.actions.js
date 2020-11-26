@@ -4,6 +4,7 @@ import {
   GET_USER_REQUEST,
 } from "./user.types";
 import axios from "axios";
+import { setAlert } from "../alert/alert.actions";
 
 export const getUser = (id) => async (dispatch) => {
   try {
@@ -14,6 +15,8 @@ export const getUser = (id) => async (dispatch) => {
       payload: res.data.user,
     });
   } catch (e) {
+    setAlert(e.message, "danger");
+
     dispatch({
       type: GET_USER_FAILURE,
     });

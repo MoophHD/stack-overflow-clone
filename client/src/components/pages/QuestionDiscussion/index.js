@@ -42,7 +42,6 @@ const QuestionDiscussion = ({
   const [stateAnswers, setStateAnswers] = useState([]);
   const [page, setPage] = useState(1);
   const pageCount = answers ? Math.ceil(answers.length / ANSWERS_PER_PAGE) : 0;
-  console.log(pageCount);
 
   useEffect(() => {
     if (match.params.id) {
