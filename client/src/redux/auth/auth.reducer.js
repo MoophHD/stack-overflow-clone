@@ -5,29 +5,27 @@ import {
   LOGIN_FAIL,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAIL,
-  CHECK_TOKEN_SUCCESS,
   LOAD_USER_FAIL,
   LOAD_USER_SUCCESS,
+  LOAD_USER_REQUEST,
 } from "./auth.types";
 
 const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
-  loading: true,
+  loading: null,
   user: null,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_USER_REQUEST:
+      return { ...state, loading: true };
     case LOAD_USER_SUCCESS:
-      return { ...state, user: { ...action.payload } };
-    case CHECK_TOKEN_SUCCESS:
-      return state;
+      return { ...state, user: { ...action.payload }, loading: false };
     case REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
-        isAuthenticated: true,
-        loading: false,
         token: action.payload.token,
       };
     case REFRESH_TOKEN_FAIL:

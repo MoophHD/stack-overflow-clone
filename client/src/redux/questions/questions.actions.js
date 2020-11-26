@@ -19,9 +19,11 @@ import {
 import axios from "axios";
 import { push } from "connected-react-router";
 import { setAlert } from "../alert/alert.actions";
+import { checkAndRefreshToken } from "../auth/auth.actions";
 
-export const createQuestion = (title, text) => async (dispatch) => {
+export const createQuestion = (title, text) => async (dispatch, getState) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
     const res = await axios.post("/api/questions", { title, text });
 
     dispatch({
@@ -41,7 +43,12 @@ export const createQuestion = (title, text) => async (dispatch) => {
 
 export const searchQuestion = (title) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/questions/search/${title}`);
+    let res;
+    if (title && title !== "") {
+      res = await axios.get(`/api/questions/search/${title}`);
+    } else {
+      res = await axios.get("/api/questions/");
+    }
 
     dispatch({
       type: SEARCH_QUESTION_SUCCESS,
@@ -56,8 +63,13 @@ export const searchQuestion = (title) => async (dispatch) => {
   }
 };
 
-export const markAnswerBest = (questionId, answerId) => async (dispatch) => {
+export const markAnswerBest = (questionId, answerId) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
+
     const res = await axios.get(
       `/api/questions/pick-answer/${questionId}/${answerId}`
     );
@@ -75,8 +87,10 @@ export const markAnswerBest = (questionId, answerId) => async (dispatch) => {
   }
 };
 
-export const addAnswer = (questionId, text) => async (dispatch) => {
+export const addAnswer = (questionId, text) => async (dispatch, getState) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
+
     const res = await axios.post(`/api/answers/`, { questionId, text });
     dispatch({
       type: ADD_ANSWER_SUCCESS,
@@ -91,8 +105,10 @@ export const addAnswer = (questionId, text) => async (dispatch) => {
   }
 };
 
-export const upvoteQuestion = (questionId) => async (dispatch) => {
+export const upvoteQuestion = (questionId) => async (dispatch, getState) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
+
     const res = await axios.get(`/api/votes/upvote/${questionId}`);
 
     const question = res.data.result;
@@ -109,8 +125,10 @@ export const upvoteQuestion = (questionId) => async (dispatch) => {
   }
 };
 
-export const downvoteQuestion = (questionId) => async (dispatch) => {
+export const downvoteQuestion = (questionId) => async (dispatch, getState) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
+
     const res = await axios.get(`/api/votes/downvote/${questionId}`);
 
     const question = res.data.result;
@@ -127,8 +145,13 @@ export const downvoteQuestion = (questionId) => async (dispatch) => {
   }
 };
 
-export const upvoteAnswer = (questionId, answerId) => async (dispatch) => {
+export const upvoteAnswer = (questionId, answerId) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
+
     const res = await axios.get(`/api/votes/upvote/${questionId}/${answerId}`);
 
     const answer = res.data.result;
@@ -145,8 +168,13 @@ export const upvoteAnswer = (questionId, answerId) => async (dispatch) => {
   }
 };
 
-export const downvoteAnswer = (questionId, answerId) => async (dispatch) => {
+export const downvoteAnswer = (questionId, answerId) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkAndRefreshToken()(dispatch, getState);
+
     const res = await axios.get(
       `/api/votes/downvote/${questionId}/${answerId}`
     );

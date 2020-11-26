@@ -45,7 +45,7 @@ const QuestionDiscussion = ({
 
   useEffect(() => {
     if (match.params.id) {
-      (async () => await getQuestion(match.params.id))();
+      getQuestion(match.params.id);
     }
   }, [match.params.id, getQuestion]);
 
@@ -86,7 +86,7 @@ const QuestionDiscussion = ({
   return (
     <Background>
       <Page>
-        {loading ? (
+        {loading || !_id? (
           <Spinner light />
         ) : (
           <>

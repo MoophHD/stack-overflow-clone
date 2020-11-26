@@ -16,17 +16,24 @@ import NotFound from "components/pages/NotFound";
 import Alert from "components/shared/Alert";
 import "./styles/index.scss";
 
-const App = ({ userId, firstName, lastName, loadUser }) => {
-  if (localStorage.token && userId !== null) {
-    setAuthToken(localStorage.token);
-    loadUser();
-  }
+const App = ({ userId, firstName, lastName, loadUser, loadingUser }) => {
+  useEffect(() => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+      loadUser();
+    }
+  }, [loadUser]);
 
   return (
     <ConnectedRouter history={history}>
       <Wrapper>
         <Alert />
-        <NavBar userId={userId} firstName={firstName} lastName={lastName} />
+        <NavBar
+          loadingUser={loadingUser}
+          userId={userId}
+          firstName={firstName}
+          lastName={lastName}
+        />
         <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/user/:id" component={User} />
@@ -53,6 +60,7 @@ const mapStateToProps = (state) => ({
   userId: state.auth.user?._id,
   firstName: state.auth.user?.firstName,
   lastName: state.auth.user?.lastName,
+  loadingUser: state.auth.loading,
 });
 
 export default connect(mapStateToProps, { loadUser })(App);

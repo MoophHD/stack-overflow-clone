@@ -6,23 +6,13 @@ import {
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAIL,
   CHECK_TOKEN_SUCCESS,
+  LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
 } from "./auth.types";
 import axios from "axios";
 import { push } from "connected-react-router";
 import { setAlert } from "../alert/alert.actions";
-
-export const loadUser = () => async (dispatch) => {
-  try {
-    const res = await axios.get("/api/auth/load-user/");
-
-    dispatch({ type: LOAD_USER_SUCCESS, payload: res.data.user });
-  } catch (e) {
-    dispatch(setAlert(e.message, "danger"));
-    dispatch({ type: LOAD_USER_FAIL });
-  }
-};
 
 export const checkAndRefreshToken = () => async (dispatch, getState) => {
   try {
@@ -48,6 +38,19 @@ export const checkAndRefreshToken = () => async (dispatch, getState) => {
     dispatch({
       type: REFRESH_TOKEN_FAIL,
     });
+  }
+};
+
+export const loadUser = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: LOAD_USER_REQUEST });
+    await checkAndRefreshToken()(dispatch, getState);
+    const res = await axios.get("/api/auth/load-user/");
+
+    dispatch({ type: LOAD_USER_SUCCESS, payload: res.data.user });
+  } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+    dispatch({ type: LOAD_USER_FAIL });
   }
 };
 

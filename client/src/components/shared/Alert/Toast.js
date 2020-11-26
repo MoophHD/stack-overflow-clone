@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { Container } from "components/shared/lib";
 
@@ -7,7 +8,9 @@ const TOAST_FADE_OUT = 500;
 const TOAST_STAY = TOAST_TIMEOUT - TOAST_FADE_IN - TOAST_FADE_OUT;
 
 const Toast = ({ type, text, onRemove }) => {
-  setTimeout(onRemove, TOAST_TIMEOUT);
+  useEffect(() => (
+    setTimeout(onRemove, TOAST_TIMEOUT)
+  ), [onRemove]);
 
   return (
     <ToastBackground shadow>
