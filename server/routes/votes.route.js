@@ -5,51 +5,60 @@ const Answer = require("../models/answer.model");
 const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
-async function vote(userId, target, voteValue) {
-  const user = await User.findById(userId);
-  const existingVote = target.votes.find((v) => v.user._id.equals(userId));
+function addVote(target, voteObj) {
+  target.score += voteObj.vote;
+  target.author.score += voteObj.vote;
 
-  if (existingVote) {
-    target.score -= existingVote.vote;
-    user.score -= existingVote.vote;
-    if (voteValue == 0) {
-      target.votes.pull(existingVote);
-    } else {
-      existingVote.vote = voteValue;
-      target.score += voteValue;
-      user.score += voteValue;
-    }
-  } else if (voteValue != 0) {
-    target.votes.push({ user, vote: voteValue });
-    target.score += voteValue;
-    user.score += voteValue;
+  target.votes.push(voteObj);
+}
+
+function removeVote(target, voteObj) {
+  target.score -= voteObj.vote;
+  target.author.score -= voteObj.vote;
+
+  target.votes.pull(voteObj);
+}
+
+async function vote(target, voteValue, voterId) {
+  const existingVote = target.votes.find((v) => v.user._id.equals(voterId));
+  const sameVote = existingVote && existingVote.vote === voteValue;
+
+  // cancel vote
+  if (sameVote) {
+    removeVote(target, existingVote);
+  } else if (existingVote) {
+    removeVote(target, existingVote);
+    addVote(target, { user: voterId, vote: voteValue });
+  } else {
+    addVote(target, { user: voterId, vote: voteValue });
+  }
+}
+
+async function buildVote(req, res, voteValue) {
+  let target;
+  if (req.params.answer_id) {
+    target = await Answer.findById(req.params.answer_id).populate({
+      path: "author",
+      select: "score",
+    });
+  } else {
+    target = await Question.findById(req.params.question_id).populate({
+      path: "author",
+      select: "score",
+    });
   }
 
-  await user.save();
+  const voter = req.user.id;
 
-  target.author.score = user.score;
+  await vote(target, voteValue, voter);
+  await target.save();
 
-  return await target.save();
+  res.json({ target });
 }
 
 router.get("/upvote/:question_id/:answer_id?", auth, async (req, res) => {
   try {
-    let target;
-    if (req.params.answer_id) {
-      target = await Answer.findById(req.params.answer_id).populate({
-        path: "author",
-        select: "score",
-      });
-    } else {
-      target = await Question.findById(req.params.question_id).populate({
-        path: "author",
-        select: "score",
-      });
-    }
-    const user = req.user.id;
-    const result = await vote(user, target, 1);
-
-    return res.json({ result });
+    await buildVote(req, res, 1);
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
   }
@@ -57,46 +66,7 @@ router.get("/upvote/:question_id/:answer_id?", auth, async (req, res) => {
 
 router.get("/downvote/:question_id/:answer_id?", auth, async (req, res) => {
   try {
-    let target;
-    if (req.params.answer_id) {
-      target = await Answer.findById(req.params.answer_id).populate({
-        path: "author",
-        select: "score",
-      });
-    } else {
-      target = await Question.findById(req.params.question_id).populate({
-        path: "author",
-        select: "score",
-      });
-    }
-    const user = req.user.id;
-    const result = await vote(user, target, -1);
-
-    return res.json({ result });
-  } catch (e) {
-    res.status(500).json({ message: `Something went terribly wrong: ${e}` });
-  }
-});
-
-router.get("/unvote/:question_id/:answer_id?", auth, async (req, res) => {
-  try {
-    let target;
-    if (req.params.answer_id) {
-      target = await Answer.findById(req.params.answer_id).populate({
-        path: "author",
-        select: "score",
-      });
-    } else {
-      target = await Question.findById(req.params.question_id).populate({
-        path: "author",
-        select: "score",
-      });
-    }
-
-    const user = req.user.id;
-    const result = await vote(user, target, 0);
-
-    return res.json({ result });
+    await buildVote(req, res, -1);
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
   }

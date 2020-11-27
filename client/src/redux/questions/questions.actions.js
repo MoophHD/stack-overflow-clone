@@ -137,10 +137,9 @@ export const upvoteQuestion = (questionId) => async (dispatch, getState) => {
 
     const res = await axios.get(`/api/votes/upvote/${questionId}`);
 
-    const question = res.data.result;
     dispatch({
       type: VOTE_QUESTION_SUCCESS,
-      payload: question,
+      payload: res.data.target,
     });
   } catch (e) {
     dispatch(setAlert(e.message, "danger"));
@@ -157,7 +156,7 @@ export const downvoteQuestion = (questionId) => async (dispatch, getState) => {
 
     const res = await axios.get(`/api/votes/downvote/${questionId}`);
 
-    const question = res.data.result;
+    const question = res.data.target;
     dispatch({
       type: VOTE_QUESTION_SUCCESS,
       payload: question,
@@ -180,7 +179,7 @@ export const upvoteAnswer = (questionId, answerId) => async (
 
     const res = await axios.get(`/api/votes/upvote/${questionId}/${answerId}`);
 
-    const answer = res.data.result;
+    const answer = res.data.target;
     dispatch({
       type: VOTE_ANSWER_SUCCESS,
       payload: answer,
@@ -205,7 +204,7 @@ export const downvoteAnswer = (questionId, answerId) => async (
       `/api/votes/downvote/${questionId}/${answerId}`
     );
 
-    const answer = res.data.result;
+    const answer = res.data.target;
     dispatch({
       type: VOTE_ANSWER_SUCCESS,
       payload: answer,

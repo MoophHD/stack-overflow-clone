@@ -109,7 +109,7 @@ const QuestionDiscussion = ({
               lastName={author.lastName}
               userScore={author.score}
               userId={author._id}
-              isUpvotedByMe={getIsUpvotedByMe(votes, author._id)}
+              isUpvotedByMe={getIsUpvotedByMe(votes, userId)}
               onUpvote={() => upvoteQuestion(questionId)}
               onDownvote={() => downvoteQuestion(questionId)}
             />

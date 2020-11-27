@@ -78,6 +78,10 @@ const reducer = (state = initialState, action) => {
           ...state.question,
           score: action.payload.score,
           votes: action.payload.votes,
+          author: {
+            ...state.question.author,
+            score: action.payload.author.score,
+          },
         },
       };
     case VOTE_ANSWER_SUCCESS: {
