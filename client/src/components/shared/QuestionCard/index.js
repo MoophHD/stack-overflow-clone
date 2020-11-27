@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import QuestionStats from "./QuestionStats";
 import CreatedInfo from "./CreatedInfo";
-import { Container, StyledLink, Heading } from "components/shared/lib";
+import {
+  Container,
+  StyledLink,
+  Heading,
+  ContainerLink,
+} from "components/shared/lib";
+import Tag from "components/shared/Tag";
 
 const QuestionCard = ({
   id,
@@ -12,10 +18,11 @@ const QuestionCard = ({
   score,
   isClosed,
   createdAt,
+  tags,
   dark = false,
 }) => {
   return (
-    <CardContainer dark={dark} >
+    <CardContainer dark={dark}>
       <QuestionStats
         answerCount={answerCount}
         score={score}
@@ -23,19 +30,32 @@ const QuestionCard = ({
       />
 
       <ContentContainer>
-        <TitleLink to={`/questions/${id}`}>
+        <TitleLink to={`/question/${id}`}>
           <Heading>{title}</Heading>
         </TitleLink>
 
-        <CreatedInfo
-          createdAt={createdAt}
-          name={authorName}
-          id={authorId}
-        />
+        <InfoBottom>
+          <TagContainer>
+            {tags?.length > 0 &&
+              tags.map((tag, i) => (
+                <ContainerLink to={`/questions/tag/${tag}`} key={`${tag}${i}`}>
+                  <Tag light>{tag}</Tag>
+                </ContainerLink>
+              ))}
+          </TagContainer>
+          <CreatedInfo createdAt={createdAt} name={authorName} id={authorId} />
+        </InfoBottom>
       </ContentContainer>
     </CardContainer>
   );
 };
+
+const InfoBottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+const TagContainer = styled.div``;
 
 const CardContainer = styled(Container)`
   flex-direction: row;

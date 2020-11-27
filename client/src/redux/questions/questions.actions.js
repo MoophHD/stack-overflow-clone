@@ -15,16 +15,21 @@ import {
   SEARCH_QUESTION_FAILURE,
   CREATE_QUESTION_SUCCESS,
   CREATE_QUESTION_FAILURE,
+  FILTER_TAGS_SUCCESS,
+  FILTER_TAGS_FAILURE,
 } from "./questions.types";
 import axios from "axios";
 import { push } from "connected-react-router";
 import { setAlert } from "../alert/alert.actions";
 import { checkAndRefreshToken } from "../auth/auth.actions";
 
-export const createQuestion = (title, text) => async (dispatch, getState) => {
+export const createQuestion = (title, text, tags) => async (
+  dispatch,
+  getState
+) => {
   try {
     await checkAndRefreshToken()(dispatch, getState);
-    const res = await axios.post("/api/questions", { title, text });
+    const res = await axios.post("/api/questions", { title, text, tags });
 
     dispatch({
       type: CREATE_QUESTION_SUCCESS,
@@ -41,8 +46,29 @@ export const createQuestion = (title, text) => async (dispatch, getState) => {
   }
 };
 
+export const filterByTag = (tag) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_QUESTIONS_REQUEST });
+
+    const res = await axios.get(`/api/questions/tag/${tag}`);
+
+    dispatch({
+      type: FILTER_TAGS_SUCCESS,
+      payload: res.data.questions,
+    });
+  } catch (e) {
+    dispatch(setAlert(e.message, "danger"));
+
+    dispatch({
+      type: FILTER_TAGS_FAILURE,
+    });
+  }
+};
+
 export const searchQuestion = (title) => async (dispatch) => {
   try {
+    dispatch({ type: GET_QUESTIONS_REQUEST });
+
     let res;
     if (title && title !== "") {
       res = await axios.get(`/api/questions/search/${title}`);

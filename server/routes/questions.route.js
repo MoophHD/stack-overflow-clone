@@ -5,6 +5,21 @@ const Answer = require("../models/answer.model");
 const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
+router.get("/tag/:name", async (req, res) => {
+  try {
+    const questions = await Question.find({
+      tags: req.params.name,
+    })
+      .sort({ createdAt: -1 })
+      .populate("author")
+      .populate("answers");
+
+    res.json({ questions });
+  } catch (e) {
+    res.status(500).json({ message: `Something went terribly wrong: ${e}` });
+  }
+});
+
 router.get("/search/:title", async (req, res) => {
   try {
     const questions = await Question.find({
@@ -76,15 +91,15 @@ router.get("/pick-answer/:question_id/:answer_id", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
   try {
     const author = req.user.id;
-    const { title, text } = req.body;
-    const question = new Question({ author, title, text });
-    const savedQuestion = await question.save();
+    const { title, text, tags } = req.body;
+    const question = new Question({ author, title, text, tags });
+    await question.save();
 
     const user = await User.findById(author);
-    user.questions.push(savedQuestion.id);
+    user.questions.push(question.id);
     await user.save();
 
-    res.json({ id: savedQuestion.id });
+    res.json({ question });
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
   }

@@ -11,6 +11,12 @@ export const Background = styled.div`
   align-items: center;
 `;
 
+export const ContainerLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
+
 export const StyledLink = styled(Link)`
   color: var(--color-text-link);
   text-decoration: none;

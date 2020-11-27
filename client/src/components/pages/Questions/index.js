@@ -8,17 +8,25 @@ import Spinner from "components/shared/Spinner";
 import {
   getQuestions,
   searchQuestion,
+  filterByTag,
 } from "redux/questions/questions.actions";
 import { StyledLink } from "components/shared/lib";
 
-const Questions = ({ questions, getQuestions, searchQuestion, loading }) => {
+const Questions = ({
+  questions,
+  getQuestions,
+  searchQuestion,
+  loading,
+  filterByTag,
+  match,
+}) => {
   useEffect(() => {
-    const fetchQuestions = async () => {
-      await getQuestions();
-    };
-
-    fetchQuestions();
-  }, [getQuestions]);
+    if (match.params.tag) {
+      filterByTag(match.params.tag)
+    } else {
+      getQuestions();
+    }
+  }, [match.params.tag, filterByTag, getQuestions]);
 
   return (
     <Page>
@@ -49,6 +57,7 @@ const Questions = ({ questions, getQuestions, searchQuestion, loading }) => {
                     answerCount={question.answers.length}
                     score={question.score}
                     isClosed={!!question.bestAnswer}
+                    tags={question.tags}
                     createdAt={question.createdAt.slice(0, 10)}
                   />
                 </CardWrapper>
@@ -85,4 +94,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getQuestions,
   searchQuestion,
+  filterByTag,
 })(Questions);

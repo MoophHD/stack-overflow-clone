@@ -37,9 +37,9 @@ const App = ({ userId, firstName, lastName, loadUser, loadingUser }) => {
         <Switch>
           <Route path="/auth" component={Auth} />
           <Route path="/user/:id" component={User} />
-          <Route path="/questions/:id" component={QuestionDiscussion} />
+          <Route path="/question/:id" component={QuestionDiscussion} />
           <Route path="/ask-question" component={CreateQuestion} />
-          <Route path="/" exact component={Questions} />
+          <Route path={["/questions/tag/:tag", "/questions", "/"]} component={Questions} />
 
           <Route component={NotFound} />
         </Switch>

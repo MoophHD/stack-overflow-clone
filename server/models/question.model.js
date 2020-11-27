@@ -8,13 +8,14 @@ const QuestionSchema = new Schema({
     ref: "user",
     required: true,
   },
+  tags: [String],
   title: { type: String, required: true },
   text: { type: String, required: true },
   score: { type: Number, default: 0 },
   votes: [VoteSchema],
   answers: [{ type: Schema.Types.ObjectId, ref: "answer" }],
   createdAt: { type: Date, default: Date.now },
-  bestAnswer: { type: Schema.Types.ObjectId, ref: "answer"},
+  bestAnswer: { type: Schema.Types.ObjectId, ref: "answer" },
 });
 
 QuestionSchema.methods.toJSON = function () {
@@ -22,6 +23,5 @@ QuestionSchema.methods.toJSON = function () {
   delete obj.__v;
   return obj;
 };
-
 
 module.exports = mongoose.model("question", QuestionSchema);
