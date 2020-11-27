@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import Info from "./Info";
 import Questions from "./Questions";
 import Rating from "./Rating";
@@ -26,8 +25,6 @@ const User = ({
   useEffect(() => {
     if (match.params.id) getUser(match.params.id);
   }, [match.params.id, getUser]);
-
-  if (email === null) return <Redirect to="/auth/" />;
 
   return (
     <Background>
