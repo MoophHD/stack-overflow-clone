@@ -65,10 +65,7 @@ const RatingWrapper = styled.div`
   padding: 1rem;
   background-color: var(--color-plain);
   border-radius: var(--br);
-
-  &:not(:last-child) {
-    margin-right: 1rem;
-  }
+  margin: 0.35rem;
 `;
 
 const RatingTitle = styled.span`
