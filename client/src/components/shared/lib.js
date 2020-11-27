@@ -1,5 +1,10 @@
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
+import {
+  tablet,
+  laptopLarge,
+  mobile,
+} from "constants/screenBreakpoints";
 
 export const Background = styled.div`
   height: 100%;
@@ -16,7 +21,6 @@ export const ContainerLink = styled(Link)`
   color: inherit;
 `;
 
-
 export const StyledLink = styled(Link)`
   color: var(--color-text-link);
   text-decoration: none;
@@ -26,21 +30,24 @@ export const StyledLink = styled(Link)`
 export const Page = styled.div`
   flex: 1;
   width: 100%;
-  max-width: 1224px;
-  margin: 2% 0;
-
+  max-width: var(--width-page);
+  margin: 1rem 0;
   display: flex;
   flex-direction: column;
-
   position: relative;
 
-  @media (max-width: 1300px) {
+  @media (max-width: calc(${laptopLarge}px + 6*16px)) {
     padding: 0 3rem;
     max-width: 100%;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: calc(${tablet}px + 4*16px)) {
+    baxckground-color: tomato;
     padding: 0 2rem;
+  }
+
+  @media (max-width: calc(${mobile}px + 2*16px)) {
+    padding: 0 1rem;
   }
 `;
 

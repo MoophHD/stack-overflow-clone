@@ -8,6 +8,7 @@ import {
   ContainerLink,
 } from "components/shared/lib";
 import Tag from "components/shared/Tag";
+import { tablet } from "constants/screenBreakpoints";
 
 const QuestionCard = ({
   id,
@@ -50,13 +51,6 @@ const QuestionCard = ({
   );
 };
 
-const InfoBottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-const TagContainer = styled.div``;
-
 const CardContainer = styled(Container)`
   flex-direction: row;
   justify-items: space-between;
@@ -68,7 +62,18 @@ const CardContainer = styled(Container)`
   &:focus {
     box-shadow: var(--bs-large);
   }
+
+  @media (max-width: ${tablet}px) {
+    flex-direction: column;
+  }
 `;
+
+const InfoBottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+const TagContainer = styled.div``;
 
 const ContentContainer = styled.div`
   display: flex;

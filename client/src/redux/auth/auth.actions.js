@@ -17,6 +17,8 @@ import { setAlert } from "../alert/alert.actions";
 export const checkAndRefreshToken = () => async (dispatch, getState) => {
   try {
     const previousToken = getState().auth.token;
+    if (!previousToken)
+      throw new Error("Must be authenticated for this action");
     const resCheckToken = await axios.get(
       "/api/auth/checkToken/" + previousToken
     );
@@ -33,11 +35,15 @@ export const checkAndRefreshToken = () => async (dispatch, getState) => {
       payload: { token },
     });
   } catch (e) {
+    // dispatch(setAlert(e.message, "danger"));
+
     dispatch(push("/auth"));
 
     dispatch({
       type: REFRESH_TOKEN_FAIL,
     });
+
+    throw new Error(e.message);
   }
 };
 

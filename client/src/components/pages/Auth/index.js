@@ -137,17 +137,22 @@ const Auth = ({ isAuthenticated, login, register }) => {
 };
 
 const Container = styled.section`
-  margin-top: 2%;
+  width: 32rem;
   display: flex;
+  padding: 2rem 3rem;
+  background-color: white;
+  border-radius: var(--br);
+  box-shadow: var(--bs-main);
+  position: relative;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 3rem;
-  width: 32rem;
-  background-color: white;
-  position: relative;
-  border-radius: var(--br);
-  box-shadow: var(--bs-main);
+  margin-top: 1rem;
+
+  @media (max-width: 32rem) {
+    width: 100%;
+    margin: auto 0;
+  }
 `;
 
 const Title = styled.h2`

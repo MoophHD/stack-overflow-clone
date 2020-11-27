@@ -1,23 +1,31 @@
 import styled, { css } from "styled-components";
+import { tablet } from "constants/screenBreakpoints";
+import useWindowSize from "hooks/useWindowSize";
 
-const QuestionStats = ({ score, isClosed, answerCount, slim }) => (
-  <BlockContainer>
-    <Block>
-      <BlockCount>{score}</BlockCount>
-      <BlockText>score</BlockText>
-    </Block>
-    <Block success={isClosed}>
-      <BlockCount>{answerCount}</BlockCount>
-      <BlockText>answers</BlockText>
-    </Block>
-  </BlockContainer>
-);
+const QuestionStats = ({ score, isClosed, answerCount }) => {
+  const { width } = useWindowSize();
 
-const BlockContainer = styled.div`
+  const slim = width <= tablet;
+  return (
+    <StatContainer>
+      <Stat slim={slim}>
+        <Count slim={slim}>{score}</Count>
+        <Text>score</Text>
+      </Stat>
+      <Stat slim={slim} success={isClosed}>
+        <Count slim={slim}>{answerCount}</Count>
+        <Text>answers</Text>
+      </Stat>
+    </StatContainer>
+  );
+};
+
+const StatContainer = styled.div`
   display: flex;
+  align-self: flex-start;
 `;
 
-const Block = styled.div`
+const Stat = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,34 +38,37 @@ const Block = styled.div`
   margin-right: 1rem;
 
   ${(props) =>
-    props.slim &&
-    css`
-      padding: 0 0.5rem;
-      border-color: var(--color-gray);
-      margin-right: 0.5rem;
-    `}
-
-  ${(props) =>
     props.success &&
     css`
       border-color: var(--color-main);
       color: var(--color-main);
     `}
-`;
-
-const BlockCount = styled.span`
-  margin-bottom: 0.5rem;
 
   ${(props) =>
     props.slim &&
     css`
-      margin-bottom: 0.1rem;
+      flex-direction: row;
+      align-items: baseline;
+      padding: 0;
+      margin-right: 0.5rem;
+      font-size: var(--fs-small);
+      border: none;
     `}
-
-  font-weight: bold;
 `;
 
-const BlockText = styled.span`
+const Count = styled.span`
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+
+  ${(props) =>
+    props.slim &&
+    css`
+      margin-bottom: 0;
+      margin-right: 0.25rem;
+    `}
+`;
+
+const Text = styled.span`
   font-size: var(--fs-small);
 `;
 
