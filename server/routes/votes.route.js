@@ -52,6 +52,7 @@ async function buildVote(req, res, voteValue) {
 
   await vote(target, voteValue, voter);
   await target.save();
+  await target.author.save();
 
   res.json({ target });
 }
