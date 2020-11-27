@@ -1,10 +1,6 @@
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
-import {
-  tablet,
-  laptopLarge,
-  mobile,
-} from "constants/screenBreakpoints";
+import { tablet, laptopLarge, mobile } from "constants/screenBreakpoints";
 
 export const Background = styled.div`
   height: 100%;
@@ -172,6 +168,9 @@ export const TextArea = styled.textarea`
 export const Button = styled.div.attrs(() => ({
   role: "button",
   tabIndex: 0,
+  onKeyDown: (e) => {
+    if (e.key === "Enter" || e.key === "Space") e.target.click();
+  },
 }))`
   display: inline-block;
   text-align: center;
