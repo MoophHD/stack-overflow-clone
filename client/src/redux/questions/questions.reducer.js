@@ -7,13 +7,10 @@ import {
   VOTE_QUESTION_SUCCESS,
   VOTE_ANSWER_SUCCESS,
   MARK_ANSWER_BEST,
-  VOTE_FAILED,
   ADD_ANSWER_FAILURE,
   ADD_ANSWER_SUCCESS,
   SEARCH_QUESTION_SUCCESS,
   SEARCH_QUESTION_FAILURE,
-  CREATE_QUESTION_SUCCESS,
-  CREATE_QUESTION_FAILURE,
   FILTER_TAGS_FAILURE,
   FILTER_TAGS_SUCCESS,
 } from "./questions.types";
@@ -25,37 +22,30 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  const question = state.question;
-  let updatedAnswer, previousAnswer, id, answers;
-
   switch (action.type) {
     case FILTER_TAGS_SUCCESS:
       return { ...state, questions: action.payload, loading: false };
-    case FILTER_TAGS_FAILURE:
-      return { ...state, loading: false };
     case GET_QUESTION_REQUEST:
       return { ...state, loading: true };
-    case CREATE_QUESTION_SUCCESS:
-    case CREATE_QUESTION_FAILURE:
-      return state;
     case SEARCH_QUESTION_SUCCESS:
       return {
         ...state,
         questions: action.payload,
         loading: false,
       };
+    case FILTER_TAGS_FAILURE:
     case SEARCH_QUESTION_FAILURE:
       return { state, loading: false };
-    case MARK_ANSWER_BEST:
-      answers = question.answers;
-      updatedAnswer = action.payload;
-      id = updatedAnswer._id;
+    case MARK_ANSWER_BEST: {
+      const answers = state.question.answers;
+      const updatedAnswer = action.payload;
+      const id = updatedAnswer._id;
 
-      previousAnswer = answers.find((answer) => answer._id === id);
+      const previousAnswer = answers.find((answer) => answer._id === id);
       return {
         ...state,
         question: {
-          ...question,
+          ...state.question,
           bestAnswer: id,
           answers: [
             ...answers.filter((answer) => answer._id !== id),
@@ -70,6 +60,7 @@ const reducer = (state = initialState, action) => {
           ],
         },
       };
+    }
     case ADD_ANSWER_SUCCESS:
       return {
         ...state,
@@ -89,16 +80,16 @@ const reducer = (state = initialState, action) => {
           votes: action.payload.votes,
         },
       };
-    case VOTE_ANSWER_SUCCESS:
-      answers = question.answers;
-      updatedAnswer = action.payload;
-      id = updatedAnswer._id;
+    case VOTE_ANSWER_SUCCESS: {
+      const answers = state.question.answers;
+      const updatedAnswer = action.payload;
+      const id = updatedAnswer._id;
 
-      previousAnswer = answers.find((answer) => answer._id === id);
+      const previousAnswer = answers.find((answer) => answer._id === id);
       return {
         ...state,
         question: {
-          ...question,
+          ...state.question,
           answers: [
             ...answers.filter((answer) => answer._id !== id),
             {
@@ -112,8 +103,7 @@ const reducer = (state = initialState, action) => {
           ],
         },
       };
-    case VOTE_FAILED:
-      return state;
+    }
     case GET_QUESTION_SUCCESS:
       return { ...state, question: action.payload, loading: false };
     case GET_QUESTIONS_SUCCESS:
