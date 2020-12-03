@@ -20,14 +20,31 @@ router.get("/tag/:name", async (req, res) => {
   }
 });
 
-router.get("/search/:title", async (req, res) => {
+router.get("/search", async (req, res) => {
   try {
-    const questions = await Question.find({
-      title: new RegExp(req.params.title, "i"),
-    })
-      .sort({ createdAt: -1 })
-      .populate("author")
-      .populate("answers");
+    const tags = req.query.tags;
+    const title = req.query.title;
+
+    const questionQuery = {};
+
+    if (title) {
+      const titleWords = title.split("+");
+
+      if (titleWords.length > 0) {
+        questionQuery.$text = {
+          $search: titleWords.map((w) => `"${w}"`).join(" "),
+        };
+      }
+    }
+
+    if (tags) {
+      const tagWords = tags.split("+");
+      if (tagWords.length > 0) {
+        questionQuery.tags = { $all: tagWords };
+      }
+    }
+
+    const questions = await Question.find(questionQuery);
 
     res.json({ questions });
   } catch (e) {

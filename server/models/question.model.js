@@ -18,6 +18,8 @@ const QuestionSchema = new Schema({
   bestAnswer: { type: Schema.Types.ObjectId, ref: "answer" },
 });
 
+QuestionSchema.index({ title: "text" });
+
 QuestionSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
