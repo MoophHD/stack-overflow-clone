@@ -11,8 +11,6 @@ import {
   ADD_ANSWER_SUCCESS,
   SEARCH_QUESTION_SUCCESS,
   SEARCH_QUESTION_FAILURE,
-  FILTER_TAGS_FAILURE,
-  FILTER_TAGS_SUCCESS,
 } from "./questions.types";
 
 const initialState = {
@@ -23,8 +21,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case FILTER_TAGS_SUCCESS:
-      return { ...state, questions: action.payload, loading: false };
     case GET_QUESTION_REQUEST:
       return { ...state, loading: true };
     case SEARCH_QUESTION_SUCCESS:
@@ -33,7 +29,6 @@ const reducer = (state = initialState, action) => {
         questions: action.payload,
         loading: false,
       };
-    case FILTER_TAGS_FAILURE:
     case SEARCH_QUESTION_FAILURE:
       return { state, loading: false };
     case MARK_ANSWER_BEST: {

@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import QuestionStats from "./QuestionStats";
 import CreatedInfo from "./CreatedInfo";
-import {
-  Container,
-  StyledLink,
-  Heading,
-  ContainerLink,
-} from "components/shared/lib";
+import { Container, StyledLink, Heading } from "components/shared/lib";
 import Tag from "components/shared/Tag";
 import { tablet } from "constants/screenBreakpoints";
 
@@ -21,6 +16,7 @@ const QuestionCard = ({
   createdAt,
   tags,
   dark = false,
+  onTagClick,
 }) => {
   return (
     <CardContainer dark={dark}>
@@ -39,9 +35,15 @@ const QuestionCard = ({
           <TagContainer>
             {tags?.length > 0 &&
               tags.map((tag, i) => (
-                <ContainerLink to={`/questions/tag/${tag}`} key={`${tag}${i}`}>
-                  <Tag light>{tag}</Tag>
-                </ContainerLink>
+                <Tag
+                  onClick={() => {
+                    if (onTagClick) onTagClick(tag);
+                  }}
+                  key={`${tag}${i}`}
+                  light
+                >
+                  {tag}
+                </Tag>
               ))}
           </TagContainer>
           <CreatedInfo createdAt={createdAt} name={authorName} id={authorId} />

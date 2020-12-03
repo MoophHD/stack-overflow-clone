@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import QuestionCard from "components/shared/QuestionCard";
@@ -8,25 +8,55 @@ import Spinner from "components/shared/Spinner";
 import {
   getQuestions,
   searchQuestion,
-  filterByTag,
 } from "redux/questions/questions.actions";
 import { StyledLink } from "components/shared/lib";
+
+const searchRegex = {
+  word: /^\w+$/,
+  tag: /^\[.+\]$/,
+};
+
+const TYPEAHEAD_DELAY = 1000;
+let typeAheadTimeout;
 
 const Questions = ({
   questions,
   getQuestions,
   searchQuestion,
   loading,
-  filterByTag,
   match,
+  location,
 }) => {
+  const [searchValue, setSearchValue] = useState("");
+
+  function handleTagClick(tag) {
+    handleSearchChange(searchValue + ` [${tag}]`);
+  }
+
+  function handleSearchChange(value) {
+    setSearchValue(value);
+
+    clearTimeout(typeAheadTimeout);
+    typeAheadTimeout = setTimeout(
+      () => handleSearchSubmit(value),
+      TYPEAHEAD_DELAY
+    );
+  }
+
+  function handleSearchSubmit(value) {
+    const tokens = value.split(" ");
+
+    const titleWords = tokens.filter((token) => searchRegex.word.test(token));
+    const tags = tokens
+      .filter((token) => searchRegex.tag.test(token))
+      .map((tag) => tag.slice(1, -1));
+
+    searchQuestion(titleWords, tags);
+  }
+
   useEffect(() => {
-    if (match.params.tag) {
-      filterByTag(match.params.tag)
-    } else {
-      getQuestions();
-    }
-  }, [match.params.tag, filterByTag, getQuestions]);
+    getQuestions();
+  }, [match.path, location.search, getQuestions]);
 
   return (
     <Page>
@@ -35,7 +65,11 @@ const Questions = ({
       ) : (
         <>
           <UiGroup>
-            <SearchBar onSubmit={searchQuestion} />
+            <SearchBar
+              value={searchValue}
+              setValue={handleSearchChange}
+              onSubmit={handleSearchSubmit}
+            />
             <StyledLink to="/ask-question">
               <AskQuestionButton primary>Ask a question</AskQuestionButton>
             </StyledLink>
@@ -59,6 +93,7 @@ const Questions = ({
                     isClosed={!!question.bestAnswer}
                     tags={question.tags}
                     createdAt={question.createdAt.slice(0, 10)}
+                    onTagClick={handleTagClick}
                   />
                 </CardWrapper>
               ))}
@@ -94,5 +129,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getQuestions,
   searchQuestion,
-  filterByTag,
 })(Questions);
