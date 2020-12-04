@@ -11,6 +11,7 @@ import {
   GET_ANSWERS_REQUEST,
   GET_ANSWERS_SUCCESS,
   RESET_QUESTION,
+  SET_ANSWERS_PAGE,
 } from "./questionDiscussion.types";
 
 const initialState = {
@@ -28,6 +29,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_ANSWERS_PAGE:
+      return {
+        ...state,
+        answers: { ...state.answers, currentPage: action.payload },
+      };
     case RESET_QUESTION:
       return initialState;
     case SET_ANSWER_COUNT:
@@ -108,26 +114,21 @@ const reducer = (state = initialState, action) => {
         },
       };
     case VOTE_ANSWER_SUCCESS: {
-      const answers = state.question.answers;
       const updatedAnswer = action.payload;
-      const id = updatedAnswer._id;
+      const nextPageAnswers = state.answers.page.slice();
 
-      const previousAnswer = answers.find((answer) => answer._id === id);
+ 
+      nextPageAnswers.splice(
+        nextPageAnswers.findIndex((a) => a._id === updatedAnswer._id),
+        1,
+        updatedAnswer
+      );
+
       return {
         ...state,
-        question: {
-          ...state.question,
-          answers: [
-            ...answers.filter((answer) => answer._id !== id),
-            {
-              ...previousAnswer,
-              ...updatedAnswer,
-              author: {
-                ...previousAnswer.author,
-                score: updatedAnswer.author.score,
-              },
-            },
-          ],
+        answers: {
+          ...state.answers,
+          page: nextPageAnswers,
         },
       };
     }

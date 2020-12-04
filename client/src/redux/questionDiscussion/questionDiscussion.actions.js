@@ -12,7 +12,8 @@ import {
   GET_ANSWERS_REQUEST,
   GET_ANSWERS_SUCCESS,
   GET_ANSWERS_FAIL,
-  RESET_QUESTION
+  RESET_QUESTION,
+  SET_ANSWERS_PAGE
 } from "./questionDiscussion.types";
 import axios from "axios";
 import { setAlert } from "../alert/alert.actions";
@@ -24,13 +25,17 @@ const setAnswerCount = async (id) => {
   return { type: SET_ANSWER_COUNT, payload: res.data.count };
 };
 
-export const resetQuestion = () => ({type: RESET_QUESTION})
+export const resetQuestion = () => ({ type: RESET_QUESTION });
 
-export const getAnswers = (id, page) => async (dispatch, getState) => {
+export const setAnswersPage = (page) => ({ type: SET_ANSWERS_PAGE, payload: page });
+
+export const getAnswers = () => async (dispatch, getState) => {
   try {
     dispatch({ type: GET_ANSWERS_REQUEST });
 
+    const id = getState().questionDiscussion.question._id;
     const pageLimit = getState().questionDiscussion.answers.pageLimit;
+    const page = getState().questionDiscussion.answers.currentPage;
     const res = await axios.get(`/api/answers/${id}`, {
       params: { page, pageLimit },
     });

@@ -39,7 +39,7 @@ async function buildVote(req, res, voteValue) {
   if (req.params.answer_id) {
     target = await Answer.findById(req.params.answer_id).populate({
       path: "author",
-      select: "score",
+      select: "firstName lastName score",
     });
   } else {
     target = await Question.findById(req.params.question_id).populate({
