@@ -10,6 +10,7 @@ import {
   GET_ANSWERS_FAIL,
   GET_ANSWERS_REQUEST,
   GET_ANSWERS_SUCCESS,
+  RESET_QUESTION,
 } from "./questionDiscussion.types";
 
 const initialState = {
@@ -27,6 +28,8 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case RESET_QUESTION:
+      return initialState;
     case SET_ANSWER_COUNT:
       return {
         ...state,

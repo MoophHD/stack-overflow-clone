@@ -11,6 +11,7 @@ import {
   getQuestions,
   searchQuestion,
   setQuestionCount,
+  resetQuestions
 } from "redux/questions/questions.actions";
 
 const searchRegex = {
@@ -40,6 +41,7 @@ const Questions = ({
   currentPage,
   questionCount,
   pageCount,
+  resetQuestions
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -68,10 +70,10 @@ const Questions = ({
   }
 
   useEffect(() => {
-    (async () => {
-      await getQuestions(1);
-    })();
-  }, [setQuestionCount, getQuestions]);
+    getQuestions(1);
+
+    return () => resetQuestions();
+  }, [setQuestionCount, getQuestions, resetQuestions]);
 
   return (
     <Page>
@@ -159,4 +161,5 @@ export default connect(mapStateToProps, {
   getQuestions,
   searchQuestion,
   setQuestionCount,
+  resetQuestions
 })(Questions);

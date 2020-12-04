@@ -7,11 +7,14 @@ import {
   CREATE_QUESTION_SUCCESS,
   CREATE_QUESTION_FAILURE,
   SET_QUESTION_COUNT,
+  RESET_QUESTIONS
 } from "./questions.types";
 import axios from "axios";
 import { push } from "connected-react-router";
 import { setAlert } from "../alert/alert.actions";
 import { checkAndRefreshToken } from "../auth/auth.actions";
+
+export const resetQuestions = () => ({type: RESET_QUESTIONS})
 
 export const setQuestionCount = (query) => async (dispatch) => {
   try {

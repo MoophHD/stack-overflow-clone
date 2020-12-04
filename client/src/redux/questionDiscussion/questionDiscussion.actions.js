@@ -12,6 +12,7 @@ import {
   GET_ANSWERS_REQUEST,
   GET_ANSWERS_SUCCESS,
   GET_ANSWERS_FAIL,
+  RESET_QUESTION
 } from "./questionDiscussion.types";
 import axios from "axios";
 import { setAlert } from "../alert/alert.actions";
@@ -22,6 +23,8 @@ const setAnswerCount = async (id) => {
 
   return { type: SET_ANSWER_COUNT, payload: res.data.count };
 };
+
+export const resetQuestion = () => ({type: RESET_QUESTION})
 
 export const getAnswers = (id, page) => async (dispatch, getState) => {
   try {

@@ -5,6 +5,7 @@ import {
   SEARCH_QUESTION_FAILURE,
   SET_QUESTION_COUNT,
   GET_QUESTIONS_REQUEST,
+  RESET_QUESTIONS,
 } from "./questions.types";
 
 const initialState = {
@@ -20,6 +21,8 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case RESET_QUESTIONS:
+      return initialState;
     case SET_QUESTION_COUNT:
       return {
         ...state,
