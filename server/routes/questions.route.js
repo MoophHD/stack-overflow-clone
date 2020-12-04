@@ -24,6 +24,8 @@ router.get("/search", async (req, res) => {
   try {
     const tags = req.query.tags;
     const title = req.query.title;
+    const page = req.query.page;
+    const pageLimit = req.query.pageLimit;
 
     const questionQuery = {};
 
@@ -44,7 +46,26 @@ router.get("/search", async (req, res) => {
       }
     }
 
-    const questions = await Question.find(questionQuery);
+    // const questions = await Question.find(questionQuery)
+    //     .sort({ createdAt: -1 })
+    //     .populate("author")
+    //     .populate("answers");
+
+    
+    let questions;
+    if (page) {
+      questions = await Question.find(questionQuery)
+        .sort({ createdAt: -1 })
+        .populate("author")
+        .populate("answers")
+        .skip((page - 1) * pageLimit)
+        .limit(page * pageLimit);
+    } else {
+      questions = await Question.find(questionQuery)
+        .sort({ createdAt: -1 })
+        .populate("author")
+        .populate("answers");
+    }
 
     res.json({ questions });
   } catch (e) {

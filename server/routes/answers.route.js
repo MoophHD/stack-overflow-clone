@@ -5,11 +5,35 @@ const Question = require("../models/question.model");
 const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
-router.get("/:question_id", async (req, res) => {
+router.get("/count/:question_id", async (req, res) => {
   try {
     const question = await Question.findById(req.params.question_id);
 
-    const answers = await Answer.find({ _id: { $in: question.answers } });
+    const count = await Answer.countDocuments({
+      _id: { $in: question.answers },
+    });
+
+    res.json({ count });
+  } catch (e) {
+    res
+      .status(500)
+      .json({ message: `Something went wrong while in /count-answers: ${e}` });
+  }
+});
+
+router.get("/:question_id", async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.question_id);
+    const page = +req.query.page;
+    const pageLimit = +req.query.pageLimit;
+
+    const answers = await Answer.find({ _id: { $in: question.answers  }})
+      .skip((page - 1) * pageLimit)
+      .limit(pageLimit)
+      .populate({
+        path: "author",
+        select: "firstName lastName score",
+      });
     res.json({ answers });
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });

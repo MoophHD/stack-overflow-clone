@@ -31,6 +31,7 @@ const Container = styled.div`
 
 const PaginationItem = styled(Button)`
   margin-right: 0.5rem;
+  border: 1px solid var(--color-gray);
 `;
 
 export default AnswerPagination;

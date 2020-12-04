@@ -5,17 +5,19 @@ import QuestionCard from "components/shared/QuestionCard";
 import { Button, Page, Heading } from "components/shared/lib";
 import SearchBar from "./SearchBar";
 import Spinner from "components/shared/Spinner";
+import PagePagination from "components/shared/PagePagination";
+import { StyledLink } from "components/shared/lib";
 import {
   getQuestions,
   searchQuestion,
 } from "redux/questions/questions.actions";
-import { StyledLink } from "components/shared/lib";
 
 const searchRegex = {
   word: /^\w+$/,
   tag: /^\[.+\]$/,
 };
 
+const QUESTIONS_PER_PAGE = 10;
 const TYPEAHEAD_DELAY = 1000;
 let typeAheadTimeout;
 
@@ -98,6 +100,8 @@ const Questions = ({
                 </CardWrapper>
               ))}
           </Container>
+
+          <PagePagination page={1} pageCount={5}/>
         </>
       )}
     </Page>
