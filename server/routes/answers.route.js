@@ -15,9 +15,7 @@ router.get("/count/:question_id", async (req, res) => {
 
     res.json({ count });
   } catch (e) {
-    res
-      .status(500)
-      .json({ message: `Something went wrong while in /count-answers: ${e}` });
+    res.status(500).json({ message: `Something went terribly wrong: ${e}` });
   }
 });
 
@@ -27,7 +25,12 @@ router.get("/:question_id", async (req, res) => {
     const page = +req.query.page;
     const pageLimit = +req.query.pageLimit;
 
-    const answers = await Answer.find({ _id: { $in: question.answers  }})
+    const answers = await Answer.find({ _id: { $in: question.answers } })
+      .sort([
+        ["isBest", -1],
+        ["score", -1],
+        ["createdAt", -1],
+      ])
       .skip((page - 1) * pageLimit)
       .limit(pageLimit)
       .populate({
