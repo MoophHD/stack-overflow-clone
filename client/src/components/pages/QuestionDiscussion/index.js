@@ -11,7 +11,7 @@ import {
   markAnswerBest,
   addAnswer,
   getAnswers,
-  resetQuestion
+  resetQuestion,
 } from "redux/questionDiscussion/questionDiscussion.actions";
 import Post from "components/shared/Post";
 import { Heading, Page, Background } from "components/shared/lib";
@@ -49,7 +49,7 @@ const QuestionDiscussion = ({
   currentPage,
   pageCount,
   answerCount,
-  resetQuestion
+  resetQuestion,
 }) => {
   const setPage = useCallback(
     (n) => {
@@ -66,7 +66,7 @@ const QuestionDiscussion = ({
     }
 
     return () => resetQuestion();
-  }, [match.params.id, getQuestion, getAnswers]);
+  }, [match.params.id, getQuestion, getAnswers, resetQuestion]);
 
   const questionId = match.params.id;
   return (
@@ -139,5 +139,5 @@ export default connect(mapStateToProps, {
   addAnswer,
   markAnswerBest,
   getAnswers,
-  resetQuestion
+  resetQuestion,
 })(QuestionDiscussion);

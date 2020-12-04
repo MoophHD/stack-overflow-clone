@@ -9,7 +9,6 @@ import PagePagination from "components/shared/PagePagination";
 import { StyledLink } from "components/shared/lib";
 import {
   getQuestions,
-  searchQuestion,
   setQuestionCount,
   resetQuestions
 } from "redux/questions/questions.actions";
@@ -35,11 +34,9 @@ let typeAheadTimeout;
 const Questions = ({
   questions,
   getQuestions,
-  searchQuestion,
   loading,
   setQuestionCount,
   currentPage,
-  questionCount,
   pageCount,
   resetQuestions
 }) => {
@@ -159,7 +156,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getQuestions,
-  searchQuestion,
   setQuestionCount,
   resetQuestions
 })(Questions);

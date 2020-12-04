@@ -1,8 +1,6 @@
 import {
   GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAIL,
-  SEARCH_QUESTION_SUCCESS,
-  SEARCH_QUESTION_FAILURE,
   SET_QUESTION_COUNT,
   GET_QUESTIONS_REQUEST,
   RESET_QUESTIONS,
@@ -32,14 +30,6 @@ const reducer = (state = initialState, action) => {
           pageCount: Math.ceil(action.payload / state.questions.pageLimit),
         },
       };
-    case SEARCH_QUESTION_SUCCESS:
-      return {
-        ...state,
-        questions: action.payload,
-        loading: false,
-      };
-    case SEARCH_QUESTION_FAILURE:
-      return { state, loading: false };
     case GET_QUESTIONS_REQUEST: {
       return { ...state, loading: true };
     }

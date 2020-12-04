@@ -41,39 +41,6 @@ router.get("/count", async (req, res) => {
   }
 });
 
-router.get("/search", async (req, res) => {
-  try {
-    const page = req.query.page;
-    const pageLimit = req.query.pageLimit;
-
-    const questionQuery = buildQuestionQuery(req.query);
-
-    // const questions = await Question.find(questionQuery)
-    //     .sort({ createdAt: -1 })
-    //     .populate("author")
-    //     .populate("answers");
-
-    let questions;
-    if (page) {
-      questions = await Question.find(questionQuery)
-        .sort({ createdAt: -1 })
-        .populate("author")
-        .populate("answers")
-        .skip((page - 1) * pageLimit)
-        .limit(page * pageLimit);
-    } else {
-      questions = await Question.find(questionQuery)
-        .sort({ createdAt: -1 })
-        .populate("author")
-        .populate("answers");
-    }
-
-    res.json({ questions });
-  } catch (e) {
-    res.status(500).json({ message: `Something went terribly wrong: ${e}` });
-  }
-});
-
 router.get("/", async (req, res) => {
   try {
     const page = +req.query.page;

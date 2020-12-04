@@ -1,12 +1,9 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "components/shared/lib";
 
 const SearchBar = ({ onSubmit, value, setValue }) => {
-  // const [value, setValue] = useState("");
-
   const handleSubmit = () => {
     onSubmit(value);
   };
