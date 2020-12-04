@@ -20,7 +20,7 @@ import { checkAndRefreshToken } from "../auth/auth.actions";
 const setAnswerCount = async (id) => {
   const res = await axios.get(`/api/answers/count/${id}`);
 
-  return { type: SET_ANSWER_COUNT, payload: res.data.count};
+  return { type: SET_ANSWER_COUNT, payload: res.data.count };
 };
 
 export const getAnswers = (id, page) => async (dispatch, getState) => {
@@ -29,7 +29,7 @@ export const getAnswers = (id, page) => async (dispatch, getState) => {
 
     const pageLimit = getState().questionDiscussion.answers.pageLimit;
     const res = await axios.get(`/api/answers/${id}`, {
-      params: { page, pageLimit: pageLimit },
+      params: { page, pageLimit },
     });
 
     dispatch({

@@ -5,16 +5,37 @@ const Answer = require("../models/answer.model");
 const User = require("../models/user.model");
 const auth = require("../middleware/auth.middleware");
 
-router.get("/tag/:name", async (req, res) => {
-  try {
-    const questions = await Question.find({
-      tags: req.params.name,
-    })
-      .sort({ createdAt: -1 })
-      .populate("author")
-      .populate("answers");
+const buildQuestionQuery = (query) => {
+  const tags = query.tags;
+  const title = query.title;
 
-    res.json({ questions });
+  const questionQuery = {};
+
+  if (title) {
+    const titleWords = title.split("+");
+
+    if (titleWords.length > 0) {
+      questionQuery.$text = {
+        $search: titleWords.map((w) => `"${w}"`).join(" "),
+      };
+    }
+  }
+
+  if (tags) {
+    const tagWords = tags.split("+");
+    if (tagWords.length > 0) {
+      questionQuery.tags = { $all: tagWords };
+    }
+  }
+
+  return questionQuery;
+};
+
+router.get("/count", async (req, res) => {
+  try {
+    const count = await Question.countDocuments(buildQuestionQuery(req.query));
+
+    res.json({ count });
   } catch (e) {
     res.status(500).json({ message: `Something went terribly wrong: ${e}` });
   }
@@ -22,36 +43,16 @@ router.get("/tag/:name", async (req, res) => {
 
 router.get("/search", async (req, res) => {
   try {
-    const tags = req.query.tags;
-    const title = req.query.title;
     const page = req.query.page;
     const pageLimit = req.query.pageLimit;
 
-    const questionQuery = {};
-
-    if (title) {
-      const titleWords = title.split("+");
-
-      if (titleWords.length > 0) {
-        questionQuery.$text = {
-          $search: titleWords.map((w) => `"${w}"`).join(" "),
-        };
-      }
-    }
-
-    if (tags) {
-      const tagWords = tags.split("+");
-      if (tagWords.length > 0) {
-        questionQuery.tags = { $all: tagWords };
-      }
-    }
+    const questionQuery = buildQuestionQuery(req.query);
 
     // const questions = await Question.find(questionQuery)
     //     .sort({ createdAt: -1 })
     //     .populate("author")
     //     .populate("answers");
 
-    
     let questions;
     if (page) {
       questions = await Question.find(questionQuery)
@@ -75,8 +76,14 @@ router.get("/search", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const questions = await Question.find({})
+    const page = +req.query.page;
+    const pageLimit = +req.query.pageLimit;
+
+    const questionQuery = buildQuestionQuery(req.query);
+    const questions = await Question.find(questionQuery)
       .sort({ createdAt: -1 })
+      .skip((page - 1) * pageLimit)
+      .limit(pageLimit)
       .populate("author")
       .populate("answers");
 

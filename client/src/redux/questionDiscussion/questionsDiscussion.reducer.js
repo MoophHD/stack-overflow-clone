@@ -35,7 +35,7 @@ const reducer = (state = initialState, action) => {
           page: [],
           currentPage: 1,
           answerCount: action.payload,
-          pageCount: ~~(action.payload / state.answers.pageLimit),
+          pageCount: Math.ceil(action.payload / state.answers.pageLimit),
         },
       };
     case GET_ANSWERS_REQUEST:

@@ -10,6 +10,7 @@ import { StyledLink } from "components/shared/lib";
 import {
   getQuestions,
   searchQuestion,
+  setQuestionCount,
 } from "redux/questions/questions.actions";
 
 const searchRegex = {
@@ -17,7 +18,16 @@ const searchRegex = {
   tag: /^\[.+\]$/,
 };
 
-const QUESTIONS_PER_PAGE = 10;
+function parseSearchInput(value) {
+  const tokens = value.split(" ");
+  const title = tokens.filter((token) => searchRegex.word.test(token));
+  const tags = tokens
+    .filter((token) => searchRegex.tag.test(token))
+    .map((tag) => tag.slice(1, -1));
+
+  return { title, tags };
+}
+
 const TYPEAHEAD_DELAY = 1000;
 let typeAheadTimeout;
 
@@ -26,8 +36,10 @@ const Questions = ({
   getQuestions,
   searchQuestion,
   loading,
-  match,
-  location,
+  setQuestionCount,
+  currentPage,
+  questionCount,
+  pageCount,
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -46,19 +58,20 @@ const Questions = ({
   }
 
   function handleSearchSubmit(value) {
-    const tokens = value.split(" ");
+    const searchParams = parseSearchInput(value);
+    getQuestions(1, searchParams);
+  }
 
-    const titleWords = tokens.filter((token) => searchRegex.word.test(token));
-    const tags = tokens
-      .filter((token) => searchRegex.tag.test(token))
-      .map((tag) => tag.slice(1, -1));
-
-    searchQuestion(titleWords, tags);
+  function handlePageChange(page) {
+    const searchParams = parseSearchInput(searchValue);
+    getQuestions(page, searchParams);
   }
 
   useEffect(() => {
-    getQuestions();
-  }, [match.path, location.search, getQuestions]);
+    (async () => {
+      await getQuestions(1);
+    })();
+  }, [setQuestionCount, getQuestions]);
 
   return (
     <Page>
@@ -81,6 +94,7 @@ const Questions = ({
             {questions.length === 0 && (
               <Heading light>No questions yet...</Heading>
             )}
+
             {questions.length !== 0 &&
               questions.map((question) => (
                 <CardWrapper key={`questionsPage_q${question._id}`}>
@@ -101,7 +115,13 @@ const Questions = ({
               ))}
           </Container>
 
-          <PagePagination page={1} pageCount={5}/>
+          {pageCount >= 1 && (
+            <PagePagination
+              page={currentPage}
+              pageCount={pageCount}
+              onPageChange={handlePageChange}
+            />
+          )}
         </>
       )}
     </Page>
@@ -118,7 +138,9 @@ const AskQuestionButton = styled(Button)`
   margin-left: 1rem;
 `;
 
-const Container = styled.section``;
+const Container = styled.section`
+  flex: 1;
+`;
 
 const CardWrapper = styled.div`
   margin-bottom: 1rem;
@@ -126,11 +148,15 @@ const CardWrapper = styled.div`
 `;
 
 const mapStateToProps = (state) => ({
-  questions: state.questions.questions,
+  questions: state.questions.questions.page,
   loading: state.questions.loading,
+  questionCount: state.questions.questions.questionCount,
+  pageCount: state.questions.questions.pageCount,
+  currentPage: state.questions.questions.currentPage,
 });
 
 export default connect(mapStateToProps, {
   getQuestions,
   searchQuestion,
+  setQuestionCount,
 })(Questions);
