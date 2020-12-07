@@ -58,7 +58,7 @@ router.post(
     check("email", "Enter correct email")
       .normalizeEmail()
       .isEmail()
-      .withMessage("Email correct Email"),
+      .withMessage("Enter correct Email"),
     check("password", "Enter correct password")
       .isLength({ min: 6, max: 48 })
       .withMessage("Password must be >= 6 & <= 48")
@@ -90,6 +90,7 @@ router.post(
       if (!isMatch) {
         return res.status(400).json({ message: "Wrong email or password." });
       }
+
       res.cookie("refreshToken", createRefreshToken(user), {
         path: "/api/auth",
         maxAge: process.env.REFRESH_TOKEN_EXPIERY,
@@ -97,7 +98,7 @@ router.post(
       });
 
       const token = createToken(user);
-      res.json({ token, userId: user.id });
+      res.status(201).json({ token, userId: user.id });
     } catch (e) {
       res
         .status(500)
