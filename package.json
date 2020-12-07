@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "server": "nodemon app.js",
+    "start": "node server/app.js",
+    "server": "nodemon server/app.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client:install": "npm install --prefix client",
     "client:build": "npm run build --prefix client",
     "heroku-postbuild": "npm run client:install && npm run client:build",
-    "test": "cross-env NODE_ENV=test jest"
+    "test:server": "cross-env NODE_ENV=test && npm run test --prefix server"
   },
   "repository": {
     "type": "git",
@@ -23,27 +23,10 @@
     "url": "https://github.com/MoophHD/p4.itechart/issues"
   },
   "homepage": "https://github.com/MoophHD/p4.itechart#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.6.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.12"
-  },
   "devDependencies": {
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
-    "jest": "^26.6.3",
-    "nodemon": "^2.0.6",
-    "supertest": "^6.0.1"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
+    "nodemon": "^2.0.6"
   },
   "engines": {
     "node": "12.x"

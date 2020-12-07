@@ -1,10 +1,11 @@
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const index = require("./server/routes/index.route");
+const index = require("./routes/index.route");
 const path = require("path");
 const app = express();
+
+require("dotenv").config({ path: path.resolve(__dirname, "..", ".env") });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,24 +28,18 @@ const PORT = process.env.PORT || 3000;
     const mongodbURI = isTestRun
       ? process.env.MONGODB_TEST_URI
       : process.env.MONGODB_URI;
+    await mongoose.connect(mongodbURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
 
-    await mongoose.connect(
-      mongodbURI,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-      },
-      () => {
-        if (isTestRun) {
-          mongoose.connection.db.dropDatabase();
-        }
-      }
-    );
+    if (isTestRun) {
+      await mongoose.connection.db.dropDatabase();
+    } 
 
     app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
   } catch (e) {
-    console.log(`Server error, message: ${e}`);
     process.exit(1);
   }
 })();
