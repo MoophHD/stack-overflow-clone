@@ -1,13 +1,6 @@
-const app = require("../app").app;
 const request = require("supertest");
-const mongoose = require('mongoose');
-const User = require('../models/user.model');
-
-beforeAll(() => {
-  return new Promise((res, rej) => {
-    setTimeout(() => res(), 2 * 1000);
-  });
-});
+const User = require("../models/user.model");
+const app = require("../app");
 
 describe("Register with valid data", () => {
   it("Should create a request and receive refresh token & userId", async () => {

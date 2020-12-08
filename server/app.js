@@ -21,27 +21,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const PORT = process.env.PORT || 3000;
-(async function () {
-  try {
-    const isTestRun = process.env.NODE_ENV === "test";
-    const mongodbURI = isTestRun
-      ? process.env.MONGODB_TEST_URI
-      : process.env.MONGODB_URI;
-    await mongoose.connect(mongodbURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
-
-    if (isTestRun) {
-      await mongoose.connection.db.dropDatabase();
-    } 
-
-    app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
-  } catch (e) {
-    process.exit(1);
-  }
-})();
-
-module.exports.app = app;
+module.exports = app;

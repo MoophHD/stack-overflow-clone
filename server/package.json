@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "jest --testTimeout=10000"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
