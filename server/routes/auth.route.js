@@ -4,6 +4,7 @@ const { check, validationResult } = require("express-validator");
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth.middleware");
+const { register } = require("../controllers/auth.controller");
 
 const {
   createToken,
@@ -122,6 +123,8 @@ router.post(
     check("firstName", "Enter correct first name").matches(/^[A-Za-z]+$/),
     check("lastName", "Enter correct last name").matches(/^[A-Za-z]+$/),
   ],
+  register
+  /*
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -176,7 +179,7 @@ router.post(
         .status(500)
         .json({ message: `Something went wrong while registering user: ${e}` });
     }
-  }
+  }*/
 );
 
 module.exports = router;

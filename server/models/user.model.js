@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
 
 const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
@@ -16,14 +17,27 @@ const UserSchema = new Schema({
   questions: [{ type: Schema.Types.ObjectId, ref: "question" }],
 });
 
+UserSchema.pre("save", async function (next) {
+  const user = this;
+  // hash only if modified or new
+  if (!user.isModified("password")) return next();
+
+  const hashedPassword = await bcrypt.hash(user.password, 12);
+  user.password = hashedPassword;
+
+  next();
+});
+
+UserSchema.methods.comparePassword = async (candidatePassword) => {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
 // don't show some user data on retrieving
 UserSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.password;
-  // delete obj.email;
   delete obj.__v;
-  // delete obj._id;
   return obj;
 };
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("user", UserSchema);;
