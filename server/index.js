@@ -1,5 +1,6 @@
 const app = require("./app");
 const mongoose = require("mongoose");
+const { mongodbUri, port } = require("./config");
 
 const connect = (url) => {
   return mongoose.connect(url, {
@@ -11,8 +12,8 @@ const connect = (url) => {
 
 // if was run directly from the command line
 if (require.main === module) {
-  app.listen(process.env.PORT || 3000);
-  connect(process.env.MONGODB_URI);
+  app.listen(port || 3000);
+  connect(mongodbUri);
   mongoose.connection.on("error", console.log);
 }
 
