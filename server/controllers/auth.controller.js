@@ -1,6 +1,5 @@
 const UserService = require("../services/user.service");
 const AuthService = require("../services/auth.service");
-const UserServiceInstance = new UserService();
 
 // todo: move it somewhere
 const attachRefreshToken = (res, refreshToken) => {
@@ -15,7 +14,7 @@ const register = async (req, res) => {
   try {
     const body = req.body;
 
-    const user = await UserServiceInstance.register(body);
+    const user = await UserService.register(body);
     const refreshToken = AuthService.getRefreshToken(user);
     const accessToken = AuthService.getAccessToken(user);
     attachRefreshToken(res, refreshToken);
