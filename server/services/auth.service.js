@@ -38,6 +38,16 @@ class AuthService {
   static async decodeToken(token) {
     return await jwt.verify(token, secret);
   }
+
+  static async refreshAccessToken(refreshToken) {
+    const isValid = await this.isTokenValid(refreshToken);
+    if (!isValid) throw new Error("Refresh token invalid");
+
+    const data = await this.decodeToken(refreshToken);
+    const accessToken = await this.getAccessToken(data);
+
+    return accessToken;
+  }
 }
 
 module.exports = AuthService;

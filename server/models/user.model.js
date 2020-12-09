@@ -28,10 +28,6 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-UserSchema.methods.comparePassword = async (candidatePassword) => {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
-
 // don't show some user data on retrieving
 UserSchema.methods.toJSON = function () {
   var obj = this.toObject();
