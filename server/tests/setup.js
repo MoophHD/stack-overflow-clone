@@ -1,22 +1,19 @@
 const mongoose = require("mongoose");
+const { mongodbTestUri } = require("../config");
 
-const clearDb = (done) => {
-  mongoose.connection.dropDatabase();
-  return done();
+const setupDb = async () => {
+  await mongoose.connect(mongodbTestUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
 };
 
-beforeEach(async (done) => {
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(process.env.MONGODB_TEST_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
-  }
-  return clearDb(done);
-});
+const clearDb = async () => {
+  await mongoose.connection.dropDatabase();
+};
 
-afterEach(async (done) => {
-  await mongoose.connection.close();
-  return done();
-});
+module.exports = {
+  setupDb,
+  clearDb,
+};

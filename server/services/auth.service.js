@@ -26,9 +26,9 @@ class AuthService {
     );
   }
 
-  static async isTokenValid(token) {
+  static isTokenValid(token) {
     try {
-      await jwt.verify(token, secret);
+      const decoded = jwt.verify(token, secret);
       return true;
     } catch (e) {
       return false;
@@ -36,11 +36,11 @@ class AuthService {
   }
 
   static async decodeToken(token) {
-    return await jwt.verify(token, secret);
+    return jwt.verify(token, secret);
   }
 
   static async refreshAccessToken(refreshToken) {
-    const isValid = await this.isTokenValid(refreshToken);
+    const isValid = this.isTokenValid(refreshToken);
     if (!isValid) throw new Error("Refresh token invalid");
 
     const data = await this.decodeToken(refreshToken);

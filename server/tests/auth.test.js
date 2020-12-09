@@ -1,24 +1,50 @@
-const request = require("supertest");
-const User = require("../models/user.model");
-const app = require("../app");
+const AuthService = require("../services/auth.service");
+const jwt = require("jsonwebtoken");
+const { secret } = require("../config");
 
-describe("Register with valid data", () => {
-  it("Should create a request and receive refresh token & userId", async () => {
-    const res = await request(app).post("/api/auth/register").send({
-      email: "d_sizykh@mail.ru",
-      password: "pro100",
-      firstName: "Danila",
-      lastName: "Sizykh",
-    });
+describe("Auth Service", () => {
+  const userData = {
+    id: 123,
+    email: "test@mail.com",
+    firstName: "n1",
+    lastName: "n2",
+  };
+  const expiery = 100;
+  const validToken = jwt.sign(userData, secret, { expiresIn: "1d" });
+  const expiredToken = jwt.sign(userData, secret, { expiresIn: 0 });
 
-    expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty("token");
-    expect(res.body).toHaveProperty("userId");
+  it("Should create tokens", async () => {
+    const token = AuthService.createToken(userData, secret, expiery);
+    expect(token).toBeTruthy();
   });
 
-  it("Should create user document", async () => {
-    const user = await User.find({});
+  it("Should create access tokens", async () => {
+    const accessToken = AuthService.getAccessToken(userData);
+    expect(accessToken).toBeTruthy();
+  });
 
-    expect(user).toBeDefined();
+  it("Should create refresh tokens", async () => {
+    const refreshToken = AuthService.getAccessToken(userData);
+    expect(refreshToken).toBeTruthy();
+  });
+
+  it("Should check token validity, valid token", async () => {
+    const isValid = AuthService.isTokenValid(validToken);
+    expect(isValid).toBe(true);
+  });
+
+  it("Should check token validity, invalid token", async () => {
+    const isValid = AuthService.isTokenValid(expiredToken);
+    expect(isValid).toBe(false);
+  });
+
+  it("Should refresh tokens", async () => {
+    const token = await AuthService.refreshAccessToken(validToken);
+    expect(token).toBeTruthy();
+  });
+
+  it("Should not refresh invalid tokens", async () => {
+    const refreshTokenInvalid = async () => await AuthService.refreshAccessToken(expiredToken);
+    await expect(refreshTokenInvalid).rejects.toThrow();
   });
 });
