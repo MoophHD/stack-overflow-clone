@@ -1,16 +1,29 @@
-const UserService = require("../services/user.service")
+const UserService = require("../services/user.service");
+const AuthService = require("../services/auth.service");
 const UserServiceInstance = new UserService();
+
+// todo: move it somewhere
+const attachRefreshToken = (res, refreshToken) => {
+  res.cookie("refreshToken", refreshToken, {
+    path: "/api/auth",
+    maxAge: process.env.REFRESH_TOKEN_EXPIERY,
+    httpOnly: true,
+  });
+};
 
 const register = async (req, res) => {
   try {
     const body = req.body;
 
     const user = await UserServiceInstance.register(body);
-
-    res.status(201).json({ userId: user._id });
+    const refreshToken = AuthService.getRefreshToken(user);
+    const accessToken = AuthService.getAccessToken(user);
+    attachRefreshToken(res, refreshToken);
+    
+    res.status(201).json({ userId: user._id, token: accessToken });
   } catch (e) {
     console.log(e);
-    
+
     res.status(500).json({ message: "Error on register user" });
   }
 };
