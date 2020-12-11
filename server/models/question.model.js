@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const VoteSchema = require("./vote");
+require("./user.model");
+require("./answer.model");
 
 const QuestionSchema = new Schema({
   author: {
@@ -18,7 +20,30 @@ const QuestionSchema = new Schema({
   bestAnswer: { type: Schema.Types.ObjectId, ref: "answer" },
 });
 
+// set index field for search
 QuestionSchema.index({ title: "text" });
+
+QuestionSchema.post("findById", async function (doc) {
+  await doc
+    .populate({ path: "author", select: "score firstName lastName" })
+    .populate({
+      path: "answers",
+      select: "score isBest author text createdAt votes",
+      populate: { path: "author", select: "firstName lastName score" },
+    });
+});
+
+QuestionSchema.post("find", async function (docs) {
+  for (let doc of docs) {
+    await doc
+      .populate({ path: "author", select: "score firstName lastName" })
+      .populate({
+        path: "answers",
+        select: "score isBest author text createdAt votes",
+        populate: { path: "author", select: "firstName lastName score" },
+      });
+  }
+});
 
 QuestionSchema.methods.toJSON = function () {
   var obj = this.toObject();
