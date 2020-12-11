@@ -6,9 +6,9 @@ const AnswerSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: "user",
-    required: true,
+    required: false,
   },
-  text: { type: String, required: true },
+  text: { type: String, required: false },
   score: { type: Number, default: 0 },
   votes: [VoteSchema],
   createdAt: { type: Date, default: Date.now },
