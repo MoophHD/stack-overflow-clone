@@ -1,5 +1,4 @@
 const { check, validationResult } = require("express-validator");
-const { param } = require("../routes/auth.route");
 
 const userValidationRules = [
   // prettier-ignore
@@ -13,8 +12,15 @@ const userValidationRules = [
     .matches(/(?=.*\d).+/).withMessage("Password must contain a digit"),
 ];
 
-const validate = (req, res, next) => {
+const validate = async (req, res, next) => {
+  await Promise.all(
+    userValidationRules.map(async (middleware) => {
+      await middleware(req, res, () => undefined);
+    })
+  );
+
   const errors = validationResult(req);
+
   if (errors.isEmpty()) {
     return next();
   }
@@ -29,6 +35,5 @@ const validate = (req, res, next) => {
 };
 
 module.exports = {
-  userValidationRules,
   validate,
 };
