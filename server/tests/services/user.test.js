@@ -1,6 +1,6 @@
-const UserService = require("../services/user.service");
-const User = require("../models/user.model");
-const { setupDb, clearDb } = require("../tests/setup");
+const UserService = require("../../services/user.service");
+const User = require("../../models/user.model");
+const { setupDb, clearDb } = require("../setup");
 
 const userData = {
   email: "new@mail.com",

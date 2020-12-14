@@ -1,6 +1,6 @@
-const AuthService = require("../services/auth.service");
+const AuthService = require("../../services/auth.service");
 const jwt = require("jsonwebtoken");
-const { secret } = require("../config");
+const { secret } = require("../../config");
 
 describe("Auth Service", () => {
   const userData = {

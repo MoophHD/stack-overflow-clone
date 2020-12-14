@@ -1,8 +1,8 @@
-const AnswerModel = require("../models/answer.model");
-const QuestionModel = require("../models/question.model");
-const UserModel = require("../models/user.model");
-const VoteService = require("../services/vote.service");
-const { setupDb, clearDb } = require("../tests/setup");
+const AnswerModel = require("../../models/answer.model");
+const QuestionModel = require("../../models/question.model");
+const UserModel = require("../../models/user.model");
+const VoteService = require("../../services/vote.service");
+const { setupDb, clearDb } = require("../setup");
 
 beforeEach(async () => {
   await setupDb();
