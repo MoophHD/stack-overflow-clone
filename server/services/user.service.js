@@ -24,6 +24,15 @@ class UserService {
 
     return userRecord;
   }
+
+  static async getUserByIdFull(id) {
+    const userRecord = await UserModel.findById(id)
+      .populate("answers")
+      .populate("questions");
+    if (!userRecord) throw new Error(`There is no user with id ${id}`);
+
+    return userRecord;
+  }
 }
 
 module.exports = UserService;
