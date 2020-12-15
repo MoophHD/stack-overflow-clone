@@ -2,18 +2,28 @@ const AnswerModel = require("../../models/answer.model");
 const QuestionModel = require("../../models/question.model");
 const UserModel = require("../../models/user.model");
 const VoteService = require("../../services/vote.service");
-const { setupDb, clearDb } = require("../setup");
+const dbHandler = require("../dbHandler");
 
 beforeEach(async () => {
-  await setupDb();
-  await QuestionModel.ensureIndexes();
-  await AnswerModel.ensureIndexes();
-  await UserModel.ensureIndexes();
+  await dbHandler.connect();
 });
 
 afterEach(async () => {
-  await clearDb();
+  await dbHandler.close();
 });
+
+
+// beforeAll(async () => {
+//   await dbHandler.connect();
+// });
+
+// afterEach(async () => {
+//   await dbHandler.clear();
+// });
+
+// afterEach(async () => {
+//   await dbHandler.close();
+// });
 
 describe("Vote Service", () => {
   let user, question, answer;

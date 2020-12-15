@@ -1,6 +1,15 @@
 const UserService = require("../../services/user.service");
 const User = require("../../models/user.model");
-const { setupDb, clearDb } = require("../setup");
+const dbHandler = require("../dbHandler");
+
+beforeEach(async () => {
+  await dbHandler.connect();
+  existingUser = await User(existingUserData).save();
+});
+
+afterEach(async () => {
+  await dbHandler.close();
+});
 
 const userData = {
   email: "new@mail.com",
@@ -16,14 +25,8 @@ const existingUserData = {
   password: "123qwe",
 };
 
-let existingUser;
-beforeEach(async () => {
-  await setupDb();
-  existingUser = await User(existingUserData).save();
-});
-afterEach(async () => await clearDb());
-
 describe("User Service", () => {
+  let existingUser;
   it("Should return user model after register", async () => {
     const user = await UserService.register(userData);
     expect(user).toBeTruthy();
@@ -37,7 +40,10 @@ describe("User Service", () => {
   it("Should throw on login if user is not present in the database", async () => {
     await expect(
       async () =>
-        await UserService.login({ ...existingUserData, email: "doesnotexist@mail.com" })
+        await UserService.login({
+          ...existingUserData,
+          email: "doesnotexist@mail.com",
+        })
     ).rejects.toThrow();
   });
 

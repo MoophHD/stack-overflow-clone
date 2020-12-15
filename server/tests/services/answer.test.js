@@ -1,16 +1,18 @@
 const AnswerModel = require("../../models/answer.model");
 const QuestionModel = require("../../models/question.model");
 const QuestionService = require("../../services/question.service");
-const { setupDb, clearDb } = require("../setup");
+const dbHandler = require("../dbHandler");
+
+// beforeAll(async () => await dbHandler.connect());
 
 beforeEach(async () => {
-  await setupDb();
-  await AnswerModel.ensureIndexes();
+  await dbHandler.connect();
 });
 
 afterEach(async () => {
-  await clearDb();
+  await dbHandler.close();
 });
+
 
 describe("Answers ", () => {
   const existingQuestionData = {

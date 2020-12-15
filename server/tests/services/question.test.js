@@ -1,16 +1,18 @@
-const { db } = require("../../models/question.model");
 const QuestionModel = require("../../models/question.model");
 const QuestionService = require("../../services/question.service");
-const { setupDb, clearDb } = require("../setup");
+const dbHandler = require("../dbHandler");
+
+beforeAll(async () => await dbHandler.connect());
 
 beforeEach(async () => {
-  await setupDb();
+  await dbHandler.connect();
   await QuestionModel.ensureIndexes();
 });
 
 afterEach(async () => {
-  await clearDb();
+  await dbHandler.close();
 });
+
 
 const questionData = {
   author: "5a1154523a6bcc1d245e143d",
