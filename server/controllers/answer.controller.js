@@ -3,11 +3,17 @@ const QuestionService = require("../services/question.service");
 const createAnswer = async (req, res) => {
   try {
     const { questionId, text } = req.body;
+
+    if (!req.user || !req.user.id)
+      return res.status(403).json({ message: "must be authorized" });
+
     const author = req.user.id;
+    const answer = await QuestionService.createAnswer(questionId, {
+      text,
+      author,
+    });
 
-    const answers = QuestionService.createAnswer(questionId, { text, author });
-
-    res.json({ answers });
+    res.json({ answer });
   } catch (e) {
     console.log(e);
 
@@ -17,7 +23,8 @@ const createAnswer = async (req, res) => {
 
 const countAnswers = async (req, res) => {
   try {
-    const count = QuestionService.countAnswers(questionId);
+    const questionId = req.params.question_id;
+    const count = await QuestionService.countAnswers(questionId);
 
     res.json({ count });
   } catch (e) {
@@ -33,7 +40,7 @@ const getAnswerPage = async (req, res) => {
     const page = +req.query.page;
     const pageLimit = +req.query.pageLimit;
 
-    const answers = QuestionService.getAnswerPage(questionId, page, pageLimit);
+    const answers = await QuestionService.getAnswerPage(questionId, page, pageLimit);
 
     res.json({ answers });
   } catch (e) {
