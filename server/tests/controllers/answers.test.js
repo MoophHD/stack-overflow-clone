@@ -74,6 +74,7 @@ describe("Answer controller", () => {
       page: '1',
       pageLimit: '10',
     };
+    
     await getAnswerPage(req, res);
     const answers = res._getJSONData().answers;
     expect(answers).toEqual(expect.any(Array))

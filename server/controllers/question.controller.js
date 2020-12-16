@@ -1,10 +1,11 @@
 const QuestionService = require("../services/question.service");
 
-const count = async (req, res) => {
+const countQuestions = async (req, res) => {
   try {
-    const { tags: queryTags, title: queryTitle } = req.query;
-    const tags = queryTags && queryTags.split("+");
-    const title = queryTitle;
+    const query = req.query;
+    const tags = query.tags ? query.tags.split("+") : [];
+    const title = query.title;
+
     const count = await QuestionService.count({ tags, title });
 
     res.json({ count });
@@ -15,7 +16,7 @@ const count = async (req, res) => {
   }
 };
 
-const getPage = async (req, res) => {
+const getQuestionPage = async (req, res) => {
   try {
     const query = req.query;
     const tags = query.tags ? query.tags.split("+") : [];
@@ -51,13 +52,9 @@ const getQuestionById = async (req, res) => {
 const createQuestion = async (req, res) => {
   try {
     const author = req.user.id;
-    const { title, text, tags } = req.body;
-    const question = new Question({ author, title, text, tags });
-    await question.save();
+    const body = req.body;
 
-    const user = await User.findById(author);
-    user.questions.push(question.id);
-    await user.save();
+    const question = await QuestionService.create({ author, ...body });
 
     res.json({ question });
   } catch (e) {
@@ -67,4 +64,9 @@ const createQuestion = async (req, res) => {
   }
 };
 
-module.exports = { count, getPage, getQuestionById, createQuestion };
+module.exports = {
+  countQuestions,
+  getQuestionPage,
+  getQuestionById,
+  createQuestion,
+};
