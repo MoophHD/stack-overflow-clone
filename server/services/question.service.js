@@ -8,7 +8,13 @@ class QuestionService {
   }
 
   static async getById(id) {
-    const questionRecord = await QuestionModel.findById(id);
+    const questionRecord = await QuestionModel.findById(id)
+      .populate({ path: "author", select: "score firstName lastName" })
+      .populate({
+        path: "answers",
+        select: "score isBest author text createdAt votes",
+        populate: { path: "author", select: "firstName lastName score" },
+      });
     return questionRecord;
   }
 

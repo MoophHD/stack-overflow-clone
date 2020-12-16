@@ -18,8 +18,8 @@ const count = async (req, res) => {
 const getPage = async (req, res) => {
   try {
     const query = req.query;
-    const tags = query.tags.split("+");
-    const title = query.tags.title;
+    const tags = query.tags ? query.tags.split("+") : [];
+    const title = query.title;
     const page = +query.page;
     const pageLimit = +query.pageLimit;
 
@@ -39,7 +39,7 @@ const getPage = async (req, res) => {
 const getQuestionById = async (req, res) => {
   try {
     const id = req.params.question_id;
-    const question = QuestionService.findById(id);
+    const question = await QuestionService.getById(id);
     res.json({ question });
   } catch (e) {
     console.log(e);
