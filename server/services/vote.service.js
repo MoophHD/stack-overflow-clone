@@ -34,7 +34,6 @@ class VoteService {
     }
     // update vote target vote array, and update the score
     await target.save();
-    console.log(target.author);
     // update target's author score
     await target.author.save();
   }
