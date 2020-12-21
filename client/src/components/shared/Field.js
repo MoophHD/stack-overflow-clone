@@ -3,13 +3,14 @@ import styled, { css } from "styled-components";
 import { Input } from "./lib";
 
 const Field = forwardRef(
-  ({ error, label, optional, bold, light, ...props }, ref) => (
+  ({ error, label, optional, bold, light, id, ...props }, ref) => (
     <Container>
-      <Label bold={light === true}>
+      <Label htmlFor={id} bold={light === true}>
         {label}
         {optional && <Label optional> - optional</Label>}
       </Label>
       <Input
+        id={id}
         light={light === true}
         danger={error !== undefined}
         ref={ref}

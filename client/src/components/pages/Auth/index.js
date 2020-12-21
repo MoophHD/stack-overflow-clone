@@ -7,7 +7,7 @@ import { Button, Background } from "components/shared/lib";
 import Field from "components/shared/Field";
 import { login, register } from "redux/auth/auth.actions";
 
-const Auth = ({ isAuthenticated, login, register }) => {
+export const Auth = ({ isAuthenticated, login, register }) => {
   const [isLogin, setIsLogin] = useState(true);
   const { register: registerForm, getValues, errors } = useForm({
     mode: "onChange",
@@ -26,6 +26,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
 
         <FieldGroup>
           <Field
+            id="email"
             label="Email"
             error={errors.email}
             type="email"
@@ -42,6 +43,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
           {!isLogin && (
             <InputRow>
               <Field
+                id="first_name"
                 label="First Name"
                 name="firstName"
                 error={errors.firstName}
@@ -54,6 +56,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
                 })}
               />
               <Field
+                id="last_name"
                 label="Last Name"
                 name="lastName"
                 error={errors.lastName}
@@ -69,6 +72,7 @@ const Auth = ({ isAuthenticated, login, register }) => {
           )}
 
           <Field
+            id="password"
             label="Password"
             type="password"
             name="password"
@@ -94,24 +98,28 @@ const Auth = ({ isAuthenticated, login, register }) => {
           {!isLogin && (
             <>
               <Field
+                id="nick_name"
                 optional
                 label="Nick Name"
                 name="nickName"
                 ref={registerForm()}
               />
               <Field
+                id="current_job"
                 optional
                 label="Current Job Position"
                 name="jobPosition"
                 ref={registerForm()}
               />
               <Field
+                id="job_experience"
                 optional
                 label="Job Experience"
                 name="jobExperience"
                 ref={registerForm()}
               />
               <Field
+                id="tech_stack"
                 optional
                 label="Tech Stack"
                 name="techStack"
