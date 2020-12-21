@@ -10,11 +10,15 @@ export const history = createBrowserHistory();
 
 const middleware = [thunk, saveToken, routerMiddleware(history)];
 
+export const createReduxStore = () => {
+  return createStore(
+    createRootReducer(history),
+    initialState,
+    composeWithDevTools(applyMiddleware(...middleware))
+  );
+};
+
 const initialState = {};
-const store = createStore(
-  createRootReducer(history),
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+const store = createReduxStore();
 
 export default store;

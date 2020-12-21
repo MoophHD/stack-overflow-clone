@@ -9,142 +9,138 @@ import { login, register } from "redux/auth/auth.actions";
 
 export const Auth = ({ isAuthenticated, login, register }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const { register: registerForm, getValues, errors } = useForm({
+  const { register: registerForm, errors, handleSubmit } = useForm({
     mode: "onChange",
   });
+  const onSubmit = (data) => {
+    isLogin ? login(data) : register(data);
+  };
 
   return isAuthenticated ? (
     <Redirect to="/" />
   ) : (
     <Background>
-      <Container>
+      {/* submit never fires for some reason */}
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <ChangeTypeBtn onClick={() => setIsLogin(!isLogin)} href="#">
           {isLogin ? "New? Register Instead" : "Already a User? Login instead"}
         </ChangeTypeBtn>
 
         <Title>{isLogin ? "Login" : "Register"}</Title>
 
-        <FieldGroup>
-          <Field
-            id="email"
-            label="Email"
-            error={errors.email}
-            type="email"
-            name="email"
-            ref={registerForm({
-              required: { value: true, message: "Email is required" },
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "invalid email address",
-              },
-            })}
-          />
+        <Field
+          id="email"
+          label="Email"
+          error={errors.email}
+          type="email"
+          name="email"
+          ref={registerForm({
+            required: { value: true, message: "Email is required" },
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          })}
+        />
 
-          {!isLogin && (
-            <InputRow>
-              <Field
-                id="first_name"
-                label="First Name"
-                name="firstName"
-                error={errors.firstName}
-                ref={registerForm({
-                  required: { value: true, message: "First Name is required" },
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Please only use letters",
-                  },
-                })}
-              />
-              <Field
-                id="last_name"
-                label="Last Name"
-                name="lastName"
-                error={errors.lastName}
-                ref={registerForm({
-                  required: { value: true, message: "Last Name is required" },
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Please only use letters",
-                  },
-                })}
-              />
-            </InputRow>
-          )}
+        {!isLogin && (
+          <InputRow>
+            <Field
+              id="first_name"
+              label="First Name"
+              name="firstName"
+              error={errors.firstName}
+              ref={registerForm({
+                required: { value: true, message: "First Name is required" },
+                pattern: {
+                  value: /^[A-Za-z]+$/i,
+                  message: "Please only use letters",
+                },
+              })}
+            />
+            <Field
+              id="last_name"
+              label="Last Name"
+              name="lastName"
+              error={errors.lastName}
+              ref={registerForm({
+                required: { value: true, message: "Last Name is required" },
+                pattern: {
+                  value: /^[A-Za-z]+$/i,
+                  message: "Please only use letters",
+                },
+              })}
+            />
+          </InputRow>
+        )}
 
-          <Field
-            id="password"
-            label="Password"
-            type="password"
-            name="password"
-            error={errors.password}
-            ref={registerForm({
-              required: { value: true, message: "Password is required" },
-              minLength: {
-                value: 6,
-                message: "Password length should be >= 6",
-              },
-              maxLength: {
-                value: 48,
-                message: "Password length should be <= 48",
-              },
-              validate: {
-                hasDigit: (value) =>
-                  /\d/.test(value) ||
-                  "Password should contain at least one digit",
-              },
-            })}
-          />
+        <Field
+          id="password"
+          label="Password"
+          type="password"
+          name="password"
+          error={errors.password}
+          ref={registerForm({
+            required: { value: true, message: "Password is required" },
+            minLength: {
+              value: 6,
+              message: "Password length should be >= 6",
+            },
+            maxLength: {
+              value: 48,
+              message: "Password length should be <= 48",
+            },
+            validate: {
+              hasDigit: (value) =>
+                /\d/.test(value) ||
+                "Password should contain at least one digit",
+            },
+          })}
+        />
 
-          {!isLogin && (
-            <>
-              <Field
-                id="nick_name"
-                optional
-                label="Nick Name"
-                name="nickName"
-                ref={registerForm()}
-              />
-              <Field
-                id="current_job"
-                optional
-                label="Current Job Position"
-                name="jobPosition"
-                ref={registerForm()}
-              />
-              <Field
-                id="job_experience"
-                optional
-                label="Job Experience"
-                name="jobExperience"
-                ref={registerForm()}
-              />
-              <Field
-                id="tech_stack"
-                optional
-                label="Tech Stack"
-                name="techStack"
-                ref={registerForm()}
-              />
-            </>
-          )}
-        </FieldGroup>
+        {!isLogin && (
+          <>
+            <Field
+              id="nick_name"
+              optional
+              label="Nick Name"
+              name="nickName"
+              ref={registerForm()}
+            />
+            <Field
+              id="current_job"
+              optional
+              label="Current Job Position"
+              name="jobPosition"
+              ref={registerForm()}
+            />
+            <Field
+              id="job_experience"
+              optional
+              label="Job Experience"
+              name="jobExperience"
+              ref={registerForm()}
+            />
+            <Field
+              id="tech_stack"
+              optional
+              label="Tech Stack"
+              name="techStack"
+              ref={registerForm()}
+            />
+          </>
+        )}
 
-        <SubmitBtn
-          primary
-          onClick={() => {
-            if (Object.keys(errors).length === 0) {
-              isLogin ? login(getValues()) : register(getValues());
-            }
-          }}
-        >
+        {/* TODO: figure out why onsubmit action is never fired on form */}
+        <SubmitBtn onClick={handleSubmit(onSubmit)} type="submit" primary>
           Submit
         </SubmitBtn>
-      </Container>
+      </Form>
     </Background>
   );
 };
 
-const Container = styled.section`
+const Form = styled.form`
   width: 32rem;
   display: flex;
   padding: 2rem 3rem;
@@ -179,13 +175,6 @@ const ChangeTypeBtn = styled.a`
   text-decoration: underline;
 `;
 
-const FieldGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 2rem;
-  width: 100%;
-`;
-
 const InputRow = styled.div`
   width: 100%;
   display: flex;
@@ -199,6 +188,7 @@ const InputRow = styled.div`
 const SubmitBtn = styled(Button)`
   width: 100%;
   font-weight: bold;
+  margin-top: 2rem;
 `;
 
 const mapStateToProps = (state) => ({
