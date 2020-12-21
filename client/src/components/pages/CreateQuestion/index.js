@@ -7,7 +7,7 @@ import FieldArea from "components/shared/FieldArea";
 import { createQuestion } from "redux/questions/questions.actions";
 import Tag from "components/shared/Tag";
 
-const CreateQuestion = ({ createQuestion }) => {
+export const CreateQuestion = ({ createQuestion }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
@@ -17,6 +17,7 @@ const CreateQuestion = ({ createQuestion }) => {
       <Heading>Ask a public question</Heading>
       <QuestionBody>
         <Field
+          id="title"
           light
           shadow
           label="Title"
@@ -28,6 +29,7 @@ const CreateQuestion = ({ createQuestion }) => {
         />
 
         <FieldArea
+          id="description"
           light
           shadow
           label="Description"
@@ -36,6 +38,7 @@ const CreateQuestion = ({ createQuestion }) => {
         />
 
         <Field
+          id="tags"
           light
           shadow
           label="Tags"
