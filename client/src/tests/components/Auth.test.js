@@ -1,13 +1,8 @@
 import React from "react";
 import { Auth } from "components/pages/Auth";
-import {
-  render,
-  cleanup,
-  fireEvent,
-} from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TestingRouter from "../utils/TestingRouter";
-
-afterEach(cleanup);
 
 describe("Auth page component", () => {
   it("Should redirect to main page if isAuthenticated", () => {
@@ -98,69 +93,81 @@ describe("Forms action", () => {
     noDigit: "qweqweqweqweqwe",
   };
 
-  it("Should fire login function and pass login and passport data as arguments", async () => {
-    const { getByLabelText, getByRole } = render(<Auth login={mockLogin} />);
+  const optional = {
+    firstName: "Aaron",
+    lastName: "Burr",
+    nickName: "mooph",
+    jobPosition: "frontend dev",
+    jobExperience: "1 year",
+    techStack: "mern",
+  };
 
-    const emailInput = getByLabelText("Email");
-    fireEvent.change(emailInput, { target: { value: email.correct } });
-    const passwordInput = getByLabelText("Password");
-    fireEvent.change(passwordInput, { target: { value: password.correct } });
+  const setInputValue = (labelName, value) => {
+    const input = screen.getByLabelText(labelName);
+
+    userEvent.type(input, value);
+  };
+
+  it("Should fire login function and pass login and passport data as arguments", async () => {
+    const { getByRole } = render(<Auth login={mockLogin} />);
+
+    setInputValue("Email", email.correct);
+    setInputValue("Password", password.correct);
 
     const submitBtn = getByRole("button", { name: "Submit" });
     fireEvent.click(submitBtn);
 
-    expect(mockLogin).toHaveBeenCalledWith({
-      email: email.correct,
-      password: password.correct,
+    await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalledWith({
+        email: email.correct,
+        password: password.correct,
+      });
     });
   });
 
   it("Should not fire login on incorrect email", async () => {
-    const { getByLabelText, getByRole } = render(<Auth login={mockLogin} />);
+    const { getByRole } = render(<Auth login={mockLogin} />);
 
-    const emailInput = getByLabelText("Email");
-    fireEvent.change(emailInput, { target: { value: email.wrongFormat } });
-    const passwordInput = getByLabelText("Password");
-    fireEvent.change(passwordInput, { target: { value: password.correct } });
+    setInputValue("Email", email.wrongFormat);
+    setInputValue("Password", password.correct);
 
     const submitBtn = getByRole("button", { name: "Submit" });
-    fireEvent.click(submitBtn);
+    userEvent.click(submitBtn);
 
-    expect(mockLogin).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockLogin).not.toHaveBeenCalled();
+    });
   });
 
   it("Should fire register function and pass login and passport data as arguments", async () => {
-    const { getByLabelText, getByRole, getByText } = render(
-      <Auth register={mockRegister} />
-    );
+    const { getByRole, getByText } = render(<Auth register={mockRegister} />);
 
     const changeModeBtn = getByText("New? Register Instead");
+    userEvent.click(changeModeBtn);
 
-    fireEvent.click(changeModeBtn);
-
-    const emailInput = getByLabelText("Email");
-    fireEvent.change(emailInput, { target: { value: email.correct } });
-    const passwordInput = getByLabelText("Password");
-    fireEvent.change(passwordInput, { target: { value: password.correct } });
-    const firstNameInput = getByLabelText("First Name");
-    fireEvent.change(firstNameInput, { target: { value: arbitrary.correct } });
-    const lastNameInput = getByLabelText("Last Name");
-    fireEvent.change(lastNameInput, { target: { value: arbitrary.correct } });
-    const nickInput = getByLabelText("Nick Name", { exact: false });
-    fireEvent.change(nickInput, { target: { value: arbitrary.correct } });
-    const jobInput = getByLabelText("Current Job Position", { exact: false });
-    fireEvent.change(jobInput, { target: { value: arbitrary.correct } });
-    const expInput = getByLabelText("Job Experience", { exact: false });
-    fireEvent.change(expInput, { target: { value: arbitrary.correct } });
-    const techInput = getByLabelText("Tech Stack", { exact: false });
-    fireEvent.change(techInput, { target: { value: arbitrary.correct } });
+    setInputValue("Email", email.correct);
+    setInputValue("Password", password.correct);
+    setInputValue("First Name", optional.firstName);
+    setInputValue("Last Name", optional.lastName);
+    setInputValue(/Nick Name/i, optional.nickName);
+    setInputValue(/Current Job Position/i, optional.jobPosition);
+    setInputValue(/Job Experience/i, optional.jobExperience);
+    setInputValue(/Tech Stack/i, optional.techStack);
 
     const submitBtn = getByRole("button", { name: "Submit" });
     fireEvent.click(submitBtn);
 
-    expect(mockRegister).toHaveBeenCalledWith({
-      email: email.correct,
-      password: password.correct,
+    await waitFor(() => {
+      expect(mockRegister).toHaveBeenCalledWith({
+        email: email.correct,
+        password: password.correct,
+        firstName: optional.firstName,
+        lastName: optional.lastName,
+        nickName: optional.nickName,
+        jobPosition: optional.jobPosition,
+        jobExperience: optional.jobExperience,
+        techStack: optional.techStack,
+      });
     });
   });
 });

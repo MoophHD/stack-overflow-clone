@@ -2,8 +2,6 @@ import React from "react";
 import { CreateQuestion } from "components/pages/CreateQuestion";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 
-afterEach(cleanup);
-
 const uiText = {
   pageIdentificator: "Ask a public question",
   inputLabel: {
