@@ -10,7 +10,7 @@ import { StyledLink } from "components/shared/lib";
 import {
   getQuestions,
   setQuestionCount,
-  resetQuestions
+  resetQuestions,
 } from "redux/questions/questions.actions";
 
 const searchRegex = {
@@ -31,14 +31,14 @@ function parseSearchInput(value) {
 const TYPEAHEAD_DELAY = 1000;
 let typeAheadTimeout;
 
-const Questions = ({
-  questions,
+export const Questions = ({
+  questions=[],
   getQuestions,
   loading,
   setQuestionCount,
   currentPage,
   pageCount,
-  resetQuestions
+  resetQuestions,
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -89,7 +89,7 @@ const Questions = ({
             </StyledLink>
           </UiGroup>
 
-          <Container>
+          <Container aria-label="Question list">
             {questions.length === 0 && (
               <Heading light>No questions yet...</Heading>
             )}
@@ -157,5 +157,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getQuestions,
   setQuestionCount,
-  resetQuestions
+  resetQuestions,
 })(Questions);

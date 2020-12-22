@@ -10,8 +10,11 @@ const SearchBar = ({ onSubmit, value, setValue }) => {
 
   return (
     <Container>
-      <SearchIcon onClick={handleSubmit} />
+      <SearchButton aria-label="search" onClick={handleSubmit}>
+        <SearchIcon />
+      </SearchButton>
       <SearchInput
+        aria-label="search"
         placeholder={"Search for a question..."}
         onKeyUp={(e) => {
           if (e.key === "Enter") handleSubmit();
@@ -32,6 +35,13 @@ const Container = styled.div`
 
 const SearchInput = styled(Input)`
   padding-left: 3rem;
+`;
+
+const SearchButton = styled.button`
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
 `;
 
 const SearchIcon = styled(FontAwesomeIcon).attrs({

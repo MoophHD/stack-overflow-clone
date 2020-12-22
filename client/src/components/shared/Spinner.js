@@ -1,8 +1,8 @@
 import styled, { keyframes, css } from "styled-components";
 
 const Spinner = ({light}) => (
-  <Center>
-    <Loading light />
+  <Center role="alert" aria-label="loading">
+    <Loading light={light} />
   </Center>
 );
 
@@ -35,7 +35,6 @@ const Loading = styled.div`
     border-left-color: white;
     border-right-color: white;
     border-bottom-color: white;
-
   `}
 `;
 
