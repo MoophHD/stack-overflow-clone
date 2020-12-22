@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth.middleware");
 const {
-  count,
-  getPage,
+  countQuestions,
+  getQuestionPage,
   getQuestionById,
   createQuestion,
 } = require("../controllers/question.controller");
 
-router.get("/count", count);
-router.get("/", getPage);
+router.get("/count", countQuestions);
+router.get("/", getQuestionPage);
 router.get("/:question_id", getQuestionById);
 router.post("/", auth, createQuestion);
 
