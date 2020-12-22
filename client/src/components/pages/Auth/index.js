@@ -12,15 +12,19 @@ export const Auth = ({ isAuthenticated, login, register }) => {
   const { register: registerForm, errors, handleSubmit } = useForm({
     mode: "onChange",
   });
+
   const onSubmit = (data) => {
-    isLogin ? login(data) : register(data);
+    if (isLogin) {
+      login(data);
+    } else {
+      register(data);
+    }
   };
 
   return isAuthenticated ? (
     <Redirect to="/" />
   ) : (
     <Background>
-      {/* submit never fires for some reason */}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ChangeTypeBtn onClick={() => setIsLogin(!isLogin)} href="#">
           {isLogin ? "New? Register Instead" : "Already a User? Login instead"}
@@ -131,8 +135,7 @@ export const Auth = ({ isAuthenticated, login, register }) => {
           </>
         )}
 
-        {/* TODO: figure out why onsubmit action is never fired on form */}
-        <SubmitBtn onClick={handleSubmit(onSubmit)} type="submit" primary>
+        <SubmitBtn type="submit" primary>
           Submit
         </SubmitBtn>
       </Form>

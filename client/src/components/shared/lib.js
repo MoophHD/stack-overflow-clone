@@ -165,13 +165,12 @@ export const TextArea = styled.textarea`
   }
 `;
 
-export const Button = styled.div.attrs(() => ({
-  role: "button",
-  tabIndex: 0,
-  onKeyDown: (e) => {
-    if (e.key === "Enter" || e.key === "Space") e.target.click();
-  },
-}))`
+export const Button = styled.button`
+  font-size: 100%;
+  font-family: inherit;
+  border: 0;
+  padding: 0;
+
   display: inline-block;
   text-align: center;
   color: var(--color-text-dark);
