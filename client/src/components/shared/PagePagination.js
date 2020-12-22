@@ -1,30 +1,44 @@
 import styled from "styled-components";
 import { Button } from "components/shared/lib";
 
-const AnswerPagination = ({ page, pageCount, onPageChange }) => (
-  <Container>
-    {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+const PagePagination = ({ page, pageCount, onPageChange }) => (
+  <Container role="navigation" aria-label="pagination navigation">
+    <StyledUl>
+      {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+        <StyledLi key={n}>
+          <PaginationItem
+            onClick={() => onPageChange(n)}
+            light
+            primary={n === page}
+            aria-label={`Goto page ${n}`}
+          >
+            {n}
+          </PaginationItem>
+        </StyledLi>
+      ))}
       <PaginationItem
-        onClick={() => onPageChange(n)}
-        light
-        primary={n === page}
-        key={n}
+        disabled={page === pageCount}
+        onClick={() => {
+          if (page !== pageCount) onPageChange(page + 1);
+        }}
+        aria-label="Goto next page"
       >
-        {n}
+        Next
       </PaginationItem>
-    ))}
-    <PaginationItem
-      disabled={page === pageCount}
-      onClick={() => {
-        if (page !== pageCount) onPageChange(page + 1);
-      }}
-    >
-      Next
-    </PaginationItem>
+    </StyledUl>
   </Container>
 );
 
-const Container = styled.div`
+const StyledUl = styled.ul`
+  padding: 0;
+  list-style: none;
+`;
+
+const StyledLi = styled.li`
+  display: inline;
+`;
+
+const Container = styled.nav`
   display: flex;
   justify-content: center;
 `;
@@ -34,4 +48,4 @@ const PaginationItem = styled(Button)`
   border: 1px solid var(--color-gray);
 `;
 
-export default AnswerPagination;
+export default PagePagination;
